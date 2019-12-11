@@ -3,7 +3,7 @@ import Statistic from "./Statistic";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { createWorkout, selectExercise } from "../actions";
+import { createRandomWorkout, selectExercise } from "../actions";
 class Main extends Component {
   state = {};
   render() {
@@ -15,7 +15,7 @@ class Main extends Component {
         <Statistic value={75} label="kg weigth" />
         <div
           onClick={() => {
-            this.props.createWorkout(this.props.exercisePool, 4);
+            this.props.createRandomWorkout(this.props.exercisePool, 4);
           }}
         >
           Create random workout
@@ -33,6 +33,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { createWorkout, selectExercise })(
-  Main
-);
+export default connect(mapStateToProps, {
+  createRandomWorkout,
+  selectExercise
+})(Main);

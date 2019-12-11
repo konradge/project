@@ -18,7 +18,8 @@ const selectedExerciseReducer = (currentExercise = null, action) => {
 };
 
 const currentWorkoutReducer = (currentWorkout = [], action) => {
-  if (action.type === "CREATE_WORKOUT") {
+  if (action.type === "CREATE_RANDOM_WORKOUT") {
+    //Nehme aus dem gemischten exercisePool eine Anzahl an Übungen
     return {
       title: "Random workout",
       exercises: shuffle([...action.payload.exercisePool]).slice(
@@ -35,11 +36,11 @@ const currentWorkoutReducer = (currentWorkout = [], action) => {
 export default combineReducers({
   exercisePool: () => {
     return [
-      { name: "Pushup", duration: 30 },
-      { name: "Situps", duration: 40 },
-      { name: "Squats", duration: 60 },
-      { name: "Bent-Over Row", duration: 40 },
-      { name: "Abdominal Crunches", duration: 50 }
+      { name: "Pushup", duration: 3 },
+      { name: "Situps", duration: 4 },
+      { name: "Squats", duration: 6 },
+      { name: "Bent-Over Row", duration: 4 },
+      { name: "Abdominal Crunches", duration: 5 }
     ];
   },
   //Exercise: Must have name and duration(int)

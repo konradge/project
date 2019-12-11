@@ -12,10 +12,10 @@ export const selectExercise = (workout, index) => {
   };
 };
 
-export const createWorkout = (exercisePool, exerciseCount) => {
+export const createRandomWorkout = (exercisePool, exerciseCount) => {
   console.log(exercisePool);
   return {
-    type: "CREATE_WORKOUT",
+    type: "CREATE_RANDOM_WORKOUT",
     payload: { exercisePool, exerciseCount }
   };
 };

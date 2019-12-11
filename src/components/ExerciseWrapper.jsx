@@ -1,92 +1,145 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
-import { selectExercise, createWorkout } from "../actions";
+import { selectExercise, createRandomWorkout } from "../actions";
 import Exercise from "./Exercise.jsx";
 
 class ExerciseWrapper extends Component {
   state = {
-    time: 0
+    //Sekunden bis Übungsende
+    time: 0,
+    timer: setInterval(() => this.countDown(), 100)
   };
-  constructor(props) {
-    super(props);
-    this.timer = {
-      interval: setInterval(() => {
-        this.countDown();
-      }, 100),
-      isRunning: true
-    };
-  }
 
+  /** Lifecycle Methods **/
   componentDidUpdate(prevProps) {
     if (this.props.exercise === null && this.props.workout) {
-      console.log(this.props.workout);
+      //Workout wurde ausgewählt, dann muss erste(nullte) Übung dieses ausgewählt werden
       this.props.selectExercise(this.props.workout, 0);
     } else if (prevProps !== this.props) {
+      //Wurde eine neue Übung ausgewählt(Props aus store wurden verändert),
+      //wird die Zeit auf die Übungsgesamtzeit gesetzt
       this.setState({ time: this.props.exercise.duration });
     }
   }
+
+  componentWillUnmount() {
+    //Wenn Seite/Component verlassen wird, muss Interval gestoppt werden
+    if (this.state.timer) {
+      clearInterval(this.state.timer);
+    }
+  }
+
+  /** Methoden zur Auswahl der Übungen **/
+  //Hilfsmethode, um Übung aus Workout zu wählen
+  selectExercise(index) {
+    this.props.selectExercise(this.props.workout, index);
+  }
+
+  //Starte die nächste Übung aus aktuellem Workout (this.props.workout)
+  next() {
+    if (this.props.exercise) {
+      this.selectExercise(this.props.exercise.index + 1);
+      //Timer wird direkt um eins verringert
+      this.setState({ time: this.state.time + 1 });
+      //Alle Übungen des Workouts beendet
+      if (this.props.exercise.index === this.props.workout.length) {
+        this.setState({ ready: true });
+      }
+    }
+  }
+
+  /** Timer Methoden **/
+  //Zähle jede 1/10 Sekunde runter, wenn auf null, starte nächste Übung
   countDown() {
     this.setState({ time: this.state.time - 0.1 });
+    if (this.state.time < 0) {
+      this.next();
+    }
   }
 
-  nextExercise() {
-    this.setState({ time: this.props.exercise.duration });
-  }
-
+  //Pausiere den Countdown
   pauseTimer() {
-    if (this.timer.isRunning) {
-      clearInterval(this.timer.interval);
-      this.timer.isRunning = false;
+    if (this.state.timer) {
+      clearInterval(this.state.timer);
+      this.setState({ timer: null });
     }
   }
+
+  //Führe den Countdown fort
   runTimer() {
-    if (!this.timer.isRunning) {
-      this.timer.interval = setInterval(() => {
-        this.countDown();
-      }, 100);
+    if (!this.state.timer) {
+      this.setState({
+        timer: setInterval(() => {
+          this.countDown();
+        }, 100)
+      });
     }
   }
-  next() {
-    this.props.selectExercise(
-      this.props.workout,
-      this.props.exercise.index + 1
-    );
-  }
+
+  /** Render **/
   render() {
-    if (this.props.exercise === null) {
+    if (this.state.ready) {
+      //Alle Übungen des aktuellen Workouts wurden beendet
+      return (
+        <div>
+          <h1>WELL DONE!</h1>
+          <Link to="/">Home</Link>
+          <br />
+          <Link to="/overview">Overview on training activitiy</Link>
+          <br />
+          <a
+            onClick={() => {
+              this.setState({ ready: false });
+              this.selectExercise(0);
+            }}
+          >
+            Restart Training
+          </a>
+        </div>
+      );
+    } else if (!this.props.workout || !this.props.exercise) {
+      //Es wurde noch kein Workout/Übung ausgewählt=>Auswahlmenu
       return (
         <div>
           <h1>Please select a workout</h1>
           <div
             onClick={() => {
-              this.props.createWorkout(this.props.exercisePool, 4);
+              this.props.createRandomWorkout(this.props.exercisePool, 4);
             }}
           >
             Create random workout
           </div>
         </div>
       );
-    }
-    return (
-      <div>
-        <Exercise exercise={this.props.exercise} time={this.state.time} />
-        <div className="ui grid exercise-menu">
-          <div className="four wide column">
-            <i
-              className="step backward icon"
-              onClick={() => console.log("backward")}
-            ></i>
-          </div>
-          <div className="four wide column">
-            <i className=" icon" onClick={() => this.pauseTimer()}></i>
-          </div>
-          <div className="four wide column">
-            <i className="step forward icon" onClick={() => this.next()}></i>
+    } else {
+      //Die aktuelle Übung wird angezeigt
+      return (
+        <div>
+          <h1>{this.props.workoutTitle}</h1>
+          <Exercise exercise={this.props.exercise} time={this.state.time} />
+          <div className="ui grid exercise-menu">
+            <div className="four wide column">
+              <i
+                className="step backward icon"
+                onClick={() => console.log("backward")}
+              ></i>
+            </div>
+            <div className="four wide column">
+              {this.state.timer ? (
+                <i className="pause icon" onClick={() => this.pauseTimer()}></i>
+              ) : (
+                <i className="play icon" onClick={() => this.runTimer()}></i>
+              )}
+            </div>
+            <div className="four wide column">
+              <i className="step forward icon" onClick={() => this.next()}></i>
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 
@@ -94,10 +147,12 @@ const mapStateToProps = state => {
   return {
     exercise: state.currentExercise,
     workout: state.currentWorkout.exercises,
+    workoutTitle: state.currentWorkout.title,
     exercisePool: state.exercisePool
   };
 };
 
-export default connect(mapStateToProps, { selectExercise, createWorkout })(
-  ExerciseWrapper
-);
+export default connect(mapStateToProps, {
+  selectExercise,
+  createRandomWorkout
+})(ExerciseWrapper);

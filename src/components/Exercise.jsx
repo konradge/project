@@ -3,6 +3,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import "../style.css";
 
+//Anzeige einer Übung mit zugehöriger Zeit
 class Exercise extends Component {
   render() {
     return (
