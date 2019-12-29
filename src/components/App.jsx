@@ -6,15 +6,18 @@ import Menu from "./Menu";
 import Overview from "./Overview";
 import Main from "./Main";
 import Challenges from "./Challenges";
+import WorkoutCreator from "./WorkoutCreator";
 class App extends Component {
   state = {};
   render() {
     return (
       <BrowserRouter>
         <Route path="/overview" component={Overview} />
-        <Route path="/workout" component={ExerciseWrapper} />
+        <Route path="/workout" component={ExerciseWrapper} exact />
+        <Route path="/workout/:id" component={WorkoutCreator} />
         <Route path="/challenges" component={Challenges} />
         <Route path="/" component={Main} exact />
+        {/**Always show menu at bottom of page */}
         <Route path="/" component={Menu} />
       </BrowserRouter>
     );

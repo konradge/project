@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import { selectExercise, createRandomWorkout } from "../actions";
 import Exercise from "./Exercise.jsx";
@@ -13,6 +13,9 @@ class ExerciseWrapper extends Component {
   };
 
   /** Lifecycle Methods **/
+  componentDidMount() {
+    this.props.selectExercise(this.props.workout, 0);
+  }
   componentDidUpdate(prevProps) {
     if (this.props.exercise === null && this.props.workout) {
       //Workout wurde ausgewählt, dann muss erste(nullte) Übung dieses ausgewählt werden
@@ -89,30 +92,21 @@ class ExerciseWrapper extends Component {
           <br />
           <Link to="/overview">Overview on training activitiy</Link>
           <br />
-          <a
+          <div
             onClick={() => {
               this.setState({ ready: false });
               this.selectExercise(0);
             }}
           >
             Restart Training
-          </a>
-        </div>
-      );
-    } else if (!this.props.workout || !this.props.exercise) {
-      //Es wurde noch kein Workout/Übung ausgewählt=>Auswahlmenu
-      return (
-        <div>
-          <h1>Please select a workout</h1>
-          <div
-            onClick={() => {
-              this.props.createRandomWorkout(this.props.exercisePool, 4);
-            }}
-          >
-            Create random workout
           </div>
         </div>
       );
+    } else if (this.props.workout.length === 0) {
+      //Es wurde noch kein Workout ausgewählt=>Auswahlmenu
+      return <Redirect to="/workout/-1" />;
+    } else if (!this.props.exercise) {
+      return <div>Loading Exercise...</div>;
     } else {
       //Die aktuelle Übung wird angezeigt
       return (
@@ -148,7 +142,7 @@ const mapStateToProps = state => {
     exercise: state.currentExercise,
     workout: state.currentWorkout.exercises,
     workoutTitle: state.currentWorkout.title,
-    exercisePool: state.exercisePool
+    exercisePool: state.userData.exercises
   };
 };
 

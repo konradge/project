@@ -13,7 +13,6 @@ export const selectExercise = (workout, index) => {
 };
 
 export const createRandomWorkout = (exercisePool, exerciseCount) => {
-  console.log(exercisePool);
   return {
     type: "CREATE_RANDOM_WORKOUT",
     payload: { exercisePool, exerciseCount }
@@ -25,4 +24,8 @@ export const selectWorkout = workout => {
     type: "SELECT_WORKOUT",
     payload: workout
   };
+};
+
+export const addExercise = exercise => {
+  return { type: "ADD_EXERCISE", payload: exercise };
 };

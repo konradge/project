@@ -14,3 +14,7 @@ export const formatTime = seconds => {
 export function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
 }
+
+export function findById(array, id) {
+  return array.find(elem => elem.id === id);
+}

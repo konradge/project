@@ -1,3 +1,7 @@
 .progress-bar {
   width: 200px;
 }
+
+.hidden-element {
+  visibility: hidden;
+}
