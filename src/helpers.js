@@ -18,3 +18,10 @@ export function shuffle(array) {
 export function findById(array, id) {
   return array.find(elem => elem.id === id);
 }
+
+//Calculates an array, which has max length of maxLength
+export function sliceArray(arr, maxLength) {
+  return arr.slice(
+    Math.sign(arr.length - maxLength) === -1 ? 0 : arr.length - maxLength
+  );
+}

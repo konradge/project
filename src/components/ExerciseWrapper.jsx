@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 
-import { selectExercise, createRandomWorkout } from "../actions";
+import {
+  selectExercise,
+  createRandomWorkout,
+  pushWorkoutHistory
+} from "../actions";
 import Exercise from "./Exercise.jsx";
 
 class ExerciseWrapper extends Component {
@@ -49,6 +53,8 @@ class ExerciseWrapper extends Component {
       //Alle Übungen des Workouts beendet
       if (this.props.exercise.index === this.props.workout.length) {
         this.setState({ ready: true });
+        this.props.pushWorkoutHistory(this.props.currentWorkout);
+        console.log("READY");
       }
     }
   }
@@ -142,11 +148,13 @@ const mapStateToProps = state => {
     exercise: state.currentExercise,
     workout: state.currentWorkout.exercises,
     workoutTitle: state.currentWorkout.title,
+    currentWorkout: state.currentWorkout,
     exercisePool: state.userData.exercises
   };
 };
 
 export default connect(mapStateToProps, {
   selectExercise,
-  createRandomWorkout
+  createRandomWorkout,
+  pushWorkoutHistory
 })(ExerciseWrapper);

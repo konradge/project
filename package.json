@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://konradge.github.io/project/",
   "dependencies": {
+    "dateformat": "^3.0.3",
     "gh-pages": "^2.1.1",
     "react": "^16.11.0",
     "react-calendar": "^2.19.2",

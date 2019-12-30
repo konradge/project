@@ -29,3 +29,15 @@ export const selectWorkout = workout => {
 export const addExercise = exercise => {
   return { type: "ADD_EXERCISE", payload: exercise };
 };
+
+export const pushWorkoutHistory = workout => {
+  return { type: "PUSH_WORKOUT_HISTORY", payload: workout };
+};
+
+export const addTime = timeToAdd => {
+  return { type: "ADD_TIME", payload: timeToAdd };
+};
+
+export const addWeight = newWeight => {
+  return { type: "ADD_WEIGHT", payload: newWeight };
+};

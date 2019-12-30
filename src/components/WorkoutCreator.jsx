@@ -9,14 +9,14 @@ import { findById } from "../helpers";
 
 class WorkoutCreator extends Component {
   state = { selected: null };
+  id = parseInt(this.props.match.params.id);
   componentDidMount() {
-    const id = parseInt(this.props.match.params.id);
-    const workout = findById(this.props.usersWorkouts, id) || null;
+    const workout = findById(this.props.usersWorkouts, this.id) || null;
     this.props.selectWorkout(workout);
   }
   componentDidUpdate() {
-    const id = parseInt(this.props.match.params.id);
-    const workout = findById(this.props.usersWorkouts, id) || null;
+    this.id = parseInt(this.props.match.params.id);
+    const workout = findById(this.props.usersWorkouts, this.id) || null;
     this.props.selectWorkout(workout);
   }
   renderExercises() {
@@ -53,24 +53,36 @@ class WorkoutCreator extends Component {
     if (this.props.currentWorkout === undefined) {
       return <div>Loading...</div>;
     }
+    console.log(this.props.currentWorkout);
+    console.log(this.id);
+    //Handle non existent id
     return (
       <div>
         <h1>Please select a workout</h1>
-        <Selector
-          options={this.props.usersWorkouts.map(workout => {
-            return {
-              value: workout.id,
-              label: workout.title
-            };
-          })}
-          onChange={selected => this.props.history.push("/workout/" + selected)}
-          defaultValue={{
-            value: 0,
-            label: "---"
-          }}
-        />
-        <ExercisePreview name={this.state.selected} />
-        {this.props.currentWorkout !== null ? this.renderExercises() : ""}
+        {this.id === -1 || this.props.currentWorkout.title ? (
+          <div>
+            <Selector
+              options={this.props.usersWorkouts.map(workout => {
+                return {
+                  value: workout.id,
+                  label: workout.title
+                };
+              })}
+              onChange={selected =>
+                this.props.history.push("/workout/" + selected)
+              }
+              defaultValue={{
+                value: this.id || -1,
+                label:
+                  this.props.currentWorkout && this.props.currentWorkout.title
+                    ? this.props.currentWorkout.title
+                    : "--Select Workout--"
+              }}
+            />
+            <ExercisePreview name={this.state.selected} />
+            {this.props.currentWorkout !== null ? this.renderExercises() : ""}
+          </div>
+        ) : null}
       </div>
     );
   }
