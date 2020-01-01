@@ -25,3 +25,19 @@ export function sliceArray(arr, maxLength) {
     Math.sign(arr.length - maxLength) === -1 ? 0 : arr.length - maxLength
   );
 }
+
+export function isSameDay(date1, date2) {
+  return (
+    date1.getDate() === date2.getDate() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getYear() === date2.getYear()
+  );
+}
+
+export function getWorkout(id, workoutList) {
+  return workoutList.find(workout => workout.id === id);
+}
+
+export function getExercise(id, exerciseList) {
+  return exerciseList.find(exercise => exercise.id === id);
+}

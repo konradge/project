@@ -2,33 +2,35 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 
-import {
-  selectExercise,
-  createRandomWorkout,
-  pushWorkoutHistory
-} from "../actions";
+import { pushWorkoutHistory, addTime, setIndex } from "../actions";
 import Exercise from "./Exercise.jsx";
+import { getWorkout, getExercise } from "../helpers";
 
 class ExerciseWrapper extends Component {
   state = {
     //Sekunden bis Übungsende
     time: 0,
-    timer: setInterval(() => this.countDown(), 100)
+    timer: null
   };
 
-  /** Lifecycle Methods **/
   componentDidMount() {
-    this.props.selectExercise(this.props.workout, 0);
-  }
-  componentDidUpdate(prevProps) {
-    if (this.props.exercise === null && this.props.workout) {
-      //Workout wurde ausgewählt, dann muss erste(nullte) Übung dieses ausgewählt werden
-      this.props.selectExercise(this.props.workout, 0);
-    } else if (prevProps !== this.props) {
-      //Wurde eine neue Übung ausgewählt(Props aus store wurden verändert),
-      //wird die Zeit auf die Übungsgesamtzeit gesetzt
-      this.setState({ time: this.props.exercise.duration });
+    if (this.props.workoutExercises && this.props.exercise) {
+      this.startExercise();
     }
+  }
+
+  /** Lifecycle Methods **/
+  componentDidUpdate(prevProps) {
+    if (this.props.indexInWorkout !== prevProps.indexInWorkout) {
+      this.startExercise();
+    }
+  }
+
+  startExercise() {
+    this.setState({
+      time: this.props.exercise.duration,
+      timer: setInterval(() => this.countDown(), 100)
+    });
   }
 
   componentWillUnmount() {
@@ -39,22 +41,17 @@ class ExerciseWrapper extends Component {
   }
 
   /** Methoden zur Auswahl der Übungen **/
-  //Hilfsmethode, um Übung aus Workout zu wählen
-  selectExercise(index) {
-    this.props.selectExercise(this.props.workout, index);
-  }
 
   //Starte die nächste Übung aus aktuellem Workout (this.props.workout)
   next() {
-    if (this.props.exercise) {
-      this.selectExercise(this.props.exercise.index + 1);
-      //Timer wird direkt um eins verringert
-      this.setState({ time: this.state.time + 1 });
-      //Alle Übungen des Workouts beendet
-      if (this.props.exercise.index === this.props.workout.length) {
+    if (this.props.exercise && !this.state.ready) {
+      if (this.props.indexInWorkout + 1 >= this.props.workoutExercises.length) {
+        clearInterval(this.state.timer);
+        this.props.pushWorkoutHistory(this.props.currentWorkout.id);
         this.setState({ ready: true });
-        this.props.pushWorkoutHistory(this.props.currentWorkout);
-        console.log("READY");
+      } else {
+        clearInterval(this.state.timer);
+        this.props.setIndex(this.props.indexInWorkout + 1);
       }
     }
   }
@@ -62,8 +59,14 @@ class ExerciseWrapper extends Component {
   /** Timer Methoden **/
   //Zähle jede 1/10 Sekunde runter, wenn auf null, starte nächste Übung
   countDown() {
+    //Verringere Timer um 1/10 Sekunde
     this.setState({ time: this.state.time - 0.1 });
-    if (this.state.time < 0) {
+    //Füge diese Zeit in die totalWorkoutTime hinzu
+    this.props.addTime(0.1);
+
+    //Übung wurde beendet
+    if (this.state.time <= 0) {
+      console.log("next");
       this.next();
     }
   }
@@ -101,14 +104,18 @@ class ExerciseWrapper extends Component {
           <div
             onClick={() => {
               this.setState({ ready: false });
-              this.selectExercise(0);
+              this.props.setIndex(0);
             }}
           >
             Restart Training
           </div>
         </div>
       );
-    } else if (this.props.workout.length === 0) {
+    } else if (
+      !this.props.workoutExercises ||
+      this.props.workoutExercises.length === 0
+    ) {
+      console.log("kein wo ausgewählt");
       //Es wurde noch kein Workout ausgewählt=>Auswahlmenu
       return <Redirect to="/workout/-1" />;
     } else if (!this.props.exercise) {
@@ -144,17 +151,28 @@ class ExerciseWrapper extends Component {
 }
 
 const mapStateToProps = state => {
+  const currentWorkout = getWorkout(
+    state.current.workout,
+    state.userData.workouts
+  );
+  const currentIndex = state.current.index;
+  const currentExercise = currentWorkout
+    ? getExercise(
+        currentWorkout.exercises[currentIndex],
+        state.userData.exercises
+      )
+    : null;
   return {
-    exercise: state.currentExercise,
-    workout: state.currentWorkout.exercises,
-    workoutTitle: state.currentWorkout.title,
-    currentWorkout: state.currentWorkout,
-    exercisePool: state.userData.exercises
+    exercise: currentExercise,
+    workoutExercises: currentWorkout ? currentWorkout.exercises : null,
+    workoutTitle: currentWorkout ? currentWorkout.title : null,
+    indexInWorkout: currentIndex,
+    currentWorkout
   };
 };
 
 export default connect(mapStateToProps, {
-  selectExercise,
-  createRandomWorkout,
-  pushWorkoutHistory
+  pushWorkoutHistory,
+  addTime,
+  setIndex
 })(ExerciseWrapper);

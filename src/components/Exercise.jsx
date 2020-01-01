@@ -10,7 +10,7 @@ class Exercise extends Component {
       <div>
         <CircularProgressbar
           className="progress-bar"
-          text={Math.floor(this.props.time)}
+          text={Math.ceil(this.props.time)}
           value={(this.props.time / this.props.exercise.duration) * 100}
         />
         <div className="exercise-name">{this.props.exercise.name}</div>

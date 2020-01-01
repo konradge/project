@@ -1,17 +1,13 @@
-export const setExercise = exercise => {
+//Setze ID von currentExercise(Mithilfe Übungsindex kann dann echte Übung geholt werden)
+export const setExercise = exerciseId => {
   return {
     type: "SET_EXERCISE",
-    payload: exercise
+    payload: exerciseId
   };
 };
 
-export const selectExercise = (workout, index) => {
-  return {
-    type: "SELECT_EXERCISE",
-    payload: { workout, index }
-  };
-};
-
+//Erstelle zufälliges Workout aus exerciseCount Übungen (Array aus Inidzes)
+//Dabei ist exercisePool ein Array aus möglichen Indizes
 export const createRandomWorkout = (exercisePool, exerciseCount) => {
   return {
     type: "CREATE_RANDOM_WORKOUT",
@@ -19,10 +15,18 @@ export const createRandomWorkout = (exercisePool, exerciseCount) => {
   };
 };
 
-export const selectWorkout = workout => {
+//Setze ID von Workout
+export const setWorkout = workoutId => {
   return {
-    type: "SELECT_WORKOUT",
-    payload: workout
+    type: "SET_WORKOUT",
+    payload: workoutId
+  };
+};
+
+export const setIndex = index => {
+  return {
+    type: "SET_INDEX",
+    payload: index
   };
 };
 
@@ -30,14 +34,22 @@ export const addExercise = exercise => {
   return { type: "ADD_EXERCISE", payload: exercise };
 };
 
+//Setze Übung mit ID id auf exercise
+export const editExercise = (exercise, id) => {
+  return { type: "EDIT_EXERCISE", payload: { exercise, id } };
+};
+
+//Füge die ID eines beendeten Workouts zur History hinzu
 export const pushWorkoutHistory = workout => {
   return { type: "PUSH_WORKOUT_HISTORY", payload: workout };
 };
 
+//Füge Zeit zur totalTrainingTime hinzu
 export const addTime = timeToAdd => {
   return { type: "ADD_TIME", payload: timeToAdd };
 };
 
+//Füge ein neues Gewicht zur History der Gewichte hinzu
 export const addWeight = newWeight => {
   return { type: "ADD_WEIGHT", payload: newWeight };
 };

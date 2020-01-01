@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import Statistic from "./Statistic";
 import { connect } from "react-redux";
-import { createRandomWorkout, selectExercise, addWeight } from "../actions";
+import { createRandomWorkout, setExercise, addWeight } from "../actions";
 import Popup from "./Popup";
+import { getWorkout } from "../helpers";
 class Main extends Component {
   state = {
     lastWeight: this.props.lastWeight,
     weightChanged: false
   };
   startPopupContent() {
-    if (this.props.currentWorkout.title === null) {
+    if (!this.props.currentWorkout) {
       return null;
     }
     return (
@@ -44,7 +45,7 @@ class Main extends Component {
         <h1>Welcome back!</h1>
         <Statistic value={this.calcWorkoutsPerWeek()} label="workouts/week" />
         <Statistic
-          value={this.calcMinutesWorkoutTime()}
+          value={(this.calcMinutesWorkoutTime() / 60).toFixed(2)}
           label="Ø minutes workout time"
         />
         <div>
@@ -96,14 +97,14 @@ class Main extends Component {
               className="play icon massive"
               onClick={() => {
                 console.log("click");
-                this.props.currentWorkout.title === null
+                !this.props.currentWorkout
                   ? this.props.history.push("/workout")
                   : console.log("asdf");
               }}
             ></i>
           }
           content={this.startPopupContent()}
-          canOpen={this.props.currentWorkout.title === null ? false : true}
+          canOpen={!!this.props.currentWorkout}
         />
       </div>
     );
@@ -111,9 +112,12 @@ class Main extends Component {
 }
 
 const mapStateToProps = state => {
+  const currentWorkout = getWorkout(
+    state.current.workout,
+    state.userData.workouts
+  );
   return {
-    exercisePool: state.exercisePool,
-    currentWorkout: state.currentWorkout,
+    currentWorkout,
     userHistory: state.userData.history,
     lastWeight:
       state.userData.history.weight[state.userData.history.weight.length - 1]
@@ -123,6 +127,6 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
   createRandomWorkout,
-  selectExercise,
+  setExercise,
   addWeight
 })(Main);

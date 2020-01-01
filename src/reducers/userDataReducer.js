@@ -12,19 +12,21 @@ const workouts = [
   {
     id: 1,
     title: "First Workout",
-    exercises: [exercises[0], exercises[1]]
+    exercises: [0, 1] //IDs der Übungen
   },
   {
     id: 2,
     title: "Second Workout",
-    exercises: [exercises[2], exercises[3]]
+    exercises: [2, 3]
   }
 ];
 
 const history = {
   lastWorkouts: [
-    { title: "EXAMPLE1Workout", date: new Date(2018, 11, 29) },
-    { title: "EXAMPLE2Workout", date: new Date(2019, 5, 25) }
+    { title: "EXAMPLE1Workout", date: new Date(2019, 10, 27) },
+    { title: "EXAMPLE2Workout", date: new Date(2019, 11, 29) },
+    { title: "EXAMPLE2Workout", date: new Date(2019, 11, 29) },
+    { title: "EXAMPLE2Workout", date: new Date(2019, 11, 30) }
   ],
   totalTrainingTime: 20,
   weight: [
@@ -73,6 +75,17 @@ export default (
             { date: new Date(), weight: action.payload }
           ]
         }
+      };
+    case "EDIT_EXERCISE":
+      console.log(action.payload);
+
+      //Die Übung mit der ID action.payload.id wird entfernt und die bearbeitete dann wieder hinzugefügt
+      return {
+        ...userData,
+        exercises: [
+          ...userData.exercises.filter(ex => ex.id !== action.payload.id),
+          { ...action.payload.exercise, id: action.payload.id }
+        ]
       };
     case "SET_USERDATA":
       return userData;

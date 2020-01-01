@@ -3,6 +3,7 @@ export default (currentExercise = null, action) => {
     case "SET_EXERCISE":
       return action.payload;
     case "SELECT_EXERCISE":
+      console.log(action.payload);
       if (!action.payload.workout || action.payload.workout.length === 0) {
         return currentExercise;
       }
