@@ -1,7 +1,209 @@
-.progress-bar {
-  width: 200px;
+body {
+  background-color: rgb(170, 170, 170);
 }
 
+.side-menu {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 125px; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #777;
+  _overflow-x: hidden; /* Disable horizontal scroll */
+  margin-top: 0px;
+}
+.side-menu * {
+  max-width: 125px;
+}
+.content {
+  padding: 20px;
+  padding-left: 130px;
+  margin: 20px;
+  min-height: calc(100vh - 40px);
+  border-radius: 10px;
+  background-color: rgb(140, 140, 140);
+}
+.timer-description {
+  font-size: 75px;
+  text-align: center;
+}
+.timer-description div {
+  padding: 30px;
+}
+
+.timer-description .time {
+  font-size: 100px;
+}
+
+.timer-div {
+  float: left;
+  height: 500px;
+  width: 500px;
+  margin-left: 100px;
+}
+
+.exercise-description {
+  background-color: lightgrey;
+  float: left;
+  width: calc(100% - 500px - 30%);
+  height: 500px;
+  position: relative;
+  margin-left: 50px;
+  border-radius: 10px;
+}
+
+.exercise-description * {
+  text-align: center;
+}
+
+.exercise-menu {
+  width: 500px;
+  margin-left: 100px;
+  clear: left;
+  background: #eee;
+  border-radius: 5px;
+}
+
+.exercise-menu * {
+  margin: auto;
+}
+
+.title .heading {
+  background-color: #eee;
+  font-size: 50px;
+  border: 3px grey solid;
+  padding: 15px;
+  margin-bottom: -3px;
+}
+
+.heading.bottom {
+  margin-bottom: 0px;
+}
+
+.title {
+  margin: auto;
+  width: fit-content;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.title .subheading {
+  background-color: #eee;
+  border: solid 3px grey;
+  border-top: solid 3px #eee;
+  border-radius: 5px;
+  width: fit-content;
+  display: inline-block;
+  padding: 5px;
+}
+
+.play-icon:hover .play {
+  color: orange;
+}
+
+.start-workout i {
+  font-size: 250px;
+}
+.start-workout div {
+  font-size: 20px;
+  font-weight: bold;
+}
+.main .grid {
+  margin: 20px;
+}
+
+.finish-stats {
+  width: 50%;
+  text-align: center;
+}
+
+.finish-links {
+  text-align: left;
+  font-size: 50px;
+}
+.finish-links > div > div {
+  padding: 10px;
+  color: blue;
+}
+.finish-links > div > div:hover {
+  color: #005;
+  cursor: pointer;
+}
+
+.finish-content {
+  padding-top: 70px;
+}
+
+.overview-section {
+  border: grey solid 2px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  padding-bottom: 30px;
+}
+
+.overview-section .chart {
+  width: fit-content;
+  margin: auto;
+  color: black;
+  background-color: white;
+  display: inline-block;
+}
+
+.add-weight {
+  background-color: red;
+  border: red solid 2px;
+}
+
+.overview-section .timeline {
+  padding: 30px;
+  background-color: white;
+  width: 90%;
+  margin: auto;
+}
+
+.overview-section .challenges {
+  width: 90%;
+  margin: auto;
+}
+
+.overview-section h1 {
+  display: flex;
+  width: 50%;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  margin: auto;
+  margin-bottom: 20px;
+  color: darkblue;
+}
+.overview-section h1:before,
+.overview-section h1:after {
+  content: "";
+  border-top: 2px solid;
+  margin: 0 20px 0 0;
+  flex: 1 0 20px;
+}
+
+.overview-section h1:after {
+  margin: 0 0 0 20px;
+}
+
+/*
+  Parent: 
+  position: relative;
+  */
+.relative-position {
+  position: relative;
+}
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
 .hidden-element {
   visibility: hidden;
 }

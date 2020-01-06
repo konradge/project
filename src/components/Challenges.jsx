@@ -44,7 +44,7 @@ class Challenges extends Component {
       2.5
     );
     return (
-      <div>
+      <div className="challenges">
         <ProgressBar
           percentage={(consecutiveDays / 4) * 100}
           label="Consecutive days with training"

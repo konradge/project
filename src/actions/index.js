@@ -30,8 +30,26 @@ export const setIndex = index => {
   };
 };
 
-export const addExercise = exercise => {
-  return { type: "ADD_EXERCISE", payload: exercise };
+export const addExerciseToWorkout = (exerciseId, workoutId) => {
+  return {
+    type: "ADD_EXERCISE_TO_WORKOUT",
+    payload: { exerciseId, workoutId }
+  };
+};
+
+export const removeExerciseFromWorkout = (exerciseId, workoutId) => {
+  return {
+    type: "REMOVE_EXERCISE_FROM_WORKOUT",
+    payload: { exerciseId, workoutId }
+  };
+};
+
+export const addExercise = exerciseName => {
+  return { type: "ADD_EXERCISE", payload: exerciseName };
+};
+
+export const addWorkout = workoutName => {
+  return { type: "ADD_WORKOUT", payload: workoutName };
 };
 
 //Setze Übung mit ID id auf exercise

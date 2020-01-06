@@ -1,36 +1,65 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { setWorkout, addExercise } from "../actions";
+import {
+  setWorkout,
+  addExercise,
+  addWorkout,
+  addExerciseToWorkout,
+  removeExerciseFromWorkout
+} from "../actions";
 import Selector from "./Selector";
 import "../style.css";
-import { getWorkout, getExercise } from "../helpers";
+import { getWorkout, getExercise, getId } from "../helpers";
 
 class WorkoutCreator extends Component {
   state = {
     selected: null,
     workout: { id: -1, title: "", exercises: [] },
-    id: parseInt(this.props.match.params.id)
+    id: parseInt(this.props.match.params.id),
+    title: null
   };
   componentDidMount() {
     const id = parseInt(this.props.match.params.id);
-    this.getWorkout(id);
+    const workout = this.getWorkout(id);
+    if (id === -1) {
+      this.setState({
+        workout: { id: -1, title: "", exercises: [] },
+        title: "---Select Workout---"
+      });
+    } else if (workout === null) {
+      this.props.history.push("/workout/-1");
+    } else {
+      this.setState({ workout, id: workout.id, title: workout.title });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     const id = parseInt(this.props.match.params.id);
-    if (prevState.id !== id) {
-      this.getWorkout(id);
+    const workout = this.getWorkout(id);
+    if (id === -1 && prevState.workout.id !== -1) {
+      console.log("if");
+      this.setState({
+        workout: { id: -1, title: "", exercises: [] },
+        title: "---Select Workout---"
+      });
+    } else if (workout === null && id !== -1) {
+      console.log("else if");
+      this.props.history.push("/workout/-1");
+    } else if (id !== -1) {
+      if (workout.exercises !== prevState.workout.exercises) {
+        this.setState({ workout, id: workout.id, title: workout.title });
+      }
     }
   }
 
   getWorkout(id) {
-    let workout = getWorkout(id, this.props.allWorkouts);
-    if (!workout) {
-      workout = { id: -1, title: "", exercises: [] };
-      id = -1;
+    const workout = getWorkout(id, this.props.allWorkouts);
+    if (workout) {
+      return workout;
+    } else {
+      return null;
     }
-    this.setState({ workout, id });
   }
   renderExercises() {
     return (
@@ -46,6 +75,15 @@ class WorkoutCreator extends Component {
                   this.props.history.push("/exercise/" + exercise.id)
                 }
               ></i>
+              <i
+                className="trash alternate icon"
+                onClick={() =>
+                  this.props.removeExerciseFromWorkout(
+                    exercise.id,
+                    this.state.workout.id
+                  )
+                }
+              ></i>
             </div>
           );
         })}
@@ -53,13 +91,23 @@ class WorkoutCreator extends Component {
           options={this.props.usersExercises.map(exercise => {
             return { value: exercise.id, label: exercise.name };
           })}
-          onChange={selected => this.props.addExercise(selected)}
+          onChange={selected =>
+            this.props.addExerciseToWorkout(selected, this.state.workout.id)
+          }
+          onCreate={selected => {
+            const idForNewExercise = getId(this.props.usersExercises);
+            this.props.addExercise(selected);
+            this.props.addExerciseToWorkout(
+              idForNewExercise,
+              this.state.workout.id
+            );
+            this.props.history.push("/exercise/" + idForNewExercise);
+          }}
         />
         {this.state.workout.exercises.length > 0 ? (
           <button
             onClick={() => {
               this.props.setWorkout(this.state.workout.id);
-              console.log("set workout to" + this.state.workout.id);
               this.props.history.push("/workout");
             }}
           >
@@ -92,12 +140,10 @@ class WorkoutCreator extends Component {
               onChange={selected =>
                 this.props.history.push("/workout/" + selected)
               }
-              defaultValue={{
-                value: this.state.workout.id,
-                label:
-                  this.state.workout.id === -1
-                    ? "---Select Workout---"
-                    : this.state.workout.title
+              value={{ value: this.state.title, label: this.state.title }}
+              onCreate={created => {
+                this.props.addWorkout(created);
+                this.props.history.push("/workout/3");
               }}
             />
             {this.state.workout !== null ? this.renderExercises() : ""}
@@ -116,6 +162,10 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { setWorkout, addExercise })(
-  WorkoutCreator
-);
+export default connect(mapStateToProps, {
+  setWorkout,
+  addExercise,
+  addWorkout,
+  addExerciseToWorkout,
+  removeExerciseFromWorkout
+})(WorkoutCreator);

@@ -15,7 +15,7 @@ class Selector extends Component {
               this.props.onChange(selected.value);
             }
           }}
-          defaultValue={this.props.defaultValue}
+          value={this.props.value}
         />
       </div>
     );

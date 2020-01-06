@@ -41,3 +41,8 @@ export function getWorkout(id, workoutList) {
 export function getExercise(id, exerciseList) {
   return exerciseList.find(exercise => exercise.id === id);
 }
+
+export function getId(list) {
+  const sortedIds = list.map(item => item.id).sort((a, b) => a - b);
+  return sortedIds[sortedIds.length - 1] + 1;
+}

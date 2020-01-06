@@ -5,12 +5,11 @@ import { Link, Redirect } from "react-router-dom";
 import { pushWorkoutHistory, addTime, setIndex } from "../actions";
 import Exercise from "./Exercise.jsx";
 import { getWorkout, getExercise } from "../helpers";
+import WorkoutStatistics from "./WorkoutStatistics";
 
 class ExerciseWrapper extends Component {
   state = {
-    //Sekunden bis Übungsende
-    time: 0,
-    timer: null
+    isRunning: true
   };
 
   componentDidMount() {
@@ -28,16 +27,8 @@ class ExerciseWrapper extends Component {
 
   startExercise() {
     this.setState({
-      time: this.props.exercise.duration,
-      timer: setInterval(() => this.countDown(), 100)
+      isRunning: true
     });
-  }
-
-  componentWillUnmount() {
-    //Wenn Seite/Component verlassen wird, muss Interval gestoppt werden
-    if (this.state.timer) {
-      clearInterval(this.state.timer);
-    }
   }
 
   /** Methoden zur Auswahl der Übungen **/
@@ -46,48 +37,30 @@ class ExerciseWrapper extends Component {
   next() {
     if (this.props.exercise && !this.state.ready) {
       if (this.props.indexInWorkout + 1 >= this.props.workoutExercises.length) {
-        clearInterval(this.state.timer);
+        //Das aktuelle Workout ist beendet->Wird zur History hinzugefügt,
+        //fertig machen für nächstes Training(Index auf 0, clearInterval)
         this.props.pushWorkoutHistory(this.props.currentWorkout.id);
+        this.props.setIndex(0);
         this.setState({ ready: true });
       } else {
-        clearInterval(this.state.timer);
         this.props.setIndex(this.props.indexInWorkout + 1);
       }
     }
   }
 
-  /** Timer Methoden **/
-  //Zähle jede 1/10 Sekunde runter, wenn auf null, starte nächste Übung
-  countDown() {
-    //Verringere Timer um 1/10 Sekunde
-    this.setState({ time: this.state.time - 0.1 });
-    //Füge diese Zeit in die totalWorkoutTime hinzu
-    this.props.addTime(0.1);
-
-    //Übung wurde beendet
-    if (this.state.time <= 0) {
-      console.log("next");
-      this.next();
-    }
-  }
+  /** Pause/Play Methoden **/
 
   //Pausiere den Countdown
   pauseTimer() {
-    if (this.state.timer) {
-      clearInterval(this.state.timer);
-      this.setState({ timer: null });
-    }
+    console.log("pause");
+    this.setState({ isRunning: false });
   }
 
   //Führe den Countdown fort
   runTimer() {
-    if (!this.state.timer) {
-      this.setState({
-        timer: setInterval(() => {
-          this.countDown();
-        }, 100)
-      });
-    }
+    this.setState({
+      isRunning: true
+    });
   }
 
   /** Render **/
@@ -96,18 +69,40 @@ class ExerciseWrapper extends Component {
       //Alle Übungen des aktuellen Workouts wurden beendet
       return (
         <div>
-          <h1>WELL DONE!</h1>
-          <Link to="/">Home</Link>
-          <br />
-          <Link to="/overview">Overview on training activitiy</Link>
-          <br />
-          <div
-            onClick={() => {
-              this.setState({ ready: false });
-              this.props.setIndex(0);
-            }}
-          >
-            Restart Training
+          <div className="title">
+            <div className="heading">WELL DONE!</div>
+            <div className="subheading">You have completed your training!</div>
+          </div>
+          <div className="finish-content">
+            <div className="ui two column grid">
+              <div className="column finish-stats">
+                <WorkoutStatistics />
+              </div>
+              <div className="column relative-position finish-links">
+                <div className="vertical-center">
+                  <div onClick={() => this.props.history.push("/")}>
+                    <div>
+                      <i className="home icon"></i>Home
+                    </div>
+                  </div>
+                  <div onClick={() => this.props.history.push("/overview")}>
+                    <div>
+                      <i className="chart line icon"></i>Overview
+                    </div>
+                  </div>
+                  <div
+                    onClick={() => {
+                      this.setState({ ready: false });
+                      this.props.setIndex(0);
+                    }}
+                  >
+                    <div>
+                      <i className="redo icon"></i>Restart
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       );
@@ -115,7 +110,6 @@ class ExerciseWrapper extends Component {
       !this.props.workoutExercises ||
       this.props.workoutExercises.length === 0
     ) {
-      console.log("kein wo ausgewählt");
       //Es wurde noch kein Workout ausgewählt=>Auswahlmenu
       return <Redirect to="/workout/-1" />;
     } else if (!this.props.exercise) {
@@ -124,24 +118,39 @@ class ExerciseWrapper extends Component {
       //Die aktuelle Übung wird angezeigt
       return (
         <div>
-          <h1>{this.props.workoutTitle}</h1>
-          <Exercise exercise={this.props.exercise} time={this.state.time} />
-          <div className="ui grid exercise-menu">
-            <div className="four wide column">
-              <i
-                className="step backward icon"
-                onClick={() => console.log("backward")}
-              ></i>
-            </div>
-            <div className="four wide column">
-              {this.state.timer ? (
-                <i className="pause icon" onClick={() => this.pauseTimer()}></i>
-              ) : (
-                <i className="play icon" onClick={() => this.runTimer()}></i>
-              )}
-            </div>
-            <div className="four wide column">
-              <i className="step forward icon" onClick={() => this.next()}></i>
+          <div className="title">
+            <div className="heading bottom">{this.props.workoutTitle}</div>
+          </div>
+          <Exercise
+            exercise={this.props.exercise}
+            time={this.state.time}
+            running={this.state.isRunning}
+            next={() => this.next()}
+          />
+          <div className="exercise-menu">
+            <div className="ui grid">
+              <div className="three wide column">
+                <i
+                  className="step backward icon"
+                  onClick={() => console.log("backward")}
+                ></i>
+              </div>
+              <div className="three wide column">
+                {this.state.isRunning ? (
+                  <i
+                    className="pause icon"
+                    onClick={() => this.pauseTimer()}
+                  ></i>
+                ) : (
+                  <i className="play icon" onClick={() => this.runTimer()}></i>
+                )}
+              </div>
+              <div className="three wide column">
+                <i
+                  className="step forward icon"
+                  onClick={() => this.next()}
+                ></i>
+              </div>
             </div>
           </div>
         </div>
@@ -162,6 +171,7 @@ const mapStateToProps = state => {
         state.userData.exercises
       )
     : null;
+  console.log(currentExercise);
   return {
     exercise: currentExercise,
     workoutExercises: currentWorkout ? currentWorkout.exercises : null,

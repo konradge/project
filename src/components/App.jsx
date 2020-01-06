@@ -13,14 +13,17 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <Route path="/overview" component={Overview} />
-        <Route path="/workout" component={ExerciseWrapper} exact />
-        <Route path="/workout/:id" component={WorkoutCreator} />
-        <Route path="/exercise/:id" component={ExercisePreview} />
-        <Route path="/challenges" component={Challenges} />
-        <Route path="/" component={Main} exact />
-        {/**Always show menu at bottom of page */}
-        <Route path="/" component={Menu} />
+        <div className="side-menu">
+          <Route path="/" component={Menu} />
+        </div>
+        <div className="content">
+          <Route path="/overview" component={Overview} />
+          <Route path="/workout" component={ExerciseWrapper} exact />
+          <Route path="/workout/:id" component={WorkoutCreator} />
+          <Route path="/exercise/:id" component={ExercisePreview} />
+          <Route path="/challenges" component={Challenges} />
+          <Route path="/" component={Main} exact />
+        </div>
       </BrowserRouter>
     );
   }

@@ -1,7 +1,4 @@
-export default (
-  current = { exercise: null, workout: null, index: 0 },
-  action
-) => {
+export default (current = { exercise: null, workout: 1, index: 0 }, action) => {
   switch (action.type) {
     case "SET_EXERCISE":
       return { ...current, exercise: action.payload };
