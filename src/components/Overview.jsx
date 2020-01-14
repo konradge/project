@@ -50,7 +50,6 @@ class Overview extends Component {
     });
   }
   render() {
-    console.log(this.state.weightValue);
     return (
       <div>
         <div className="overview-section" id="last-trainings">

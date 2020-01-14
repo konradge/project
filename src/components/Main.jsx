@@ -4,6 +4,10 @@ import Popup from "./Popup";
 import { getWorkout } from "../helpers";
 import WorkoutStatistics from "./WorkoutStatistics";
 class Main extends Component {
+  componentDidMount() {
+    console.log("state");
+    console.log(this.props.state);
+  }
   startPopupContent() {
     if (!this.props.currentWorkout) {
       return null;
@@ -69,7 +73,8 @@ const mapStateToProps = state => {
     state.userData.workouts
   );
   return {
-    currentWorkout
+    currentWorkout,
+    state
   };
 };
 
