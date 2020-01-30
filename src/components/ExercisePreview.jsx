@@ -1,130 +1,196 @@
+/*
+  Formular zum Bearbeiten der einzelnen Übungen
+*/
+
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
-import { editExercise } from "../actions";
-import UnsplashSearch from "./UnsplashSearch";
-import { TextArea } from "semantic-ui-react";
+import { editExercise, addExercise } from "../actions";
+import ImageField from "./ImageSearch/ImageField";
+import { getId } from "../helpers";
 class ExercisePreview extends Component {
-  constructor(props) {
-    super(props);
-    const id = parseInt(this.props.match.params.id);
-    const exercise = this.props.exercises.find(ex => ex.id === id);
-    console.log(exercise);
-    this.state = {
-      id: id,
-      exercise: exercise,
-      exerciseName: exercise.name,
-      exerciseDuration: exercise.duration,
-      exerciseImage: exercise.image,
-      exerciseDescription: exercise.description || "",
-      imageURL: "",
-      unsplashKeyword: "",
-      showImage: false
-    };
+  state = { exercise: null };
+  componentDidMount() {
+    this.getExercise(this.props.match.params.id);
   }
-  renderImage() {
-    if (this.state.exerciseImage) {
+  componentDidUpdate(prevProps, prevState) {
+    const id = parseInt(this.props.match.params.id);
+    if (prevState.id !== id) {
+      this.getExercise(id);
+    }
+  }
+
+  //Hole Übung mit der ID aus der URL und speichere die ID, gebe sonst undefined zurück
+  getExercise(id) {
+    const exercise = this.props.exercises.find(ex => ex.id === parseInt(id));
+    if (!exercise) {
+      return undefined;
+    }
+    this.setState({
+      id,
+      exercise
+    });
+  }
+  render() {
+    //Falls in der URL eine nicht-existente ID eingegeben wurde, wird dies als Fehler angezeigt
+    if (!this.state.exercise) {
       return (
-        <img
-          src={this.state.exerciseImage}
-          alt={"Image of " + this.state.exerciseName}
-          width="20%"
-        />
-      );
-    } else {
-      return (
-        <div className="ui placeholder segment">
-          <div className="ui two column very relaxed stackable grid">
-            <div className="column">
-              <label htmlFor="urlInput">Provide image's URL:</label>
-              <input
-                id="urlInput"
-                value={this.state.imageURL}
-                onChange={event =>
-                  this.setState({ imageURL: event.target.value })
-                }
-                onKeyDown={e => {
-                  if (e.key === "Enter") {
-                    this.setState({
-                      exerciseImage: this.state.imageURL
-                    });
-                  }
-                }}
-              ></input>
+        <div>
+          <div className="ui grid">
+            <div className="row">
+              <div className="ui eight wide centered column red massive label">
+                Could not find any exercise!
+              </div>
             </div>
-            <div className="middle aligned column">
-              <label htmlFor="unsplashInput">Search in unsplash.com</label>
-              <input
-                id="unsplashInput"
-                onChange={event =>
-                  this.setState({ unsplashKeyword: event.target.value })
-                }
-              ></input>
+            <div className="centered row">
+              <div className="ui four wide column">
+                <button
+                  className="ui button"
+                  onClick={() => {
+                    this.props.history.goBack();
+                  }}
+                >
+                  <i className="arrow alternate circle left icon"></i>
+                  Back
+                </button>
+              </div>
+              <div className="ui four wide column">
+                <button
+                  className="ui button"
+                  onClick={() => {
+                    const idForNewExercise = getId(this.props.exercises);
+                    this.props.addExercise("");
+                    this.props.history.push("/exercise/" + idForNewExercise);
+                  }}
+                >
+                  <i className="plus circle icon"></i>
+                  Add Exercise
+                </button>
+              </div>
             </div>
           </div>
-          <div className="ui vertical divider">Or</div>
         </div>
       );
     }
-  }
-  render() {
-    if (!this.state.exercise) {
-      return <div>Could not find any exercise!</div>;
-    }
+    //In einem Formular werden Name, Dauer, Beschreibung und Bild der Übung angezeigt (siehe ImageWrapper.jsx)
+    //Mit dem Button am Ende wird die Übung mit den neuen Werten dann global gespeichert
+
+    const { name, duration, description, image } = this.state.exercise;
+    console.log("-----------DEFAULTS");
+    console.log(image);
     return (
-      <div>
-        <label htmlFor="name">Name:</label>
-        <input
-          id="name"
-          value={this.state.exerciseName}
-          onChange={evt => this.setState({ exerciseName: evt.target.value })}
-        ></input>
-        <label htmlFor="duration">Duration (s):</label>
-        <input
-          type="number"
-          id="duration"
-          value={this.state.exerciseDuration}
-          onChange={evt =>
-            this.setState({ exerciseDuration: evt.target.value })
+      <Formik
+        enableReinitialize
+        initialValues={{
+          name,
+          duration,
+          description: description || "",
+          image: {
+            showImage: image != null,
+            imageUrl: image || "",
+            alt: name,
+            unsplashKeyword: "",
+            customUrl: ""
           }
-        ></input>
-        <label htmlFor="description">Description:</label>
-        <TextArea
-          id="description"
-          value={this.state.exerciseDescription}
-          onChange={evt =>
-            this.setState({ exerciseDescription: evt.target.value })
+        }}
+        validate={values => {
+          const errors = {};
+          if (values.name === "") {
+            errors.name = "field name required";
           }
-        ></TextArea>
-        {this.renderImage()}
-        {this.state.unsplashKeyword ? (
-          <UnsplashSearch
-            keyword={this.state.unsplashKeyword}
-            setImage={image =>
-              this.setState({
-                exerciseImage: image.imageURL,
-                unsplashKeyword: null
-              })
-            }
-          />
-        ) : null}
-        <button
-          onClick={() => {
-            this.props.editExercise(
-              {
-                name: this.state.exerciseName,
-                duration: this.state.exerciseDuration,
-                image: this.state.exerciseImage,
-                description: this.state.exerciseDescription
-              },
-              this.state.id
-            );
-            this.props.history.goBack();
-          }}
-        >
-          Save
-        </button>
-      </div>
+          if (!values.duration) {
+            errors.duration = "field duration required";
+          }
+          return errors;
+        }}
+        onSubmit={values => {
+          console.log("----------------Submit------------");
+          const { name, duration, description, image } = values;
+          console.log(image);
+          this.props.editExercise(
+            {
+              name,
+              duration,
+              description,
+              image: image.showImage ? image.imageUrl : null
+            },
+            this.state.id
+          );
+          this.props.history.goBack();
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting
+          /* and other goodies */
+        }) => {
+          return (
+            <form className="ui form" onSubmit={handleSubmit}>
+              <div className="required field">
+                <label>Name:</label>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Exercise Name"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.name}
+                ></input>
+                {errors.name && touched.name && (
+                  <div className="form-error">{errors.name}</div>
+                )}
+              </div>
+              <div className="required field">
+                <label>Duration (s):</label>
+                <input
+                  type="number"
+                  name="duration"
+                  placeholder="Duration in seconds"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.duration}
+                ></input>
+                {errors.duration && touched.duration && (
+                  <div className="form-error">{errors.duration}</div>
+                )}
+              </div>
+              <div className="field">
+                <label>Description:</label>
+                <textarea
+                  name="description"
+                  onChange={handleChange}
+                  value={values.description}
+                ></textarea>
+              </div>
+              <div className="field">
+                <label>Image:</label>
+                <Field
+                  as={ImageField}
+                  onChange={handleChange}
+                  name="image"
+                  className="image-field"
+                />
+              </div>
+              <button
+                type="submit"
+                className={
+                  "ui button " +
+                  (errors.name || errors.duration ? "disabled" : null)
+                }
+                type="submit"
+              >
+                Save
+              </button>
+            </form>
+          );
+        }}
+      </Formik>
     );
   }
 }
@@ -135,4 +201,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { editExercise })(ExercisePreview);
+export default connect(mapStateToProps, { editExercise, addExercise })(
+  ExercisePreview
+);

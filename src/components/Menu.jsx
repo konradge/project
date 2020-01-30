@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { Dropdown, Menu as SemanticMenu } from "semantic-ui-react";
 import { connect } from "react-redux";
 class Menu extends Component {

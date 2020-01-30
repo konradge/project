@@ -44,6 +44,4 @@ function prepareState(persistedState) {
   for (let key in weight) {
     weight[key].date = new Date(weight[key].date);
   }
-  console.log("prepared");
-  console.log(persistedState);
 }

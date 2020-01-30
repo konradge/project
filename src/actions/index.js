@@ -23,6 +23,14 @@ export const setWorkout = workoutId => {
   };
 };
 
+//Um nach einem Bearbeiten o.Ä. an der gleichen Stelle im Workout weiterzumachen, speichere die aktuelle Stelle
+export const setStoppedAt = timeInExercise => {
+  return {
+    type: "SET_STOPPED_AT",
+    payload: timeInExercise
+  };
+};
+
 export const setIndex = index => {
   return {
     type: "SET_INDEX",
@@ -37,23 +45,36 @@ export const addExerciseToWorkout = (exerciseId, workoutId) => {
   };
 };
 
-export const removeExerciseFromWorkout = (exerciseId, workoutId) => {
+export const removeExerciseFromWorkout = (position, workoutId) => {
   return {
     type: "REMOVE_EXERCISE_FROM_WORKOUT",
-    payload: { exerciseId, workoutId }
+    payload: { position, workoutId }
   };
+};
+
+export const editWorkout = (workoutId, workout) => {
+  return { type: "EDIT_WORKOUT", payload: { workoutId, workout } };
 };
 
 export const addExercise = exerciseName => {
   return { type: "ADD_EXERCISE", payload: exerciseName };
 };
 
+export const removeExercise = exerciseId => {
+  return { type: "REMOVE_EXERCISE", payload: exerciseId };
+};
+
 export const addWorkout = workoutName => {
   return { type: "ADD_WORKOUT", payload: workoutName };
 };
 
+export const removeWorkout = workoutId => {
+  return { type: "REMOVE_WORKOUT", payload: workoutId };
+};
+
 //Setze Übung mit ID id auf exercise
 export const editExercise = (exercise, id) => {
+  console.log(exercise);
   return { type: "EDIT_EXERCISE", payload: { exercise, id } };
 };
 

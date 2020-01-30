@@ -51,10 +51,33 @@ body {
   position: relative;
   margin-left: 50px;
   border-radius: 10px;
+  overflow-y: scroll;
 }
 
 .exercise-description * {
   text-align: center;
+}
+
+.exercise-description:hover span {
+  opacity: 1;
+}
+.exercise-description span {
+  color: darkgrey;
+  opacity: 0;
+}
+
+.exercise-description-text {
+  border: red solid 2px;
+}
+
+.exercise-description-image {
+  max-width: 100%;
+  max-height: 150px;
+}
+
+.exercise-description .heading {
+  font-size: 30px;
+  font-weight: bold;
 }
 
 .exercise-menu {
@@ -190,6 +213,54 @@ body {
   margin: 0 0 0 20px;
 }
 
+/*
+Image
+*/
+
+.exercise-image {
+  overflow: hidden;
+}
+
+.exercise-image:hover .label {
+  opacity: 1;
+}
+.exercise-image .label {
+  opacity: 0;
+}
+
+/*
+Image search
+*/
+.image-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 0 10px;
+  grid-auto-rows: 10px;
+}
+
+.image-list img {
+  width: 200px;
+}
+
+/*
+Workout Creator
+*/
+.exercise-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/*
+  ExercisePreview
+*/
+.no-exercise-found {
+  font-size: 20px;
+}
+
+.form-error {
+  color: #a00;
+  padding-left: 5px;
+}
 /*
   Parent: 
   position: relative;

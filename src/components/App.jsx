@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Redirect } from "react-router-dom";
 
 import ExerciseWrapper from "./ExerciseWrapper";
 import Menu from "./Menu";
@@ -17,6 +17,10 @@ class App extends Component {
           <Route path="/" component={Menu} />
         </div>
         <div className="content">
+          {/*Da die Github Seite als Root /project hat, muss diew auf meine Hauptseite gelenkt werden (/)*/}
+          <Route path="/project">
+            <Redirect to="/" />
+          </Route>
           <Route path="/overview" component={Overview} />
           <Route path="/workout" component={ExerciseWrapper} exact />
           <Route path="/workout/:id" component={WorkoutCreator} />

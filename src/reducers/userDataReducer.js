@@ -1,4 +1,3 @@
-import StateManager from "react-select";
 import { getId } from "../helpers";
 
 const exercises = [
@@ -39,10 +38,10 @@ const history = {
     { title: "EXAMPLE2Workout", date: new Date(2020, 0, 1) },
     { title: "EXAMPLE2Workout", date: new Date(2020, 0, 1) },
     { title: "EXAMPLE2Workout", date: new Date(2020, 0, 1) },
-    { title: "EXAMPLE2Workout", date: new Date(2020, 0, 1) },
-    { title: "EXAMPLE2Workout", date: new Date(2020, 0, 1) },
-    { title: "EXAMPLE2Workout", date: new Date(2020, 0, 1) },
-    { title: "EXAMPLE2Workout", date: new Date(2020, 0, 1) }
+    { title: "EXAMPLE2Workout", date: new Date(2020, 0, 25) },
+    { title: "EXAMPLE2Workout", date: new Date(2020, 0, 26) },
+    { title: "EXAMPLE2Workout", date: new Date(2020, 0, 27) },
+    { title: "EXAMPLE2Workout", date: new Date(2020, 0, 28) }
   ],
   totalTrainingTime: 20,
   weight: [
@@ -65,6 +64,7 @@ export default (
   let workout;
   switch (action.type) {
     case "PUSH_WORKOUT_HISTORY":
+      console.log("push");
       return {
         ...userData,
         history: {
@@ -113,33 +113,46 @@ export default (
           { id: getId(userData.workouts), title: action.payload, exercises: [] }
         ]
       };
+    case "REMOVE_WORKOUT":
+      return {
+        ...userData,
+        workouts: userData.workouts.filter(
+          workout => workout.id !== action.payload
+        )
+      };
     case "ADD_EXERCISE_TO_WORKOUT":
       workout = userData.workouts.find(w => w.id === action.payload.workoutId);
+      if (!workout) {
+        return userData;
+      }
       workout = {
         ...workout,
         exercises: [...workout.exercises, action.payload.exerciseId]
       };
-      if (!workout) {
-        return userData;
-      }
       return {
         ...userData,
         workouts: [
-          ...workouts.filter(w => w.id !== action.payload.workoutId),
+          ...userData.workouts.filter(w => w.id !== action.payload.workoutId),
           workout
         ]
       };
     case "REMOVE_EXERCISE_FROM_WORKOUT":
-      console.log(action.payload);
       workout = userData.workouts.find(w => w.id === action.payload.workoutId);
-      console.log(workout);
-      workout = {
-        ...workout,
-        exercises: workout.exercises.filter(exercise => {
-          console.log(exercise);
-          return exercise !== action.payload.exerciseId;
-        })
+      console.log(workout.exercises);
+      console.log(action.payload.position);
+      workout.exercises.splice(action.payload.position, 1);
+      console.log(workout.exercises);
+      return {
+        ...userData,
+        workouts: [
+          ...userData.workouts.filter(w => w.id !== action.payload.workoutId),
+          workout
+        ]
       };
+    case "EDIT_WORKOUT":
+      workout = userData.workouts.find(w => w.id === action.payload.workoutId);
+      workout = { ...workout, ...action.payload.workout };
+      console.log("-------------NEW WORKOUT---------------");
       console.log(workout);
       return {
         ...userData,
@@ -153,8 +166,23 @@ export default (
         ...userData,
         exercises: [
           ...userData.exercises,
-          { id: getId(userData.exercises), title: action.payload, duration: 0 }
+          { id: getId(userData.exercises), name: action.payload, duration: 0 }
         ]
+      };
+    case "REMOVE_EXERCISE":
+      const updatedWorkouts = userData.workouts.map(workout => {
+        return {
+          ...workout,
+          deleted: true,
+          exercises: workout.exercises.filter(
+            exercise => exercise !== action.payload
+          )
+        };
+      });
+      return {
+        ...userData,
+        exercises: userData.exercises.filter(e => e.id !== action.payload),
+        workouts: updatedWorkouts
       };
     default:
       return userData;

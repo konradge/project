@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Popup as SemanticPopup } from "semantic-ui-react";
+import { Popup as SemanticPopup } from "semantic-ui-react";
 
 class Popup extends Component {
   state = { open: false };

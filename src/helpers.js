@@ -42,7 +42,20 @@ export function getExercise(id, exerciseList) {
   return exerciseList.find(exercise => exercise.id === id);
 }
 
+//Gib die nächste freie ID aus einer Liste zurück
 export function getId(list) {
   const sortedIds = list.map(item => item.id).sort((a, b) => a - b);
+  if (sortedIds.length === 0) {
+    return 0;
+  }
   return sortedIds[sortedIds.length - 1] + 1;
+}
+
+export function isToday(date) {
+  const today = new Date();
+  return (
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear()
+  );
 }

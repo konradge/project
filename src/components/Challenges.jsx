@@ -32,17 +32,21 @@ class Challenges extends Component {
     return consecutiveDays;
   }
 
+  calcConsecutiveDays(arr) {
+    console.log(arr);
+  }
+
   render() {
+    const { weightHistory, trainingTime } = this.props;
     const consecutiveDays = Math.min(
       this.calcConsecutiveDays(this.props.lastTrainingDates),
       4
     );
     const totalWorkouts = Math.min(this.props.lastTrainingDates.length, 10);
-    const lostWeight = Math.min(
-      Math.max(...this.props.weightHistory) -
-        Math.min(...this.props.weightHistory),
-      2.5
-    );
+    const lostWeight =
+      Math.max.apply(null, weightHistory) -
+      weightHistory[weightHistory.length - 1];
+    console.log(this.props.lastTrainingIds);
     return (
       <div className="challenges">
         <ProgressBar
@@ -60,6 +64,16 @@ class Challenges extends Component {
           label="Weight Loss"
           value={lostWeight.toFixed(2) + "/2.5 kg"}
         />
+        <ProgressBar
+          percentage={(trainingTime / 200) * 100}
+          label="Training Time"
+          value={trainingTime.toFixed(2) + "/200 min"}
+        />
+        <ProgressBar
+          percentage={(trainingTime / 200) * 100}
+          label="Different consecutive trainings"
+          value={trainingTime.toFixed(2) + "/200 min"}
+        />
       </div>
     );
   }
@@ -70,7 +84,11 @@ const mapStateToProps = state => {
     lastTrainingDates: state.userData.history.lastWorkouts.map(
       workout => workout.date
     ),
-    weightHistory: state.userData.history.weight.map(weight => weight.weight)
+    lastTrainingIds: state.userData.history.lastWorkouts.map(
+      workout => workout.id
+    ),
+    weightHistory: state.userData.history.weight.map(weight => weight.weight),
+    trainingTime: state.userData.history.totalTrainingTime
   };
 };
 

@@ -1,8 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
-import { pushWorkoutHistory, addTime, setIndex } from "../actions";
+import {
+  pushWorkoutHistory,
+  addTime,
+  setIndex,
+  setStoppedAt
+} from "../actions";
 import Exercise from "./Exercise.jsx";
 import { getWorkout, getExercise } from "../helpers";
 import WorkoutStatistics from "./WorkoutStatistics";
@@ -21,6 +26,10 @@ class ExerciseWrapper extends Component {
   /** Lifecycle Methods **/
   componentDidUpdate(prevProps) {
     if (this.props.indexInWorkout !== prevProps.indexInWorkout) {
+      if (this.props.exercise.id === prevProps.exercise.id) {
+        console.log("Gleiche");
+        //this.props.setStoppedAt(0);
+      }
       this.startExercise();
     }
   }
@@ -36,6 +45,7 @@ class ExerciseWrapper extends Component {
   //Starte die nächste Übung aus aktuellem Workout (this.props.workout)
   next() {
     if (this.props.exercise && !this.state.ready) {
+      console.log("next");
       if (this.props.indexInWorkout + 1 >= this.props.workoutExercises.length) {
         //Das aktuelle Workout ist beendet->Wird zur History hinzugefügt,
         //fertig machen für nächstes Training(Index auf 0, clearInterval)
@@ -43,7 +53,16 @@ class ExerciseWrapper extends Component {
         this.props.setIndex(0);
         this.setState({ ready: true });
       } else {
+        this.setState({ isRunning: false });
         this.props.setIndex(this.props.indexInWorkout + 1);
+      }
+    }
+  }
+
+  previous() {
+    if (this.props.exercise && !this.state.ready) {
+      if (this.props.indexInWorkout - 1 >= 0) {
+        this.props.setIndex(this.props.indexInWorkout - 1);
       }
     }
   }
@@ -123,16 +142,19 @@ class ExerciseWrapper extends Component {
           </div>
           <Exercise
             exercise={this.props.exercise}
-            time={this.state.time}
             running={this.state.isRunning}
+            startAt={this.props.exerciseStoppedTime}
             next={() => this.next()}
+            edit={() =>
+              this.props.history.push("/exercise/" + this.props.exercise.id)
+            }
           />
           <div className="exercise-menu">
             <div className="ui grid">
               <div className="three wide column">
                 <i
                   className="step backward icon"
-                  onClick={() => console.log("backward")}
+                  onClick={() => this.previous()}
                 ></i>
               </div>
               <div className="three wide column">
@@ -171,18 +193,19 @@ const mapStateToProps = state => {
         state.userData.exercises
       )
     : null;
-  console.log(currentExercise);
   return {
     exercise: currentExercise,
     workoutExercises: currentWorkout ? currentWorkout.exercises : null,
     workoutTitle: currentWorkout ? currentWorkout.title : null,
     indexInWorkout: currentIndex,
-    currentWorkout
+    currentWorkout,
+    exerciseStoppedTime: state.current.workoutStoppedAt
   };
 };
 
 export default connect(mapStateToProps, {
   pushWorkoutHistory,
   addTime,
-  setIndex
+  setIndex,
+  setStoppedAt
 })(ExerciseWrapper);

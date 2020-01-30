@@ -25,7 +25,8 @@ class Main extends Component {
           className="ui button"
           onClick={() => this.props.history.push("/workout")}
         >
-          <i className="play icon"></i> {this.props.currentWorkout.title}
+          <i className="play icon"></i> Continue{" "}
+          {this.props.currentWorkout.title}
         </div>
       </div>
     );

@@ -4,8 +4,6 @@ export const loadState = () => {
     if (serializedState === null) {
       return undefined;
     }
-    console.log("Getting from localstorage...");
-    console.log(JSON.parse(serializedState));
     return JSON.parse(serializedState);
   } catch (err) {
     return undefined;

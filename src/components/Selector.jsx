@@ -1,13 +1,32 @@
 import React, { Component } from "react";
 import CreatableSelect from "react-select/creatable";
 
-import "../style.css";
-
 class Selector extends Component {
+  customStyles = {
+    option: provided => ({
+      ...provided,
+      fontSize: "18px",
+      fontWeight: "bold",
+      color: "black",
+      ...this.props.customStyle.provided
+    }),
+    control: provided => ({
+      fontSize: "18px",
+      fontWeight: "bold",
+      ...provided,
+      ...this.props.customStyle.control
+    }),
+    singleValue: () => ({
+      fontSize: "18px",
+      fontWeight: "bold",
+      ...this.props.customStyle.singleValue
+    })
+  };
   render() {
     return (
       <div>
         <CreatableSelect
+          styles={this.customStyles}
           options={this.props.options}
           onCreateOption={this.props.onCreate}
           onChange={selected => {
@@ -20,6 +39,9 @@ class Selector extends Component {
       </div>
     );
   }
+  static defaultProps = {
+    customStyle: {}
+  };
 }
 
 export default Selector;
