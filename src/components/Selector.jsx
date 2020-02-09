@@ -35,6 +35,9 @@ class Selector extends Component {
             }
           }}
           value={this.props.value}
+          noOptionsMessage={() =>
+            "No options available. Type and Enter to create new!"
+          }
         />
       </div>
     );

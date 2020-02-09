@@ -2,27 +2,25 @@ body {
   background-color: rgb(170, 170, 170);
 }
 
-.side-menu {
-  height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 125px; /* Set the width of the sidebar */
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  z-index: 1; /* Stay on top */
-  top: 0; /* Stay at the top */
-  left: 0;
-  background-color: #777;
-  _overflow-x: hidden; /* Disable horizontal scroll */
-  margin-top: 0px;
+.top-menu {
+  position: fixed;
+  top: 0;
+  padding: 8px;
+  background-color: rgb(140, 140, 140);
+  width: 100%;
+  border-bottom: solid 1px black;
+  z-index: 1;
 }
-.side-menu * {
-  max-width: 125px;
-}
+
 .content {
   padding: 20px;
-  padding-left: 130px;
+  padding-top: 30px;
   margin: 20px;
+  margin-top: 60px;
   min-height: calc(100vh - 40px);
   border-radius: 10px;
   background-color: rgb(140, 140, 140);
+  z-index: 0;
 }
 .timer-description {
   font-size: 75px;
@@ -45,17 +43,36 @@ body {
 
 .exercise-description {
   background-color: lightgrey;
-  float: left;
-  width: calc(100% - 500px - 30%);
-  height: 500px;
   position: relative;
   margin-left: 50px;
   border-radius: 10px;
   overflow-y: scroll;
 }
 
-.exercise-description * {
+.pause-description,
+.exercise-description {
+  height: 500px;
+  padding: 30px;
+  float: left;
+  width: calc(100% - 500px - 30%);
   text-align: center;
+  font-size: 50px;
+}
+
+.pause-description .next-exercise {
+  padding-top: 50px;
+  font-size: 20px;
+  color: #555;
+}
+
+.pause-description .next-exercise h1 {
+  font-size: 50px;
+}
+
+.pause-description .next-exercise h1:hover {
+  font-size: 50px;
+  color: black;
+  cursor: pointer;
 }
 
 .exercise-description:hover span {
@@ -125,12 +142,19 @@ body {
   color: orange;
 }
 
+.start-workout {
+  padding: 50px;
+  width: fit-content;
+}
+
 .start-workout i {
   font-size: 250px;
+  color: blue;
 }
 .start-workout div {
   font-size: 20px;
   font-weight: bold;
+  color: white;
 }
 .main .grid {
   margin: 20px;
@@ -261,6 +285,19 @@ Workout Creator
   color: #a00;
   padding-left: 5px;
 }
+
+.wger-search-results {
+  margin-top: 30px;
+  font-size: 30px;
+}
+
+/*
+  Settings
+*/
+.file-drop {
+  padding: 30px;
+  border: grey dotted 2px;
+}
 /*
   Parent: 
   position: relative;
@@ -277,4 +314,9 @@ Workout Creator
 }
 .hidden-element {
   visibility: hidden;
+}
+
+.top-fixed {
+  position: fixed;
+  top: 0;
 }

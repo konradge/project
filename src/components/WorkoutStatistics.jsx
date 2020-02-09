@@ -18,7 +18,6 @@ class WorkoutStatistics extends Component {
     //Damit sich die Statistiken nicht bei jeder Veränderung neu mischen,
     //wird dies nur einmalig hier gemacht
     this.calcStats();
-    console.log(this.statistics);
     this.setState({
       statOrder: shuffle(Array.from(Array(this.statistics.length).keys()))
     });
@@ -38,11 +37,7 @@ class WorkoutStatistics extends Component {
       />,
       <Statistic value={lastWorkouts.length} label="workouts done" />,
       <Statistic
-        value={(
-          userHistory.totalTrainingTime /
-          userHistory.lastWorkouts.length /
-          60
-        ).toFixed(2)}
+        value={this.calcAverageWorkoutTime()}
         label="Ø minutes workout time"
       />,
       this.renderWeightStatistics.bind(this),
@@ -57,11 +52,28 @@ class WorkoutStatistics extends Component {
   }
   calcWorkoutsPerWeek() {
     const { lastWorkouts } = this.props.userHistory;
+    if (lastWorkouts.length === 0) {
+      //Es wurden noch keine Workouts durchgeführt
+      return 0;
+    }
     const startDate = lastWorkouts[0].date;
     const timeMillis = new Date() - startDate;
     const timeWeeks = Math.floor(timeMillis / 1000 / 60 / 60 / 24 / 7);
     const average = lastWorkouts.length / timeWeeks;
     return average.toFixed(2);
+  }
+  calcAverageWorkoutTime() {
+    const time = (
+      this.props.userHistory.totalTrainingTime /
+      this.props.userHistory.lastWorkouts.length /
+      60
+    ).toFixed(2);
+    if (isNaN(time)) {
+      //Falls noch keine Workouts durchgeführt wurden
+      return 0;
+    } else {
+      return time;
+    }
   }
   renderWeightLoss() {
     let { lastWeight } = this.state;
@@ -163,11 +175,15 @@ class WorkoutStatistics extends Component {
 }
 
 const mapStateToProps = state => {
+  let lastWeight = 75;
+  if (state.userData.history.weight.length > 0) {
+    lastWeight =
+      state.userData.history.weight[state.userData.history.weight.length - 1]
+        .weight;
+  }
   return {
     userHistory: state.userData.history,
-    lastWeight:
-      state.userData.history.weight[state.userData.history.weight.length - 1]
-        .weight,
+    lastWeight,
     differentExercises: state.userData.exercises.length,
     differentWorkouts: state.userData.workouts.length
   };

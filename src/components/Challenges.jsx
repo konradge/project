@@ -1,3 +1,7 @@
+//Todo: Veränderung zu einmaligen Trophäen
+/*
+ Verschiedenen Challenges
+*/
 import React, { Component } from "react";
 import ProgressBar from "./ProgressBar";
 import { connect } from "react-redux";
@@ -13,7 +17,6 @@ class Challenges extends Component {
       consecutiveDays++;
     }
     for (; i >= 0; i--) {
-      console.log(i);
       const testedDay = dayArray[i];
       if (isSameDay(testedDay, day)) {
         //2 Trainings wurden an einem Tag durchgeführt
@@ -32,9 +35,7 @@ class Challenges extends Component {
     return consecutiveDays;
   }
 
-  calcConsecutiveDays(arr) {
-    console.log(arr);
-  }
+  calcConsecutiveDays(arr) {}
 
   render() {
     const { weightHistory, trainingTime } = this.props;
@@ -46,7 +47,6 @@ class Challenges extends Component {
     const lostWeight =
       Math.max.apply(null, weightHistory) -
       weightHistory[weightHistory.length - 1];
-    console.log(this.props.lastTrainingIds);
     return (
       <div className="challenges">
         <ProgressBar

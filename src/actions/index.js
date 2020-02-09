@@ -1,3 +1,6 @@
+import wger from "../wger";
+import Speech from "speak-tts";
+
 //Setze ID von currentExercise(Mithilfe Übungsindex kann dann echte Übung geholt werden)
 export const setExercise = exerciseId => {
   return {
@@ -79,8 +82,8 @@ export const editExercise = (exercise, id) => {
 };
 
 //Füge die ID eines beendeten Workouts zur History hinzu
-export const pushWorkoutHistory = workout => {
-  return { type: "PUSH_WORKOUT_HISTORY", payload: workout };
+export const pushWorkoutHistory = (workout, title) => {
+  return { type: "PUSH_WORKOUT_HISTORY", payload: { workout, title } };
 };
 
 //Füge Zeit zur totalTrainingTime hinzu
@@ -91,4 +94,48 @@ export const addTime = timeToAdd => {
 //Füge ein neues Gewicht zur History der Gewichte hinzu
 export const addWeight = newWeight => {
   return { type: "ADD_WEIGHT", payload: newWeight };
+};
+
+export const deleteAll = () => {
+  return { type: "DELETE_ALL" };
+};
+
+export const setUserData = data => {
+  return { type: "SET_USER_DATA", payload: data };
+};
+
+export const setDefaultValue = (value, key) => {
+  return { type: "SET_DEFAULT_VALUE", payload: { key, value } };
+};
+
+export const setPause = time => {
+  return { type: "SET_PAUSE", payload: time };
+};
+
+/** Wger actions */
+
+export const getLanguages = () => async dispatch => {
+  const response = await wger.get("/language.json");
+  console.log(response);
+  dispatch({ type: "GET_LANGUAGES", payload: response.data.results });
+};
+
+export const getMuscles = () => async dispatch => {
+  const response = await wger.get("/muscle.json");
+
+  dispatch({ type: "GET_MUSCLES", payload: response.data.results });
+};
+
+export const getEquipment = () => async dispatch => {
+  const response = await wger.get("/equipment.json");
+
+  dispatch({ type: "GET_EQUIPMENT", payload: response.data.results });
+};
+
+export const initSpeech = () => async dispatch => {
+  const speech = new Speech();
+  await speech.init({ lang: "en-GB" });
+  console.log(speech);
+
+  dispatch({ type: "SET_SPEECH", payload: speech });
 };

@@ -1,21 +1,25 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Redirect } from "react-router-dom";
 
-import ExerciseWrapper from "./ExerciseWrapper";
+import { initSpeech } from "../actions";
+import ExerciseWrapper from "./ExerciseWrapper/ExerciseWrapper";
 import Menu from "./Menu";
 import Overview from "./Overview";
 import Main from "./Main";
 import Challenges from "./Challenges";
 import WorkoutCreator from "./WorkoutCreator";
 import ExercisePreview from "./ExercisePreview";
+import { Provider, connect } from "react-redux";
+import Settings from "./Settings";
+import WgerSearch from "./WgerSearch";
 class App extends Component {
-  state = {};
+  componentDidMount() {
+    this.props.initSpeech();
+  }
   render() {
     return (
       <BrowserRouter>
-        <div className="side-menu">
-          <Route path="/" component={Menu} />
-        </div>
+        <Route path="/" component={Menu} />
         <div className="content">
           {/*Da die Github Seite als Root /project hat, muss diew auf meine Hauptseite gelenkt werden (/)*/}
           <Route path="/project">
@@ -26,6 +30,8 @@ class App extends Component {
           <Route path="/workout/:id" component={WorkoutCreator} />
           <Route path="/exercise/:id" component={ExercisePreview} />
           <Route path="/challenges" component={Challenges} />
+          <Route path="/settings" component={Settings} />
+          <Route path="/wger" component={WgerSearch} />
           <Route path="/" component={Main} exact />
         </div>
       </BrowserRouter>
@@ -33,4 +39,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(null, { initSpeech })(App);

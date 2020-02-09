@@ -1,13 +1,15 @@
+/*
+  Hauptseite mit Übersicht über bisheriges Training und der Möglichkeit, ein Training zu starten
+*/
+
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Popup from "./Popup";
 import { getWorkout } from "../helpers";
 import WorkoutStatistics from "./WorkoutStatistics";
+import WgerSearch from "./WgerSearch";
 class Main extends Component {
-  componentDidMount() {
-    console.log("state");
-    console.log(this.props.state);
-  }
+  //Falls bereits früher ein Workout gestartet wurde, kann es hier direkt ausgewählt werden
   startPopupContent() {
     if (!this.props.currentWorkout) {
       return null;
@@ -32,7 +34,6 @@ class Main extends Component {
     );
   }
   render() {
-    console.log(this.props);
     return (
       <div>
         <div className="title">
@@ -47,7 +48,7 @@ class Main extends Component {
               trigger={
                 <div className="start-workout">
                   <i
-                    className="fa fa-play"
+                    className="fas fa-play"
                     onClick={() => {
                       console.log("click");
                       !this.props.currentWorkout

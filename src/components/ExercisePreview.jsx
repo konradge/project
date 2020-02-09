@@ -1,14 +1,15 @@
 /*
   Formular zum Bearbeiten der einzelnen Übungen
+  TODO: Leere Übungen nicht erlauben
 */
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import { editExercise, addExercise } from "../actions";
-import ImageField from "./ImageSearch/ImageField";
 import { getId } from "../helpers";
+import ExerciseForm from "./ExerciseForm";
+import { Prompt } from "react-router-dom";
 class ExercisePreview extends Component {
   state = { exercise: null };
   componentDidMount() {
@@ -73,131 +74,22 @@ class ExercisePreview extends Component {
         </div>
       );
     }
-    //In einem Formular werden Name, Dauer, Beschreibung und Bild der Übung angezeigt (siehe ImageWrapper.jsx)
-    //Mit dem Button am Ende wird die Übung mit den neuen Werten dann global gespeichert
-
-    const { name, duration, description, image } = this.state.exercise;
-    console.log("-----------DEFAULTS");
-    console.log(image);
+    //Zeige die Daten der Übung mit Bearbeitungsoption an
     return (
-      <Formik
-        enableReinitialize
-        initialValues={{
-          name,
-          duration,
-          description: description || "",
-          image: {
-            showImage: image != null,
-            imageUrl: image || "",
-            alt: name,
-            unsplashKeyword: "",
-            customUrl: ""
-          }
-        }}
-        validate={values => {
-          const errors = {};
-          if (values.name === "") {
-            errors.name = "field name required";
-          }
-          if (!values.duration) {
-            errors.duration = "field duration required";
-          }
-          return errors;
-        }}
-        onSubmit={values => {
-          console.log("----------------Submit------------");
-          const { name, duration, description, image } = values;
-          console.log(image);
-          this.props.editExercise(
-            {
-              name,
-              duration,
-              description,
-              image: image.showImage ? image.imageUrl : null
-            },
-            this.state.id
-          );
-          this.props.history.goBack();
-        }}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting
-          /* and other goodies */
-        }) => {
-          return (
-            <form className="ui form" onSubmit={handleSubmit}>
-              <div className="required field">
-                <label>Name:</label>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Exercise Name"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.name}
-                ></input>
-                {errors.name && touched.name && (
-                  <div className="form-error">{errors.name}</div>
-                )}
-              </div>
-              <div className="required field">
-                <label>Duration (s):</label>
-                <input
-                  type="number"
-                  name="duration"
-                  placeholder="Duration in seconds"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.duration}
-                ></input>
-                {errors.duration && touched.duration && (
-                  <div className="form-error">{errors.duration}</div>
-                )}
-              </div>
-              <div className="field">
-                <label>Description:</label>
-                <textarea
-                  name="description"
-                  onChange={handleChange}
-                  value={values.description}
-                ></textarea>
-              </div>
-              <div className="field">
-                <label>Image:</label>
-                <Field
-                  as={ImageField}
-                  onChange={handleChange}
-                  name="image"
-                  className="image-field"
-                />
-              </div>
-              <button
-                type="submit"
-                className={
-                  "ui button " +
-                  (errors.name || errors.duration ? "disabled" : null)
-                }
-                type="submit"
-              >
-                Save
-              </button>
-            </form>
-          );
-        }}
-      </Formik>
+      <ExerciseForm
+        exercise={this.state.exercise}
+        editExercise={this.props.editExercise}
+        goBack={this.props.history.goBack}
+        defaults={this.props.defaults}
+      />
     );
   }
 }
 
 const mapStateToProps = state => {
   return {
-    exercises: state.userData.exercises
+    exercises: state.userData.exercises,
+    defaults: state.userData.defaultValues
   };
 };
 

@@ -27,11 +27,7 @@ class Overview extends Component {
   //Die letzen count Trainings werden formatiert und auf die richtige Länge gekürzt
   getLastTrainings(count) {
     return sliceArray(this.props.lastWorkouts, count).map(training => {
-      if (training.date.getYear() === new Date().getYear()) {
-        return dateFormat(training.date, "dd.mm.");
-      } else {
-        return dateFormat(training.date, "dd.mm.yy");
-      }
+      return training.date;
     });
   }
   getWeightHistory(count) {
@@ -118,12 +114,16 @@ class Overview extends Component {
 }
 
 const mapStateToProps = state => {
+  let lastWeight = null;
+  if (state.userData.history.weight[state.userData.history.weight.length - 1]) {
+    lastWeight =
+      state.userData.history.weight[state.userData.history.weight.length - 1]
+        .weight;
+  }
   return {
     lastWorkouts: state.userData.history.lastWorkouts,
     weightHistory: state.userData.history.weight,
-    lastWeight:
-      state.userData.history.weight[state.userData.history.weight.length - 1]
-        .weight
+    lastWeight
   };
 };
 

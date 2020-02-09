@@ -1,0 +1,39 @@
+{
+  "history": {
+    "lastWorkouts": [
+      { "date": "2020-02-04T18:01:18.364Z", "title": "New Workout" },
+      { "date": "2020-02-04T18:01:40.118Z", "title": "New Workout" },
+      { "date": "2020-02-04T18:01:53.538Z", "title": "New Workout" },
+      { "date": "2020-02-04T18:02:27.424Z", "title": "New Workout" },
+      { "date": "2020-02-04T18:02:52.467Z", "title": "New Workout" },
+      { "date": "2020-02-04T18:03:17.311Z", "title": "New Workout" },
+      { "date": "2020-02-04T18:03:29.695Z", "title": "New Workout" },
+      { "date": "2020-02-05T14:31:32.583Z", "title": "Beine" }
+    ],
+    "totalTrainingTime": 1.9066666666668706,
+    "weight": [
+      { "date": "2020-02-05T14:29:45.137Z", "weight": 75.5 },
+      { "date": "2020-02-05T15:20:20.248Z", "weight": 75.7 }
+    ]
+  },
+  "exercises": [
+    {
+      "name": "Pushups",
+      "duration": 20,
+      "description": "",
+      "image": null,
+      "id": 0
+    },
+    {
+      "name": "Lunges",
+      "duration": 10,
+      "description": "Beine beugen...",
+      "image": "https://images.unsplash.com/flagged/photo-1578609929903-5faf6a229851?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjk4MzY5fQ",
+      "id": 1
+    }
+  ],
+  "workouts": [
+    { "id": 0, "title": "New Workout", "exercises": [0] },
+    { "id": 1, "title": "Beine", "exercises": [0, 1] }
+  ]
+}

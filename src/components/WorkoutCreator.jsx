@@ -37,7 +37,7 @@ class WorkoutCreator extends Component {
     if (id === -1) {
       this.setState({
         workout: { id: -1, title: null, exercises: [] },
-        title: "---Select Workout---"
+        title: "---Select Workout, Type name to add workout---"
       });
     } else if (workout === null) {
       this.props.history.push("/workout/-1");
@@ -53,7 +53,7 @@ class WorkoutCreator extends Component {
     if (id === -1 && prevState.workout.id !== -1) {
       this.setState({
         workout: { id: -1, title: null, exercises: [] },
-        title: "---Select Workout---"
+        title: "---Select Workout, Type name to add workout---"
       });
     } else if (workout === null && id !== -1) {
       this.props.history.push("/workout/-1");
@@ -148,6 +148,7 @@ class WorkoutCreator extends Component {
                         this.setState({ preventSelect: false });
                       }}
                       onClick={evt => {
+                        evt.stopPropagation();
                         this.props.removeExercise(exercise.id);
                       }}
                     ></i>

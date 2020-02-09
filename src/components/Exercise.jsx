@@ -1,38 +1,45 @@
+/*
+  Zeige die Verbleibende Zeit einer Übung zusammen mit einigen Informationen an
+*/
 import React, { Component } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 import { addTime, setStoppedAt } from "../actions";
 import { connect } from "react-redux";
 
-//Anzeige einer Übung mit zugehöriger Zeit
 class Exercise extends Component {
   state = { key: 0 };
   renderTime(time) {
     //Funktion wird 60 Mal in der Sekunde aufgerufen
     //Füge jedes mal 1/60 Sekunde zur Trainingszeit hinzu
     this.props.addTime(1 / 60 / 60);
+
+    //Update die Übungszeit im redux-store
     this.props.setStoppedAt(this.props.exercise.duration - time);
+
     if (time === 0) {
+      //Zwinge den Timer, die Zeit neuzustarten
       this.setState({ key: this.state.key + 1 });
+      //Starte die nächste Übung
       this.props.next();
     }
     return (
       <div className="timer-description">
-        <div className="time">{time}</div>
+        <div className="time">{time}s</div>
         <h1>{this.props.exercise.name}</h1>
       </div>
     );
   }
+
   render() {
-    console.log(this.props.exercise.duration);
     return (
-      <div className="">
+      <div>
         <div className="timer-div">
           <CountdownCircleTimer
             className="timer"
             key={"" + this.props.exercise.id + this.state.key}
             durationSeconds={this.props.exercise.duration}
-            colors={[["#004777", 0.33], ["#F7B801", 0.33], ["#A30000"]]}
+            colors={[["#f00", 0.33], ["#ff0", 0.33], ["#0f0"]]}
             isPlaying={this.props.running}
             startAt={this.props.startAt}
             renderTime={this.renderTime.bind(this)}
@@ -56,9 +63,11 @@ class Exercise extends Component {
                 />
               </div>
             ) : null}
-            <div className="ui segment exercise-description-text">
-              {this.props.exercise.description}
-            </div>
+            {this.props.exercise.description ? (
+              <div className="ui segment exercise-description-text">
+                {this.props.exercise.description}
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
