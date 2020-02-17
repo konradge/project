@@ -108,8 +108,6 @@ class ImageWrapper extends Component {
     }
   }
   render() {
-    console.log(this.props.value);
-
     const { showImage, imageUrl, alt } = this.props.value;
     const { unsplashKeyword, customUrl } = this.state;
     //Falls bereits ein Bild gespeichert wurde, zeige dieses an. Bei klick auf Papierkorb wird das Bild wieder gelöscht

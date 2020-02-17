@@ -5,6 +5,7 @@ import React from "react";
 import { Chart, Dataset } from "react-rainbow-components";
 
 export default function ChartComponent(props) {
+  console.log(props.data.values);
   return (
     <div className="chart">
       <Chart
@@ -15,7 +16,7 @@ export default function ChartComponent(props) {
       >
         <Dataset
           title={props.data.title}
-          values={props.data.values.map(val => val.value)}
+          values={props.data.values.map(val => parseInt(val.value))}
           backgroundColor={props.backgroundColor}
           borderColor={props.borderColor}
         />

@@ -9,7 +9,6 @@ import { connect } from "react-redux";
 import { editExercise, addExercise } from "../actions";
 import { getId } from "../helpers";
 import ExerciseForm from "./ExerciseForm";
-import { Prompt } from "react-router-dom";
 class ExercisePreview extends Component {
   state = { exercise: null };
   componentDidMount() {
@@ -75,12 +74,12 @@ class ExercisePreview extends Component {
       );
     }
     //Zeige die Daten der Übung mit Bearbeitungsoption an
+    console.log(this.props);
+
     return (
       <ExerciseForm
         exercise={this.state.exercise}
-        editExercise={this.props.editExercise}
-        goBack={this.props.history.goBack}
-        defaults={this.props.defaults}
+        back={this.props.history.goBack.bind(this)}
       />
     );
   }
@@ -88,8 +87,7 @@ class ExercisePreview extends Component {
 
 const mapStateToProps = state => {
   return {
-    exercises: state.userData.exercises,
-    defaults: state.userData.defaultValues
+    exercises: state.userData.exercises
   };
 };
 

@@ -9,6 +9,8 @@ class Popup extends Component {
     }
   }
   render() {
+    console.log("PROPS");
+    console.log(this.props);
     return (
       <SemanticPopup
         content={this.props.content}

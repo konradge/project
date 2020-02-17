@@ -77,7 +77,6 @@ export const removeWorkout = workoutId => {
 
 //Setze Übung mit ID id auf exercise
 export const editExercise = (exercise, id) => {
-  console.log(exercise);
   return { type: "EDIT_EXERCISE", payload: { exercise, id } };
 };
 
@@ -112,11 +111,14 @@ export const setPause = time => {
   return { type: "SET_PAUSE", payload: time };
 };
 
+export const createMuscle = muscleName => {
+  return { type: "CREATE_MUSCLE", payload: muscleName };
+};
+
 /** Wger actions */
 
 export const getLanguages = () => async dispatch => {
   const response = await wger.get("/language.json");
-  console.log(response);
   dispatch({ type: "GET_LANGUAGES", payload: response.data.results });
 };
 

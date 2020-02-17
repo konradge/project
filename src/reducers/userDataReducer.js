@@ -4,6 +4,13 @@ const exercises = [];
 
 const workouts = [];
 
+const muscles = [
+  { isDefault: true },
+  { id: 0, name: "Bizeps" },
+  { id: 1, name: "Trizeps" },
+  { id: 2, name: "Row" }
+];
+
 const history = {
   lastWorkouts: [],
   totalTrainingTime: 0,
@@ -15,6 +22,7 @@ export default (
   userData = {
     workouts,
     exercises,
+    muscles,
     history,
     defaultValues
   },
@@ -72,8 +80,6 @@ export default (
         }
       };
     case "EDIT_EXERCISE":
-      console.log(action.payload);
-
       //Die Übung mit der ID action.payload.id wird entfernt und die bearbeitete dann wieder hinzugefügt
       return {
         ...userData,
@@ -155,6 +161,25 @@ export default (
         ...userData,
         exercises: userData.exercises.filter(e => e.id !== action.payload),
         workouts: updatedWorkouts
+      };
+    case "GET_MUSCLES":
+      let newMuscles = [];
+      userData.muscles.shift();
+      action.payload.forEach(muscle => {
+        newMuscles.push({
+          name: muscle.name,
+          id: getId([...userData.muscles, ...newMuscles])
+        });
+      });
+      console.log(newMuscles);
+      return { ...userData, muscles: [...userData.muscles, ...newMuscles] };
+    case "CREATE_MUSCLE":
+      return {
+        ...userData,
+        muscles: [
+          ...userData.muscles,
+          { id: getId(userData.muscles), name: action.payload }
+        ]
       };
     default:
       return userData;

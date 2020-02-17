@@ -52,15 +52,32 @@ class Timeline extends Component {
     return dateArray;
   }
   render() {
+    let filteredTrainings = [];
+    if (this.state.index != null) {
+      let trainingsOnSelectedDay = this.props.lastWorkouts
+        .filter(t => isSameDay(t.date, this.values[this.state.index]))
+        .map(t => t.title);
+      filteredTrainings = [...new Set(trainingsOnSelectedDay)];
+      filteredTrainings = filteredTrainings.map(name => {
+        return {
+          name,
+          count: trainingsOnSelectedDay.reduce((acc, val) => {
+            return acc + (val === name ? 1 : 0);
+          }, 0)
+        };
+      });
+    }
     return (
       <div>
         {this.buildTimeline()}
         <div className="ui list">
-          {this.state.index
-            ? this.props.lastWorkouts
-                .filter(t => isSameDay(t.date, this.values[this.state.index]))
-                .map(t => <div className="item">{t.title}</div>)
-            : null}
+          {filteredTrainings.length === 0
+            ? "--No trainings today--"
+            : filteredTrainings.map(t => (
+                <div key={t.name}>
+                  {t.count} X {t.name}
+                </div>
+              ))}
         </div>
       </div>
     );
