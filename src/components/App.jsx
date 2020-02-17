@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Redirect } from "react-router-dom";
 
-import { initSpeech } from "../actions";
 import ExerciseWrapper from "./ExerciseWrapper/ExerciseWrapper";
 import Menu from "./Menu";
 import Overview from "./Overview";
@@ -9,13 +8,9 @@ import Main from "./Main";
 import Challenges from "./Challenges";
 import WorkoutCreator from "./WorkoutCreator";
 import ExercisePreview from "./ExercisePreview";
-import { Provider, connect } from "react-redux";
 import Settings from "./Settings";
 import WgerSearch from "./WgerSearch";
 class App extends Component {
-  componentDidMount() {
-    this.props.initSpeech();
-  }
   render() {
     return (
       <BrowserRouter>
@@ -39,4 +34,4 @@ class App extends Component {
   }
 }
 
-export default connect(null, { initSpeech })(App);
+export default App;

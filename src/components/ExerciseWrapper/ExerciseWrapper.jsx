@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import Speech from "speak-tts";
 
 import {
   pushWorkoutHistory,
@@ -9,10 +10,9 @@ import {
   setStoppedAt,
   setPause
 } from "../../actions";
-import { getWorkout, getExercise, tts } from "../../helpers";
+import { getWorkout, getExercise } from "../../helpers";
 import FinishScreen from "./FinishScreen";
 import ExerciseScreen from "./ExerciseScreen";
-import PauseScreen from "./PauseScreen";
 
 class ExerciseWrapper extends Component {
   state = {
@@ -22,6 +22,10 @@ class ExerciseWrapper extends Component {
 
   /** Lifecycle Methods **/
   async componentDidMount() {
+    const speech = new Speech();
+    await speech.init({ lang: "en-GB" });
+    console.log("SPEECH LOADED!");
+    this.setState({ speech });
     if (this.props.workoutExercises && this.props.exercise) {
       this.startExercise();
     }
@@ -30,7 +34,6 @@ class ExerciseWrapper extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.indexInWorkout !== prevProps.indexInWorkout) {
       if (this.props.exercise.id === prevProps.exercise.id) {
-        console.log("Gleiche");
         //this.props.setStoppedAt(0);
       }
       this.startExercise();
@@ -43,12 +46,21 @@ class ExerciseWrapper extends Component {
     });
   }
 
+  speak(text) {
+    if (this.state.speech) {
+      this.state.speech.speak({ text: text });
+    }
+  }
+
   /** Methoden zur Auswahl der Übungen **/
 
   //Starte die nächste Übung aus aktuellem Workout (this.props.workout)
   next() {
     if (this.props.pause !== null) {
       this.props.setPause(null);
+      this.speak(
+        this.props.exercise.duration + " seconds " + this.props.exercise.name
+      );
       return;
     }
     if (this.props.exercise && !this.state.ready) {
@@ -61,11 +73,13 @@ class ExerciseWrapper extends Component {
         );
         this.props.setIndex(0);
         this.setState({ ready: true });
+        this.speak("Well done. workout completed!");
       } else {
         if (!this.props.pause) {
-          tts("pause starts now");
+          //tts("pause starts now");
+          this.speak(this.props.defaultPauseTime + " seconds pause");
           this.props.setIndex(this.props.indexInWorkout + 1);
-          this.props.setPause(400);
+          this.props.setPause(this.props.defaultPauseTime);
         }
       }
     }
@@ -151,8 +165,7 @@ const mapStateToProps = state => {
     currentWorkout,
     exerciseStoppedTime: state.current.workoutStoppedAt,
     pause: state.current.pause,
-    defaultPauseTime: state.userData.defaultValues.pauseTime,
-    speech: state.speech
+    defaultPauseTime: state.userData.defaultValues.pauseTime
   };
 };
 export default connect(mapStateToProps, {

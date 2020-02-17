@@ -4,7 +4,6 @@ import Exercise from "../Exercise";
 import PauseScreen from "./PauseScreen";
 
 export default function ExerciseScreen(props) {
-  console.log(props.isRunning);
   return (
     <div>
       <div className="title">

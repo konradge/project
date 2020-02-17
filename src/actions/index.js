@@ -1,4 +1,4 @@
-import wger from "../wger";
+import wger from "../apis/wger";
 import Speech from "speak-tts";
 
 //Setze ID von currentExercise(Mithilfe Übungsindex kann dann echte Übung geholt werden)
@@ -130,12 +130,4 @@ export const getEquipment = () => async dispatch => {
   const response = await wger.get("/equipment.json");
 
   dispatch({ type: "GET_EQUIPMENT", payload: response.data.results });
-};
-
-export const initSpeech = () => async dispatch => {
-  const speech = new Speech();
-  await speech.init({ lang: "en-GB" });
-  console.log(speech);
-
-  dispatch({ type: "SET_SPEECH", payload: speech });
 };

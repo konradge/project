@@ -3,16 +3,32 @@
 */
 import React, { Component } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import Speech from "speak-tts";
 
 import { addTime, setStoppedAt } from "../actions";
 import { connect } from "react-redux";
 
 class Exercise extends Component {
-  state = { key: 0 };
+  state = { key: 0, lastTime: 0, speech: null };
+  async componentDidMount() {
+    const speech = new Speech();
+    await speech.init({ lang: "en-GB" });
+    console.log("SPEECH LOADED!");
+    this.setState({ speech });
+  }
   renderTime(time) {
     //Funktion wird 60 Mal in der Sekunde aufgerufen
     //Füge jedes mal 1/60 Sekunde zur Trainingszeit hinzu
     this.props.addTime(1 / 60 / 60);
+    if (this.state.lastTime !== time) {
+      if (this.state.speech) {
+        if (time > 0 && time < 4) {
+          console.log("Speak: " + time);
+          this.state.speech.speak({ text: "" + time });
+        }
+      }
+      this.setState({ lastTime: time });
+    }
 
     //Update die Übungszeit im redux-store
     this.props.setStoppedAt(this.props.exercise.duration - time);

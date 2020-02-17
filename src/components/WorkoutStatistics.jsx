@@ -58,16 +58,18 @@ class WorkoutStatistics extends Component {
     }
     const startDate = lastWorkouts[0].date;
     const timeMillis = new Date() - startDate;
-    const timeWeeks = Math.floor(timeMillis / 1000 / 60 / 60 / 24 / 7);
+    const timeWeeks = Math.floor(timeMillis / 1000 / 60 / 60 / 24 / 7) + 1;
     const average = lastWorkouts.length / timeWeeks;
     return average.toFixed(2);
   }
   calcAverageWorkoutTime() {
+    console.log(this.props.userHistory.lastWorkouts);
     const time = (
       this.props.userHistory.totalTrainingTime /
-      this.props.userHistory.lastWorkouts.length /
-      60
+      this.props.userHistory.lastWorkouts.length
     ).toFixed(2);
+    console.log(this.props.userHistory.totalTrainingTime);
+    console.log(this.props.userHistory.lastWorkouts.length);
     if (isNaN(time)) {
       //Falls noch keine Workouts durchgeführt wurden
       return 0;
