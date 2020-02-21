@@ -171,7 +171,12 @@ export default (
         ...userData,
         workouts: [
           ...userData.workouts,
-          { id: getId(userData.workouts), title: action.payload, exercises: [] }
+          {
+            id: getId(userData.workouts),
+            title: action.payload,
+            exercises: [],
+            pauseTime: userData.defaultValues.pauseTime
+          }
         ]
       };
     case "REMOVE_WORKOUT":

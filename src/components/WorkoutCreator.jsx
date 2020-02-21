@@ -81,7 +81,6 @@ class WorkoutCreator extends Component {
                 exerciseId,
                 this.props.usersExercises
               );
-              console.log(exercise);
               if (exercise) {
                 //Zeige diese Übung in einer Tabelle an(Übungsname, Bearbeitungsoption, Löschoption)
                 return {
@@ -237,18 +236,39 @@ class WorkoutCreator extends Component {
             />
           </div>
           {this.state.workout.title !== null ? this.renderExerciseList() : null}
-          <button
-            className={
-              "ui submit button" +
-              (this.state.workout.exercises.length > 0 ? "" : " disabled")
-            }
-            onClick={() => {
-              this.props.setWorkout(this.state.workout.id);
-              this.props.history.push("/workout");
-            }}
-          >
-            Start
-          </button>
+          <div className="ui right labeled input pause-time-input">
+            <div className="ui label">Pause time:</div>
+            <input
+              value={this.state.workout.pauseTime}
+              onChange={evt => {
+                this.setState({
+                  workout: {
+                    ...this.state.workout,
+                    pauseTime: evt.target.value
+                  }
+                });
+                this.props.editWorkout(this.state.workout.id, {
+                  ...this.state.workout,
+                  pauseTime: evt.target.value
+                });
+              }}
+            />
+            <div className="ui basic label">sec</div>
+          </div>
+          <div>
+            <button
+              className={
+                "ui submit button" +
+                (this.state.workout.exercises.length > 0 ? "" : " disabled")
+              }
+              onClick={() => {
+                this.props.setWorkout(this.state.workout.id);
+                this.props.history.push("/workout");
+              }}
+            >
+              Start
+            </button>
+          </div>
         </form>
       </div>
     );

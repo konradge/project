@@ -56,6 +56,7 @@ export const removeExerciseFromWorkout = (position, workoutId) => {
 };
 
 export const editWorkout = (workoutId, workout) => {
+  console.log(workout);
   return { type: "EDIT_WORKOUT", payload: { workoutId, workout } };
 };
 

@@ -291,6 +291,12 @@ Workout Creator
   font-size: 30px;
 }
 
+.pause-time-input {
+  width: 10%;
+  position: absolute;
+  left: 40%;
+}
+
 /*
   Settings
 */

@@ -77,9 +77,9 @@ class ExerciseWrapper extends Component {
       } else {
         if (!this.props.pause) {
           //tts("pause starts now");
-          this.speak(this.props.defaultPauseTime + " seconds pause");
+          this.speak(this.props.pauseTime + " seconds pause");
           this.props.setIndex(this.props.indexInWorkout + 1);
-          this.props.setPause(this.props.defaultPauseTime);
+          this.props.setPause(this.props.pauseTime);
         }
       }
     }
@@ -165,7 +165,9 @@ const mapStateToProps = state => {
     currentWorkout,
     exerciseStoppedTime: state.current.workoutStoppedAt,
     pause: state.current.pause,
-    defaultPauseTime: state.userData.defaultValues.pauseTime
+    pauseTime: currentWorkout
+      ? currentWorkout.pauseTime
+      : state.userData.defaultValues.pauseTime
   };
 };
 export default connect(mapStateToProps, {
