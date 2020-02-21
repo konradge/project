@@ -1,17 +1,16 @@
 import { getId } from "../helpers";
 
-const exercises = [];
+const defaultExercises = [];
 
-const workouts = [];
+const defaultWorkouts = [];
 
-const muscles = [
-  { isDefault: true },
+const defaultMuscles = [
   { id: 0, name: "Bizeps" },
   { id: 1, name: "Trizeps" },
   { id: 2, name: "Row" }
 ];
 
-const history = {
+const defaultHistory = {
   lastWorkouts: [],
   totalTrainingTime: 0,
   weight: []
@@ -20,24 +19,103 @@ const defaultValues = { exerciseDuration: 10, pauseTime: 10 };
 
 export default (
   userData = {
-    workouts,
-    exercises,
-    muscles,
-    history,
+    workouts: defaultWorkouts,
+    exercises: defaultExercises,
+    muscles: defaultMuscles,
+    history: defaultHistory,
     defaultValues
   },
   action
 ) => {
   //Muss hier initialisiert werden, damit Variablenname mehrfach verwendet werden kann
-  let workout;
+  let workout, history, workouts, exercises, muscles;
   switch (action.type) {
     case "SET_USER_DATA":
+      //Setze Daten aus action.payload als UserData
       return action.payload;
-    case "DELETE_ALL":
+    case "ADD_USER_DATA":
+      //Füge jeweilige Daten aus action.payload zu UserData hinzu
+      ({ exercises, workouts, history } = action.payload);
+      //Übungen laden (IDs weiter vergeben)
+      let startId = getId(userData.exercises);
+      for (let prop in exercises) {
+        exercises[prop].id = startId;
+        startId++;
+      }
+      //Workouts laden (IDs weiter vergeben)
+      startId = getId(userData.workouts);
+      for (let prop in workouts) {
+        workouts[prop].id = startId;
+        startId++;
+      }
+      //Muskeln laden (IDs weiter vergeben)
+      startId = getId(userData.muscles);
+      for (let prop in muscles) {
+        muscles[prop].id = startId;
+        startId++;
+      }
       return {
-        history: { lastWorkouts: [], totalTrainingTime: 0, weight: [] },
-        exercises: [],
-        workouts: []
+        ...userData,
+        exercises: [...userData.exercises, ...exercises],
+        workouts: [...userData.workouts, ...workouts],
+        muscles: [...userData.muscles, ...muscles],
+        //Werte an history anhängen
+        history: {
+          lastWorkouts: [
+            ...userData.history.lastWorkouts,
+            ...history.lastWorkouts
+          ],
+          totalTrainingTime:
+            userData.history.totalTrainingTime + history.totalTrainingTime,
+          weight: [...userData.history.weight, ...history.weight]
+        }
+      };
+    case "DELETE_ALL":
+      //Lösche die in action.payload angegebenen Felder aus userData
+      if (action.payload.workouts) {
+        workouts = [];
+      } else if (action.payload.exercises) {
+        //Wenn Übungen gelöscht werden: Lösche sie auch aus den Workouts
+        workouts = userData.workouts.map(workout => {
+          return {
+            ...workout,
+            exercises: []
+          };
+        });
+      } else {
+        workouts = userData.workouts;
+      }
+      if (action.payload.exercises) {
+        exercises = [];
+      } else if (action.payload.muscles) {
+        //Falls Muskeln gelöscht werden: Lösche diese auch in den Übungen
+        console.log(userData.exercises);
+        exercises = userData.exercises.map(exercise => {
+          return { ...exercise, muscles: [] };
+        });
+      } else {
+        exercises = userData.exercises;
+      }
+      console.log(action.payload);
+      muscles = action.payload.muscles ? [] : userData.muscles;
+      //History des Trainings
+      history = userData.history;
+      if (action.payload.history.weight) {
+        history.weight = [];
+      }
+      if (action.payload.history["training time"]) {
+        history.totalTrainingTime = 0;
+      }
+      if (action.payload.history.workouts) {
+        history.lastWorkouts = [];
+        console.log("DLETE LAST WO");
+      }
+      return {
+        history,
+        exercises,
+        workouts,
+        muscles,
+        defaultValues
       };
     case "SET_DEFAULT_VALUE":
       try {
@@ -164,15 +242,17 @@ export default (
       };
     case "GET_MUSCLES":
       let newMuscles = [];
-      userData.muscles.shift();
       action.payload.forEach(muscle => {
         newMuscles.push({
           name: muscle.name,
-          id: getId([...userData.muscles, ...newMuscles])
+          id: getId([...(userData.muscles || []), ...newMuscles])
         });
       });
       console.log(newMuscles);
-      return { ...userData, muscles: [...userData.muscles, ...newMuscles] };
+      return {
+        ...userData,
+        muscles: [...(userData.muscles || []), ...newMuscles]
+      };
     case "CREATE_MUSCLE":
       return {
         ...userData,

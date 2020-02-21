@@ -23,7 +23,11 @@ class App extends Component {
           <Route path="/overview" component={Overview} />
           <Route path="/workout" component={ExerciseWrapper} exact />
           <Route path="/workout/:id" component={WorkoutCreator} />
-          <Route path="/exercise/:id" component={ExercisePreview} />
+          <Route
+            path="/exercise/:id"
+            component={ExercisePreview}
+            onLeave={() => alert("hi")}
+          />
           <Route path="/challenges" component={Challenges} />
           <Route path="/settings" component={Settings} />
           <Route path="/wger" component={WgerSearch} />

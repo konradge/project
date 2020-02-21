@@ -22,7 +22,8 @@ class WgerSearch extends Component {
     if (this.props.languages.length === 0) {
       this.props.getLanguages();
     }
-    if (this.props.muscles.length === 0) {
+    console.log(this.props.muscles);
+    if (!this.props.muscles || this.props.muscles.length === 0) {
       this.props.getMuscles();
     }
     if (this.props.equipment.length === 0) {
@@ -108,6 +109,7 @@ class WgerSearch extends Component {
       }
     };
     if (this.state.exercises === null) {
+      console.log(this.props.muscles);
       return (
         <div>
           <WgerSearchSettings {...settingsProps} />
@@ -161,7 +163,7 @@ class WgerSearch extends Component {
 const mapStateToProps = state => {
   return {
     languages: state.wger.languages,
-    muscles: state.wger.muscles,
+    muscles: state.userData.muscles,
     equipment: state.wger.equipment,
     exercises: state.userData.exercises
   };

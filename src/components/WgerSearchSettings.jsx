@@ -32,7 +32,7 @@ export default props => {
         <label>Muscles</label>
         <Select
           isClearable
-          options={props.muscles.map(muscle => {
+          options={(props.muscles || []).map(muscle => {
             return {
               label: muscle.name,
               value: muscle.id

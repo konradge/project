@@ -1,18 +1,37 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { deleteAll, setUserData, setDefaultValue } from "../actions";
+import {
+  deleteAll,
+  setUserData,
+  setDefaultValue,
+  addUserData
+} from "../actions";
 
 import FileUpload from "./FileUpload";
 import { prepareDateInHistory } from "../helpers";
+import DeleteSelectorField from "./DeleteSelectorField";
 
 class Settings extends Component {
-  state = { overwriteChecked: false };
+  state = {
+    overwriteChecked: false,
+    delete: {
+      exercises: true,
+      workouts: true,
+      muscles: true,
+      history: {
+        workouts: true,
+        weight: true,
+        "training time": true
+      }
+    }
+  };
   deleteAll(evt) {
+    console.log(this.state.delete);
     evt.preventDefault();
     if (
       window.confirm("Are your sure that you want to delete all of your data?")
     ) {
-      this.props.deleteAll();
+      this.props.deleteAll(this.state.delete);
     }
   }
   saveData() {
@@ -26,6 +45,9 @@ class Settings extends Component {
     try {
       let json = JSON.parse(file);
       const { exercises, workouts, history } = json;
+      if (history) {
+        prepareDateInHistory(json.history);
+      }
       if (
         Array.isArray(exercises) &&
         Array.isArray(workouts) &&
@@ -34,11 +56,10 @@ class Settings extends Component {
         typeof history.totalTrainingTime === "number" &&
         Array.isArray(history.weight)
       ) {
-        prepareDateInHistory(json.history);
-        if (this.state.overwriteChecked) {
+        if (this.props.overwriteChecked) {
           this.props.setUserData(json);
         } else {
-          //ADD USER DATA
+          this.props.addUserData(json);
         }
       }
     } catch (error) {
@@ -50,6 +71,7 @@ class Settings extends Component {
     this.props.setDefaultValue(evt.target.value, evt.target.name);
   };
   render() {
+    console.log(this.state);
     return (
       <form className="ui form">
         <div className="ui dividing header">Defaults</div>
@@ -79,6 +101,10 @@ class Settings extends Component {
                 }
               }}
             ></input>
+          </div>
+          <div className="field">
+            <label>Description:</label>
+            <input></input>
           </div>
         </div>
         <div className="ui dividing header">Data</div>
@@ -116,7 +142,45 @@ class Settings extends Component {
           </div>
         </div>
         <div className="field">
-          <label>Delete all of your data:</label>
+          <label>Delete data:</label>
+          <div className="grouped field">
+            <DeleteSelectorField
+              setState={this.setState.bind(this)}
+              label={"Exercises"}
+              values={this.state.delete}
+            />
+            <DeleteSelectorField
+              setState={this.setState.bind(this)}
+              label={"Workouts"}
+              values={this.state.delete}
+            />
+            <DeleteSelectorField
+              setState={this.setState.bind(this)}
+              label={"Muscles"}
+              values={this.state.delete}
+            />
+            <div className="grouped field">
+              <label>History:</label>
+              <DeleteSelectorField
+                historyField
+                setState={this.setState.bind(this)}
+                label={"Weight"}
+                values={this.state.delete}
+              />
+              <DeleteSelectorField
+                historyField
+                setState={this.setState.bind(this)}
+                label={"Workouts"}
+                values={this.state.delete}
+              />
+              <DeleteSelectorField
+                historyField
+                setState={this.setState.bind(this)}
+                label={"Training Time"}
+                values={this.state.delete}
+              />
+            </div>
+          </div>
           <button
             type="button"
             className="ui red button"
@@ -141,5 +205,6 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   deleteAll,
   setUserData,
-  setDefaultValue
+  setDefaultValue,
+  addUserData
 })(Settings);

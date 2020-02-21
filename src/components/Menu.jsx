@@ -153,6 +153,7 @@ class Menu extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state.userData);
   return {
     exercises: state.userData.exercises,
     workouts: state.userData.workouts

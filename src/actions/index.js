@@ -95,12 +95,8 @@ export const addWeight = newWeight => {
   return { type: "ADD_WEIGHT", payload: newWeight };
 };
 
-export const deleteAll = () => {
-  return { type: "DELETE_ALL" };
-};
-
-export const setUserData = data => {
-  return { type: "SET_USER_DATA", payload: data };
+export const deleteAll = fieldsToDelete => {
+  return { type: "DELETE_ALL", payload: fieldsToDelete };
 };
 
 export const setDefaultValue = (value, key) => {
@@ -115,6 +111,17 @@ export const createMuscle = muscleName => {
   return { type: "CREATE_MUSCLE", payload: muscleName };
 };
 
+/*
+  Importiere Daten
+*/
+export const setUserData = data => {
+  return { type: "SET_USER_DATA", payload: data };
+};
+
+export const addUserData = data => {
+  return { type: "ADD_USER_DATA", payload: data };
+};
+
 /** Wger actions */
 
 export const getLanguages = () => async dispatch => {
@@ -124,7 +131,7 @@ export const getLanguages = () => async dispatch => {
 
 export const getMuscles = () => async dispatch => {
   const response = await wger.get("/muscle.json");
-
+  console.log(getMuscles);
   dispatch({ type: "GET_MUSCLES", payload: response.data.results });
 };
 

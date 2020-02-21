@@ -1,6 +1,18 @@
-\documentclass[]{report}
-
-
+\documentclass[
+	fontsize=11pt,
+	]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{helvet}
+\usepackage[onehalfspacing]{setspace}
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	left=3cm,
+	top=2cm,
+	right=4cm,
+	bottom=3cm
+}
 % Title Page
 \title{Projekt}
 \author{Konrad Geller}
@@ -8,10 +20,36 @@
 
 
 \begin{document}
-\maketitle
+\begin{titlepage}
+	\maketitle
+\end{titlepage}
+\setcounter{page}{1}
+\tableofcontents
+\newpage
 
-\begin{abstract}
-	Im Laufe dieses Projektes wurde mithilfe des Javascript Frameworks \textit{React} sowie \textit{Redux} eine Fitnessapp erstellt. In dieser können in verschiedenen Trainingseinheiten (Workouts) bereits vorhandene oder selbsterstellte Fitnessübungen hinzugefügt und bearbeitet werden. Des weiteren werden Trainingsfortschritte aufgezeichnet und können dann angeschaut werden. Außerdem gibt es Erfolge, die man durch regelmäßiges Training erreichen kann.
-\end{abstract}
-
+\section{Kurzanleitung}
+Zu Beginn befindet man sich auf der Hauptseite des Programms, von dem man mithilfe des Menüs auf die folgenden Funktionen zugreifen kann:
+\begin{enumerate}
+	\item Bearbeiten und Erstellen von Fitnessübungen
+	\item Bearbeiten, Hinzufügen und Starten eines Workouts
+	\item Ansehen der bisherigen Trainingsdaten in verschiedenen grafischen Übersichten
+	\item Importieren von Übungen aus einer Datenbank
+	\item Vornehmen von verschiedenen Einstellungen
+\end{enumerate}
+Außerdem kann man direkt von der Hauptseite aus ein Workout starten
+\section{Motivation}
+Natürlich gibt es bereits zahlreiche Fitness-Apps auf dem Markt, seien es solche für \textit{7 Minuten Trainings}, \textit{Tabatas} oder "30 Tage Challenges", von denen ich auch schon welche getestet habe. Doch alle diese Apps haben zwar einzelne Funktionen, die mir auch gut gefallen, andere wiederum fehlen mir oder gefallen mir nicht. Beispiele für solche Probleme sind zu viel Werbung, fehlende Übungen oder ein schlechte Nutzerfreundlichkeit. Mit dem vorliegenden Programm wollte ich es schaffen, eine Workout-App zu machen, die quasi genau auf mich zugeschnitten ist und somit genau die Funktionen besitzt, die ich von so einer App erwarte. So erhoffe ich mir auch, dass ich in Zukunft diese App auch regelmäßig für meine Workouts benutzen möchte und somit tatsächlich eine sinnvolle Verwendung für mein Programm habe. Auch in Zukunft möglich ist eine Veröffentlichung der App.
+\section{Vorstellung}
+\subsection{Die Übungen}
+Um diese Funktion zu nutzen muss man im Hauptmenü den Punkt \textit{Exercises} auswählen. Dort kann man nun wählen ob man eine bereits vorhandene Übung anschauen und bearbeiten oder eine neue hinzufügen möchte. In beiden Fällen wird man nun auf ein Formular weitergeleitet. Dort muss man zunächst einen Übungsnamen sowie eine Dauer der Übung angeben. Im nächsten Punkt kann man nun entweder eine oder mehrere beanspruchte Muskelgruppen aus bereits vorhandenen Auswählen - um diese zu suchen kann man einfach die ersten Buchstaben dieser in das Feld eintippen - oder man kann eine neue Muskelgruppe zu der vorhandenen Liste hinzufügen. Dazu tippt man einfach den Namen dieser in das Feld und bestätigt mit Enter. Im Folgenden kann man nun eine Übungsbeschreibung angeben sowie ein Bild für die Übung hinzufügen. Dazu gibt es entweder die Option, die URL eines Bildes anzugeben (Mit Enter bestätigen) oder eines in der Datenbank von unsplash.com zu suchen. Dazu gibt man ein Suchwort in das rechte Feld ein und wählt nun ein Bild aus der Liste der Suchergebnisse mit einem Linksklick aus. Um das Bild wieder zu löschen kann man auf den Papierkorb in der rechten oberen Ecke des Bildes klicken. Um die geänderten Daten nun zu speichern klickt man auf den Knopf am Ende des Formulars
+\subsection{Das Workout}
+\subsubsection{Bearbeiten}
+Bei einem Klick auf den Menüpunkt \textit{Workout} kann man entweder ein Bestehendes Workout auswählen oder ein neues erstellen. Falls man ein neues erstellen möchte kann man nun in der Auswahl den Namen dieses eingeben und mit Enter bestätigen. Wurde nun ein Workout ausgewählt sieht man, falls bereits vorhanden, eine Auflistung aller Übungen in diesem mit einer Option zum Löschen aus diesem Workout und einer zum Bearbeiten, die man mit einem Linksklick auf das jeweilige Symbol auswählen kann. Am Ende dieser Auflistung sieht man ein weiteres Auswahlmenü. Aus diesem kann man entweder durch einen Klick eine Übung auswählen (Zum Suchen: Tippe die ersten Buchstaben ein) oder durch Tippen eines Übungsnamen und Bestätigens durch Enter eine neue Übung erstellen. Außerdem kann man Einträge aus der Liste entfernen, indem man auf den Papierkorb auf der rechten Seite des jeweiligen Eintrags klickt. Damit wird die Übung aus allen Workouts und der Liste entfernt. Wurde nun mindestens eine Übung hinzugefügt kann man mit einem Klick auf den Startknopf das Workout starten.
+\subsubsection{Durchführen}
+Nun wird man zum wirklichen Workout weitergeleitet. Dieses startet mit der ersten Übung des Workouts. Dabei ist diese Seite in zwei Teilen aufgebaut:\\
+Auf der linken Seite sieht man den Namen der jeweiligen Übung sowie die Zeit, wie lange diese noch dauert. Dabei sieht man anhand eines Fortschrittsbalkens, welcher Anteil der Zeit bereits vergangen ist. Unter diesem Kreis gibt es die Optionen, zur vorherigen Übung zurückzugehen, zur nächsten weiterzugehen sowie die Übung zu pausieren.\\
+Auf der rechten Seite sieht man verschiedene Informationen zu der aktuellen Übung. Dabei wird oben der Name der Übung, darunter das ausgewählte Bild und darunter wiederum die Beschreibung für die Übung.\\
+Wenn die Übung vollendet wurde, beginnt eine Pause, deren Länge man in den Einstellungen anpassen kann. Auch hier sieht man wieder auf der linken Seite die Zeit bis zum Pausenende und einen Fortschrittsbalken. Auf der rechten Seite sieht man diesmal, welche Übung nach der Pause kommen wird. Dabei kann man durch einen Klick auf diese Information auch direkt zu dieser Übung vorspringen.
+\subsubsection{Das Ende}
+Wenn die letzte Übung des Workouts beendet wurde, wird man auf eine Übersichtsseite weitergeleitet. Dabei sieht man zum einen eine Übersicht über bereits geleistete Erfolge (siehe ...), zum Anderen Links zu anderen Teilen der App.
 \end{document}          
