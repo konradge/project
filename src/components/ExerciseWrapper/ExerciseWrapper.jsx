@@ -16,10 +16,14 @@ import ExerciseScreen from "./ExerciseScreen";
 import { Loader } from "../Loader";
 
 class ExerciseWrapper extends Component {
-  state = {
-    isRunning: true,
-    pause: false
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isRunning: true,
+      pause: false
+    };
+  }
 
   /** Lifecycle Methods **/
   async componentDidMount() {
@@ -35,7 +39,7 @@ class ExerciseWrapper extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.indexInWorkout !== prevProps.indexInWorkout) {
       if (this.props.exercise.id === prevProps.exercise.id) {
-        //this.props.setStoppedAt(0);
+        this.props.setStoppedAt(0);
       }
       this.startExercise();
     }
@@ -62,6 +66,7 @@ class ExerciseWrapper extends Component {
       this.speak(
         this.props.exercise.duration + " seconds " + this.props.exercise.name
       );
+
       return;
     }
     if (this.props.exercise && !this.state.ready) {
@@ -77,16 +82,18 @@ class ExerciseWrapper extends Component {
           //tts("pause starts now");
           const nextExerciseIndex = this.props.currentWorkout.exercises[
             this.props.indexInWorkout + 1
-          ];
+          ].id;
           const nextExercise = findById(
             this.props.exerciseList,
             nextExerciseIndex
           );
+
           this.speak(
             this.props.pauseTime +
               " seconds pause. prepare for " +
               nextExercise.name
           );
+          console.log("next");
           this.props.setIndex(this.props.indexInWorkout + 1);
           this.props.setPause(this.props.pauseTime);
         }
@@ -159,12 +166,26 @@ const mapStateToProps = state => {
     state.userData.workouts,
     state.current.workout
   );
+
   const currentIndex = state.current.index;
+  console.log(currentWorkout.exercises);
+  console.log(currentIndex);
   const currentExercise = currentWorkout
-    ? findById(state.userData.exercises, currentWorkout.exercises[currentIndex])
+    ? findById(
+        state.userData.exercises,
+        currentWorkout.exercises[currentIndex].id
+      )
     : null;
+  let exercise = { ...currentExercise };
+
+  if (currentWorkout.exercises[currentIndex].duration) {
+    //Eigene Zeit wurde angegeben
+    exercise.duration = parseInt(
+      currentWorkout.exercises[currentIndex].duration
+    );
+  }
   return {
-    exercise: currentExercise,
+    exercise,
     workoutExercises: currentWorkout ? currentWorkout.exercises : null,
     workoutTitle: currentWorkout ? currentWorkout.title : null,
     indexInWorkout: currentIndex,

@@ -44,7 +44,11 @@ class WorkoutCreator extends Component {
     } else if (workout == null) {
       this.props.history.push("/project/workout/-1");
     } else {
-      this.setState({ workout, id: workout.id, title: workout.title });
+      this.setState({
+        workout,
+        id: workout.id,
+        title: workout.title
+      });
     }
   }
 
@@ -66,6 +70,19 @@ class WorkoutCreator extends Component {
     }
   }
 
+  editExerciseDurationInWorkout(indexInWorkout, duration) {
+    let editedExercises = this.state.workout.exercises.map((ex, index) => {
+      if (index !== indexInWorkout) {
+        return ex;
+      } else {
+        return { id: ex.id, duration };
+      }
+    });
+    this.props.editWorkout(this.state.workout.id, {
+      exercises: editedExercises
+    });
+  }
+
   //Zeige dem Nutzer ein Auswahlmenu mit allen gespeicherten Übungen
   //Bei Auswahl wird die ausgewählte Übung zu dem aktuellen Workout und der Liste aller Übungen hinzugefügt
   renderExerciseList() {
@@ -73,13 +90,19 @@ class WorkoutCreator extends Component {
       <div className="field">
         <DragAndDropList
           onDragEnd={ids => {
-            this.props.editWorkout(this.state.workout.id, { exercises: ids });
+            //Verändere die Reihenfolge der Übungen
+            const newOrder = ids.map(id =>
+              this.state.workout.exercises.find(ex => ex.id === id)
+            );
+            this.props.editWorkout(this.state.workout.id, {
+              exercises: newOrder
+            });
             this.loadWorkout();
           }}
           items={this.state.workout.exercises
-            .map((exerciseId, index) => {
+            .map((ex, index) => {
               //Wandle die (als ID) gespeicherte Übung in die richtige Übung um
-              const exercise = findById(this.props.usersExercises, exerciseId);
+              const exercise = findById(this.props.usersExercises, ex.id);
               if (exercise) {
                 //Zeige diese Übung in einer Tabelle an(Übungsname, Bearbeitungsoption, Löschoption)
                 return {
@@ -89,8 +112,27 @@ class WorkoutCreator extends Component {
                       key={"" + exercise.id + index}
                     >
                       <div className="ui grid">
-                        <div className="twelve wide column exercise-name">
+                        <div className="eight wide column exercise-name">
                           {exercise.name}
+                        </div>
+                        <div className="four wide column">
+                          <div className="ui right labeled mini input">
+                            <input
+                              type="number"
+                              value={
+                                ex.duration == null
+                                  ? exercise.duration
+                                  : ex.duration
+                              }
+                              onChange={evt =>
+                                this.editExerciseDurationInWorkout(
+                                  index,
+                                  parseInt(evt.target.value)
+                                )
+                              }
+                            ></input>
+                            <div className="ui basic label">seconds</div>
+                          </div>
                         </div>
                         <div className="one wide column">
                           <i
@@ -116,7 +158,7 @@ class WorkoutCreator extends Component {
                       </div>
                     </div>
                   ),
-                  id: exerciseId
+                  id: ex.id
                 };
               } else {
                 return { content: <div></div>, id: -1 };
@@ -190,8 +232,8 @@ class WorkoutCreator extends Component {
       equipment: this.props.usersEquipment,
       muscles: this.props.usersMuscles
     };
-    const ids = this.state.workout.exercises.map(exerciseId => {
-      const exercise = findById(this.props.usersExercises, exerciseId);
+    const ids = this.state.workout.exercises.map(ex => {
+      const exercise = findById(this.props.usersExercises, ex.id);
 
       return exercise[type];
     });

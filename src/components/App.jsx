@@ -43,7 +43,10 @@ class App extends Component {
 
 export default connect(
   state => {
-    return { muscles: state.wger.muscles };
+    return {
+      muscles: state.wger.muscles,
+      exercise: state.userData.exercises[0]
+    };
   },
   { loadDefaultData }
 )(App);

@@ -13,13 +13,14 @@ class PauseScreen extends Component {
     this.setState({ speech });
   }
   renderTime = time => {
-    this.props.addTime(1 / 60 / 60);
     if (this.state.lastTime !== time) {
       if (this.state.speech) {
         if (time > 0 && time < 4) {
           this.state.speech.speak({ text: "" + time, queue: false });
         }
       }
+      this.props.addTime(1 / 60);
+
       this.setState({ lastTime: time });
     }
     if (time <= 0) {

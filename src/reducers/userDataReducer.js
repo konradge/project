@@ -80,7 +80,7 @@ export default (
       }
       workout = {
         ...workout,
-        exercises: [...workout.exercises, action.payload.exerciseId]
+        exercises: [...workout.exercises, { id: action.payload.exerciseId }]
       };
       return {
         ...userData,
@@ -116,7 +116,11 @@ export default (
         ...userData,
         exercises: [
           ...userData.exercises,
-          { id, name: action.payload || "Unnamed exercise " + id, duration: 0 }
+          {
+            id,
+            name: action.payload || "Unnamed exercise " + id,
+            duration: userData.defaultValues.exerciseDuration
+          }
         ]
       };
     case "REMOVE_EXERCISE":

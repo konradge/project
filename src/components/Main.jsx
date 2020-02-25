@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import Popup from "./Popup";
 import { findById } from "../helpers";
 import WorkoutStatistics from "./WorkoutStatistics";
+import { Redirect, Link } from "react-router-dom";
 class Main extends Component {
   //Falls bereits früher ein Workout gestartet wurde, kann es hier direkt ausgewählt werden
   startPopupContent() {
@@ -50,6 +51,7 @@ class Main extends Component {
                     className="fas fa-play"
                     onClick={() => {
                       if (this.props.currentWorkout) {
+                        //return <Redirect to="/project/workout"></Redirect>;
                         this.props.history.push("/project/workout");
                       }
                     }}
@@ -60,6 +62,7 @@ class Main extends Component {
               content={this.startPopupContent()}
               canOpen={!!this.props.currentWorkout}
             />
+            <Link to="/project/workout">START</Link>
           </div>
         </div>
       </div>
@@ -74,7 +77,8 @@ const mapStateToProps = state => {
   );
   return {
     currentWorkout,
-    state
+    state,
+    exercise: state.userData.exercises[0]
   };
 };
 

@@ -11,26 +11,33 @@ import { connect } from "react-redux";
 class Exercise extends Component {
   state = { key: 0, lastTime: 0, speech: null };
   async componentDidMount() {
+    console.log(this.props.exercise);
     const speech = new Speech();
     await speech.init({ lang: "en-GB" });
 
     this.setState({ speech });
   }
   renderTime(time) {
+    console.log(time);
+    console.log(this.state.lastTime);
     //Funktion wird 60 Mal in der Sekunde aufgerufen
     //Füge jedes mal 1/60 Sekunde zur Trainingszeit hinzu
-    this.props.addTime(1 / 60 / 60);
     if (this.state.lastTime !== time) {
       if (this.state.speech) {
         if (time > 0 && time < 4) {
-          this.state.speech.speak({ text: "" + time });
+          this.state.speech.speak({
+            text: "" + time
+          });
         }
       }
+      //Eine Sekunde ist vergangen
+      this.props.addTime(1 / 60);
+      this.props.setStoppedAt(this.props.exercise.duration - time);
+
       this.setState({ lastTime: time });
     }
 
     //Update die Übungszeit im redux-store
-    this.props.setStoppedAt(this.props.exercise.duration - time);
 
     if (time === 0) {
       //Zwinge den Timer, die Zeit neuzustarten
