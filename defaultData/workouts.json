@@ -1,12 +1,12 @@
 [
   {
-    "id": 1,
+    "id": 0,
     "title": "First Workout",
-    "exercises": [0, 1]
+    "exercises": [0, 1, 1, 0]
   },
   {
-    "id": 2,
+    "id": 1,
     "title": "Second Workout",
-    "exercises": [2, 3]
+    "exercises": [0, 0, 1]
   }
 ]
