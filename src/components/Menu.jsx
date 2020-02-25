@@ -8,7 +8,7 @@ class Menu extends Component {
   state = { active: 0 };
   render() {
     const activeItem = this.props.location.pathname;
-    console.log(activeItem);
+
     return (
       <div className="top-fixed top-menu">
         <SemanticMenu secondary stackable>
@@ -17,7 +17,7 @@ class Menu extends Component {
           </SemanticMenu.Item>
           <SemanticMenu.Item
             active={activeItem === "/"}
-            onClick={() => this.props.history.push("/")}
+            onClick={() => this.props.history.push("/project/")}
           >
             <div>
               <i className="home icon"></i>Home
@@ -34,12 +34,22 @@ class Menu extends Component {
           >
             <Dropdown.Menu>
               {[
+                <Dropdown.Item
+                  key={-2}
+                  onClick={() =>
+                    this.props.history.push("/project/exercise/search")
+                  }
+                >
+                  <i className="search icon"></i>Search
+                </Dropdown.Item>,
                 this.props.exercises.map(exercise => (
                   <Dropdown.Item
                     key={exercise.id}
                     active={activeItem === "/exercise/" + exercise.id}
                     onClick={() =>
-                      this.props.history.push("/exercise/" + exercise.id)
+                      this.props.history.push(
+                        "/project/exercise/" + exercise.id
+                      )
                     }
                   >
                     {exercise.name}
@@ -50,7 +60,9 @@ class Menu extends Component {
                   onClick={() => {
                     const idForNewExercise = getId(this.props.exercises);
                     this.props.addExercise("");
-                    this.props.history.push("/exercise/" + idForNewExercise);
+                    this.props.history.push(
+                      "/project/exercise/" + idForNewExercise
+                    );
                   }}
                 >
                   <i className="plus icon"></i>Add exercise
@@ -74,7 +86,7 @@ class Menu extends Component {
                     key={workout.id}
                     active={activeItem === "/workout/" + workout.id}
                     onClick={() =>
-                      this.props.history.push("/workout/" + workout.id)
+                      this.props.history.push("/project/workout/" + workout.id)
                     }
                   >
                     {workout.title}
@@ -84,7 +96,7 @@ class Menu extends Component {
                   key={-1}
                   onClick={() => {
                     this.props.setWorkout(null);
-                    this.props.history.push("/workout/-1");
+                    this.props.history.push("/project/workout/-1");
                   }}
                 >
                   <i className="plus icon"></i>Add workout
@@ -105,34 +117,32 @@ class Menu extends Component {
               <Dropdown.Item
                 active={activeItem === "/overview#last-trainings"}
                 onClick={() =>
-                  this.props.history.push("/overview#last-trainings")
+                  this.props.history.push("/project/overview#last-trainings")
                 }
               >
                 Last Trainings
               </Dropdown.Item>
               <Dropdown.Item
                 active={activeItem === "/overview#body-weight"}
-                onClick={() => this.props.history.push("/overview#body-weight")}
+                onClick={() =>
+                  this.props.history.push("/project/overview#body-weight")
+                }
               >
                 Body Weight
               </Dropdown.Item>
               <Dropdown.Item
                 active={activeItem === "/overview#statistics"}
-                onClick={() => this.props.history.push("/overview#statistics")}
+                onClick={() =>
+                  this.props.history.push("/project/overview#statistics")
+                }
               >
                 Statistics
-              </Dropdown.Item>
-              <Dropdown.Item
-                active={activeItem === "/overview#challenges"}
-                onClick={() => this.props.history.push("/overview#challenges")}
-              >
-                Challenges
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
           <SemanticMenu.Item
             active={activeItem === "/wger"}
-            onClick={() => this.props.history.push("/wger")}
+            onClick={() => this.props.history.push("/project/wger")}
           >
             <div>
               <i className="fas fa-file-import"></i>Import exercises
@@ -140,7 +150,7 @@ class Menu extends Component {
           </SemanticMenu.Item>
           <SemanticMenu.Item
             active={activeItem === "/settings"}
-            onClick={() => this.props.history.push("/settings")}
+            onClick={() => this.props.history.push("/project/settings")}
           >
             <div>
               <i className="cogs icon"></i>Settings
@@ -153,7 +163,6 @@ class Menu extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state.userData);
   return {
     exercises: state.userData.exercises,
     workouts: state.userData.workouts

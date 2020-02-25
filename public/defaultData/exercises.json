@@ -1,0 +1,16 @@
+[
+  {
+    "id": 0,
+    "name": "Situps",
+    "duration": 10,
+    "muscles": [1],
+    "equipment": [1, 2]
+  },
+  {
+    "id": 1,
+    "name": "Squats",
+    "duration": 10,
+    "muscles": [1, 2],
+    "equipment": [1, 2, 3]
+  }
+]

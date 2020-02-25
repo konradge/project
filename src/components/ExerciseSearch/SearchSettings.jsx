@@ -3,38 +3,40 @@ import Select from "react-select";
 export default props => {
   return (
     <form className="ui form">
-      <div className="field">
-        <label>Language</label>
-        <Select
-          isClearable
-          options={props.languages.map(lang => {
-            return {
-              label: (
-                <div>
-                  <i className={lang.short_name + " flag"}></i>
-                  {lang.full_name}
-                </div>
-              ),
-              value: lang.id
-            };
-          })}
-          onChange={evt => {
-            if (evt === null) {
-              //Sprachauswahl gelöscht
-              props.deleteKey("language");
-            } else {
-              props.setSearchSettings("language", evt.value);
-            }
-          }}
-        />
-      </div>
+      {props.showLanguages ? (
+        <div className="field">
+          <label>Language</label>
+          <Select
+            isClearable
+            options={props.languages.map(lang => {
+              return {
+                label: (
+                  <div style={{ color: "black" }}>
+                    <i className={lang.short_name + " flag"}></i>
+                    {lang.full_name}
+                  </div>
+                ),
+                value: lang.id
+              };
+            })}
+            onChange={evt => {
+              if (evt === null) {
+                //Sprachauswahl gelöscht
+                props.deleteKey("language");
+              } else {
+                props.setSearchSettings("language", evt.value);
+              }
+            }}
+          />
+        </div>
+      ) : null}
       <div className="field">
         <label>Muscles</label>
         <Select
           isClearable
           options={(props.muscles || []).map(muscle => {
             return {
-              label: muscle.name,
+              label: <div style={{ color: "black" }}>{muscle.name}</div>,
               value: muscle.id
             };
           })}
@@ -54,7 +56,7 @@ export default props => {
           isClearable
           options={props.equipment.map(equipment => {
             return {
-              label: equipment.name,
+              label: <div style={{ color: "black" }}>{equipment.name}</div>,
               value: equipment.id
             };
           })}
@@ -69,7 +71,7 @@ export default props => {
         />
       </div>
       <div className="field">
-        <label>Keyword (exact):</label>
+        <label>Keyword{props.wgerSearch ? <span> (exact)</span> : null}:</label>
         <input
           type="text"
           onKeyDown={evt =>

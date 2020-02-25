@@ -5,9 +5,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Popup from "./Popup";
-import { getWorkout } from "../helpers";
+import { findById } from "../helpers";
 import WorkoutStatistics from "./WorkoutStatistics";
-import WgerSearch from "./WgerSearch";
 class Main extends Component {
   //Falls bereits früher ein Workout gestartet wurde, kann es hier direkt ausgewählt werden
   startPopupContent() {
@@ -18,14 +17,14 @@ class Main extends Component {
       <div className="start-popup ui center aligned basic segment">
         <div
           className="ui button"
-          onClick={() => this.props.history.push("/workout/-1")}
+          onClick={() => this.props.history.push("/project/workout/-1")}
         >
           <i className="mouse pointer icon"></i> Select Workout
         </div>
         <div className="ui horizontal divider">Or</div>
         <div
           className="ui button"
-          onClick={() => this.props.history.push("/workout")}
+          onClick={() => this.props.history.push("/project/workout")}
         >
           <i className="play icon"></i> Continue{" "}
           {this.props.currentWorkout.title}
@@ -50,10 +49,9 @@ class Main extends Component {
                   <i
                     className="fas fa-play"
                     onClick={() => {
-                      console.log("click");
-                      !this.props.currentWorkout
-                        ? this.props.history.push("/workout")
-                        : console.log("asdf");
+                      if (this.props.currentWorkout) {
+                        this.props.history.push("/project/workout");
+                      }
                     }}
                   ></i>
                   <div>Start your workout NOW!</div>
@@ -70,9 +68,9 @@ class Main extends Component {
 }
 
 const mapStateToProps = state => {
-  const currentWorkout = getWorkout(
-    state.current.workout,
-    state.userData.workouts
+  const currentWorkout = findById(
+    state.userData.workouts,
+    state.current.workout
   );
   return {
     currentWorkout,

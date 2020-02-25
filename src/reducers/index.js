@@ -8,11 +8,6 @@ export default combineReducers({
   current: currentReducer,
   //Nutzerdaten
   userData: userDataReducer,
-  wger: wgerReducer,
-  speech: (speech = null, action) => {
-    if (action.type === "SET_SPEECH") {
-      return action.payload;
-    }
-    return speech;
-  }
+  //Daten, die für die Wger-Suche (zum Importieren von Übungen) verwendet werden
+  wger: wgerReducer
 });

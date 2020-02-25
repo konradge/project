@@ -1,24 +1,8 @@
 import wger from "../apis/wger";
-import Speech from "speak-tts";
+import Axios from "axios";
 
-//Setze ID von currentExercise(Mithilfe Übungsindex kann dann echte Übung geholt werden)
-export const setExercise = exerciseId => {
-  return {
-    type: "SET_EXERCISE",
-    payload: exerciseId
-  };
-};
-
-//Erstelle zufälliges Workout aus exerciseCount Übungen (Array aus Inidzes)
-//Dabei ist exercisePool ein Array aus möglichen Indizes
-export const createRandomWorkout = (exercisePool, exerciseCount) => {
-  return {
-    type: "CREATE_RANDOM_WORKOUT",
-    payload: { exercisePool, exerciseCount }
-  };
-};
-
-//Setze ID von Workout
+/**Current Reducer actions */
+//Setze ID von aktuellen Workout (in currentReducer)
 export const setWorkout = workoutId => {
   return {
     type: "SET_WORKOUT",
@@ -26,14 +10,7 @@ export const setWorkout = workoutId => {
   };
 };
 
-//Um nach einem Bearbeiten o.Ä. an der gleichen Stelle im Workout weiterzumachen, speichere die aktuelle Stelle
-export const setStoppedAt = timeInExercise => {
-  return {
-    type: "SET_STOPPED_AT",
-    payload: timeInExercise
-  };
-};
-
+//Setzt den Index der gerade durchgeführten Übung im gerade durchgeführten Workout
 export const setIndex = index => {
   return {
     type: "SET_INDEX",
@@ -41,6 +18,53 @@ export const setIndex = index => {
   };
 };
 
+//Um nach einem Bearbeiten o.Ä. an der gleichen Stelle im Workout weiterzumachen, speichere die aktuelle Stelle
+export const setStoppedAt = timeAlreadyPassed => {
+  return {
+    type: "SET_STOPPED_AT",
+    payload: timeAlreadyPassed
+  };
+};
+
+//Setzte die Pause in Sekunden; time = null -> Keine Pause
+export const setPause = time => {
+  return { type: "SET_PAUSE", payload: time };
+};
+
+/**userData reducer actions */
+
+/**Muscle */
+//Erstelle eine neue Muskulatur mit Namen <muscleName>
+export const createMuscle = muscleName => {
+  return { type: "CREATE_MUSCLE", payload: muscleName };
+};
+
+//Lösche eine Muskulatur mit ID <id>
+export const deleteMuscle = id => {
+  return { type: "DELETE_MUSCLE", payload: id };
+};
+/**Equipment */
+//Erstelle eine neues Equipment mit Namen <equipmentName>
+export const createEquipment = equipmentName => {
+  return { type: "CREATE_EQUIPMENT", payload: equipmentName };
+};
+
+//Lösche ein Equipment mit ID <id>
+export const deleteEquipment = id => {
+  return { type: "DELETE_EQUIPMENT", payload: id };
+};
+/**Workout */
+//Füge ein Workout mit dem Namen <workoutName> hinzu
+export const addWorkout = workoutName => {
+  return { type: "ADD_WORKOUT", payload: workoutName };
+};
+
+//Entferne ein Workout mit der ID <workoutId>
+export const removeWorkout = workoutId => {
+  return { type: "REMOVE_WORKOUT", payload: workoutId };
+};
+
+//Füge eine Übung zu einem Workout hinzu (Nur Übungs-ID wird gespeichert)
 export const addExerciseToWorkout = (exerciseId, workoutId) => {
   return {
     type: "ADD_EXERCISE_TO_WORKOUT",
@@ -48,6 +72,7 @@ export const addExerciseToWorkout = (exerciseId, workoutId) => {
   };
 };
 
+//Entferne eine Übung an der Stelle <position> im Workout mit der ID <workoutId> aus diesem Workout
 export const removeExerciseFromWorkout = (position, workoutId) => {
   return {
     type: "REMOVE_EXERCISE_FROM_WORKOUT",
@@ -55,35 +80,31 @@ export const removeExerciseFromWorkout = (position, workoutId) => {
   };
 };
 
+//Setze einzelne Felder in einem Workout (z. B. workout={exercises:[1,2,3]})
 export const editWorkout = (workoutId, workout) => {
-  console.log(workout);
   return { type: "EDIT_WORKOUT", payload: { workoutId, workout } };
 };
 
+/**Exercise */
+//Füge eine Übung mit dem Namen <exerciseName> zur userdata hinzu
 export const addExercise = exerciseName => {
   return { type: "ADD_EXERCISE", payload: exerciseName };
 };
 
+//Entferne eine Übung mit ID <exerciseId> aus der userdata
 export const removeExercise = exerciseId => {
   return { type: "REMOVE_EXERCISE", payload: exerciseId };
 };
 
-export const addWorkout = workoutName => {
-  return { type: "ADD_WORKOUT", payload: workoutName };
-};
-
-export const removeWorkout = workoutId => {
-  return { type: "REMOVE_WORKOUT", payload: workoutId };
-};
-
-//Setze Übung mit ID id auf exercise
+//Setze Übung mit ID id auf exercise(exakt)
 export const editExercise = (exercise, id) => {
   return { type: "EDIT_EXERCISE", payload: { exercise, id } };
 };
 
-//Füge die ID eines beendeten Workouts zur History hinzu
-export const pushWorkoutHistory = (workout, title) => {
-  return { type: "PUSH_WORKOUT_HISTORY", payload: { workout, title } };
+/** History */
+//Füge den Titel eines beendeten Workouts zur History hinzu
+export const pushWorkoutHistory = title => {
+  return { type: "PUSH_WORKOUT_HISTORY", payload: title };
 };
 
 //Füge Zeit zur totalTrainingTime hinzu
@@ -91,53 +112,70 @@ export const addTime = timeToAdd => {
   return { type: "ADD_TIME", payload: timeToAdd };
 };
 
-//Füge ein neues Gewicht zur History der Gewichte hinzu
+//Füge ein neues Körpergewicht zur History der Gewichte hinzu
 export const addWeight = newWeight => {
   return { type: "ADD_WEIGHT", payload: newWeight };
 };
-
-export const deleteAll = fieldsToDelete => {
-  return { type: "DELETE_ALL", payload: fieldsToDelete };
-};
-
+/**Bearbeitung aller Daten */
+//Setze den Standardwert von <key> auf <value>
 export const setDefaultValue = (value, key) => {
   return { type: "SET_DEFAULT_VALUE", payload: { key, value } };
 };
 
-export const setPause = time => {
-  return { type: "SET_PAUSE", payload: time };
+//Lösche alle in <fieldsToDelete> angegebenen Felder
+//z. B. {exercises:true, muscles:true} löscht Übungen und Muskelgruppen
+export const deleteAll = fieldsToDelete => {
+  return { type: "DELETE_ALL", payload: fieldsToDelete };
 };
 
-export const createMuscle = muscleName => {
-  return { type: "CREATE_MUSCLE", payload: muscleName };
-};
-
-/*
-  Importiere Daten
-*/
+//Setze userData auf data (überschreibt andere Daten)
 export const setUserData = data => {
   return { type: "SET_USER_DATA", payload: data };
 };
 
+//Füge data zu userData hinzu (wird angehängt)
 export const addUserData = data => {
   return { type: "ADD_USER_DATA", payload: data };
 };
 
-/** Wger actions */
+/** Load defaults */
 
-export const getLanguages = () => async dispatch => {
-  const response = await wger.get("/language.json");
-  dispatch({ type: "GET_LANGUAGES", payload: response.data.results });
-};
+//Lade Standarddaten aus json-Dateien und von wger.de
+export const loadDefaultData = () => async dispatch => {
+  let workouts, exercises, muscles;
+  try {
+    [workouts, exercises, muscles] = await Axios.all([
+      Axios.get("/defaultData/workouts.json"),
+      Axios.get("/defaultData/exercises.json"),
+      Axios.get("/defaultData/muscles.json")
+    ]);
+  } catch {
+    [workouts, exercises, muscles] = await Axios.all([
+      Axios.get("/project/defaultData/workouts.json"),
+      Axios.get("/project/defaultData/exercises.json"),
+      Axios.get("/project/defaultData/muscles.json")
+    ]);
+  }
+  dispatch({
+    type: "LOAD_DEFAULT_DATA_FROM_JSON",
+    payload: {
+      workouts: workouts.data,
+      exercises: exercises.data,
+      muscles: muscles.data
+    }
+  });
+  const [language, muscle, equipment] = await Axios.all([
+    wger.get("/language.json"),
+    wger.get("/muscle.json"),
+    wger.get("/equipment.json")
+  ]);
 
-export const getMuscles = () => async dispatch => {
-  const response = await wger.get("/muscle.json");
-  console.log(getMuscles);
-  dispatch({ type: "GET_MUSCLES", payload: response.data.results });
-};
-
-export const getEquipment = () => async dispatch => {
-  const response = await wger.get("/equipment.json");
-
-  dispatch({ type: "GET_EQUIPMENT", payload: response.data.results });
+  dispatch({
+    type: "LOAD_DEFAULT_DATA_FROM_WGER",
+    payload: {
+      language: language.data.results,
+      muscle: muscle.data.results,
+      equipment: equipment.data.results
+    }
+  });
 };

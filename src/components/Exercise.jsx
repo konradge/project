@@ -13,7 +13,7 @@ class Exercise extends Component {
   async componentDidMount() {
     const speech = new Speech();
     await speech.init({ lang: "en-GB" });
-    console.log("SPEECH LOADED!");
+
     this.setState({ speech });
   }
   renderTime(time) {
@@ -23,7 +23,6 @@ class Exercise extends Component {
     if (this.state.lastTime !== time) {
       if (this.state.speech) {
         if (time > 0 && time < 4) {
-          console.log("Speak: " + time);
           this.state.speech.speak({ text: "" + time });
         }
       }

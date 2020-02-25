@@ -1,54 +1,28 @@
-import { createStore } from "redux";
-import throttle from "lodash.throttle";
+import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
-import Speech from "speak-tts";
+
+import throttle from "lodash.throttle";
 
 import { saveState, loadState } from "./localstorage";
 import reducers from "./reducers";
-import { applyMiddleware } from "redux";
 
-export function formatTime(seconds) {
-  let hours = Math.floor(seconds / (60 * 60));
-  let mins = Math.floor((seconds % (60 * 60)) / 60);
-  let secs = Math.floor(seconds % 60);
-  return (
-    (hours === 0 ? "" : hours + ":") +
-    (mins < 10 ? "0" + mins : mins) +
-    ":" +
-    (secs < 10 ? "0" + secs : secs)
-  );
-}
-
-//For copy call shuffle([...array])
+//Gibt gemischtes Array <array> zurück
 export function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
 }
 
+//Finde erstes Objekt aus <array> mit id <id>
 export function findById(array, id) {
   return array.find(elem => elem.id === id);
 }
 
-//Calculates an array, which has max length of maxLength
-export function sliceArray(arr, maxLength) {
-  return arr.slice(
-    Math.sign(arr.length - maxLength) === -1 ? 0 : arr.length - maxLength
-  );
-}
-
+//Teste, ob <date1> und <date2> am gleichen Tag liegen
 export function isSameDay(date1, date2) {
   return (
     date1.getDate() === date2.getDate() &&
     date1.getMonth() === date2.getMonth() &&
     date1.getYear() === date2.getYear()
   );
-}
-
-export function getWorkout(id, workoutList) {
-  return workoutList.find(workout => workout.id === id);
-}
-
-export function getExercise(id, exerciseList) {
-  return exerciseList.find(exercise => exercise.id === id);
 }
 
 //Gib die nächste freie ID aus einer Liste zurück
@@ -60,15 +34,17 @@ export function getId(list) {
   return sortedIds[sortedIds.length - 1] + 1;
 }
 
+//Teste, ob <date> heute ist
 export function isToday(date) {
-  const today = new Date();
-  return (
-    date.getDate() === today.getDate() &&
-    date.getMonth() === today.getMonth() &&
-    date.getFullYear() === today.getFullYear()
-  );
+  return isSameDay(date, new Date());
 }
 
+//Gebe ein Array zurück, in dem es keine doppelten Werte gibt
+export function unique(array) {
+  return [...new Set(array)];
+}
+
+//TODO
 export function prepareStore() {
   let persistedState = loadState();
   if (persistedState) {
@@ -92,7 +68,7 @@ export function prepareStore() {
 }
 
 //Da das Datum im localstorage nicht als Date-Objekt gespeichert werden, müssen
-//die Daten hier wieder in Daten verwandelt werden.
+//die Daten hier wieder in echte Date-Objekte verwandelt werden.
 export function prepareDateInHistory(persistedState) {
   let { lastWorkouts, weight } = persistedState;
   for (let key in lastWorkouts) {

@@ -297,6 +297,10 @@ Workout Creator
   left: 40%;
 }
 
+.workout-information {
+  padding: 10px;
+}
+
 /*
   Settings
 */
@@ -325,4 +329,8 @@ Workout Creator
 .top-fixed {
   position: fixed;
   top: 0;
+}
+
+.loading-bar {
+  padding: 70px;
 }

@@ -1,43 +1,44 @@
 import React, { Component } from "react";
+
+import { connect } from "react-redux";
+import { addWeight } from "../actions";
+
 import dateFormat from "dateformat";
+
 import Timeline from "./Timeline";
 import ChartComponent from "./ChartComponent";
-import { connect } from "react-redux";
-
-import { sliceArray } from "../helpers";
-import { addWeight } from "../actions";
 import WorkoutStatistics from "./WorkoutStatistics";
-import Challenges from "./Challenges";
 import Popup from "./Popup";
+
 class Overview extends Component {
-  state = { popupCanOpen: true, weightValue: this.props.lastWeight };
+  state = { weightValue: 0, lastAnchorTag: null };
   componentDidMount() {
-    this.forceUpdate();
+    this.setState({ weightValue: this.props.lastWeight });
   }
   componentDidUpdate() {
     this.moveToAnchorTag();
   }
   moveToAnchorTag() {
+    //Bewege Website zur jeweils in URL als #anchor am Ende angegebenen Stelle
     const selected = this.props.history.location.hash;
-    if (selected && selected.length > 0) {
-      const elem = document.querySelector(selected);
-      elem && elem.scrollIntoView();
+    if (selected !== this.state.lastAnchorTag) {
+      this.setState({ lastAnchorTag: selected });
+      if (selected && selected.length > 0) {
+        const elem = document.querySelector(selected);
+        elem && elem.scrollIntoView();
+      }
     }
   }
-  //Die letzen count Trainings werden formatiert und auf die richtige Länge gekürzt
-  getLastTrainings(count) {
-    return sliceArray(this.props.lastWorkouts, count).map(training => {
-      return training.date;
-    });
-  }
-  getWeightHistory(count) {
-    return sliceArray(this.props.weightHistory, count).map(weight => {
+  getWeightHistory() {
+    //Formatiere Aufzeichnungen des Körpergewichts
+    return this.props.weightHistory.map(weight => {
       if (weight.date.getYear() === new Date().getYear()) {
         return {
           label: dateFormat(weight.date, "dd.mm."),
           value: weight.weight
         };
       } else {
+        //Zeige zusätzlich das Jahr an.
         return {
           label: dateFormat(weight.date, "dd.mm.yy"),
           value: weight.weight
@@ -50,26 +51,25 @@ class Overview extends Component {
       <div>
         <div className="overview-section" id="last-trainings">
           <h1>Last Trainings</h1>
-          <Timeline latestTrainings={this.getLastTrainings(20)} />
+          <Timeline
+            latestTrainings={this.props.lastWorkouts.map(training => {
+              return training.date;
+            })}
+          />
         </div>
         <div className="overview-section" id="body-weight">
           <h1>Body Weight</h1>
           <ChartComponent
             data={{
               title: "weight",
-              values: this.getWeightHistory(Number.POSITIVE_INFINITY)
+              values: this.getWeightHistory()
             }}
             backgroundColor="#0ce"
             borderColor="#0df"
           />
           <Popup
             trigger={
-              <button
-                onClick={() =>
-                  this.setState({ popupCanOpen: !this.state.popupCanOpen })
-                }
-                className="circular ui icon button add-weight"
-              >
+              <button className="circular ui icon button add-weight">
                 <i className="icon plus"></i>
               </button>
             }
@@ -83,30 +83,27 @@ class Overview extends Component {
                     onChange={evt =>
                       this.setState({ weightValue: evt.target.value })
                     }
+                    onKeyDown={evt => {
+                      if (evt.keyCode === 13) {
+                        this.props.addWeight(this.state.weightValue);
+                      }
+                    }}
                     placeholder="Enter weight"
                   ></input>
                   <div className="ui basic label">kg</div>
                 </div>
                 <button
-                  onClick={() => {
-                    this.props.addWeight(this.state.weightValue);
-                    this.setState({ popupCanOpen: false });
-                  }}
+                  onClick={() => this.props.addWeight(this.state.weightValue)}
                 >
                   Save
                 </button>
               </div>
             }
-            canOpen={this.state.popupCanOpen}
           />
         </div>
         <div className="overview-section" id="statistics">
           <h1>Statistics</h1>
           <WorkoutStatistics />
-        </div>
-        <div className="overview-section" id="challenges">
-          <h1>Challenges</h1>
-          <Challenges />
         </div>
       </div>
     );
@@ -114,7 +111,7 @@ class Overview extends Component {
 }
 
 const mapStateToProps = state => {
-  let lastWeight = null;
+  let lastWeight = 75;
   if (state.userData.history.weight[state.userData.history.weight.length - 1]) {
     lastWeight =
       state.userData.history.weight[state.userData.history.weight.length - 1]

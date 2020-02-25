@@ -1,0 +1,98 @@
+Date : 2020-02-25 09:46:11
+Directory : d:\Projektkurs\projekt
+Total : 55 files,  18712 codes, 192 comments, 315 blanks, all 19219 lines
+
+Languages
++----------------------+------------+------------+------------+------------+------------+
+| language             | files      | code       | comment    | blank      | total      |
++----------------------+------------+------------+------------+------------+------------+
+| JSON                 |          7 |     14,796 |          0 |          7 |     14,803 |
+| JavaScript React     |         33 |      2,797 |        113 |        151 |      3,061 |
+| JavaScript           |         10 |        626 |         37 |         62 |        725 |
+| CSS                  |          1 |        271 |         19 |         47 |        337 |
+| Log                  |          1 |        155 |          0 |         13 |        168 |
+| source.markdown.math |          1 |         37 |          0 |         32 |         69 |
+| HTML                 |          1 |         29 |         23 |          2 |         54 |
+| JSON with Comments   |          1 |          1 |          0 |          1 |          2 |
++----------------------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                           | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                              |         55 |     18,712 |        192 |        315 |     19,219 |
+| Dokumentation                                                                  |          1 |        155 |          0 |         13 |        168 |
+| public                                                                         |          5 |         59 |         23 |          6 |         88 |
+| public\defaultData                                                             |          4 |         30 |          0 |          4 |         34 |
+| src                                                                            |         44 |      3,694 |        169 |        260 |      4,123 |
+| src\actions                                                                    |          1 |        126 |         14 |         29 |        169 |
+| src\apis                                                                       |          2 |         11 |          0 |          4 |         15 |
+| src\components                                                                 |         33 |      2,797 |        113 |        151 |      3,061 |
+| src\components\ExercisePreview                                                 |          3 |        385 |         15 |         17 |        417 |
+| src\components\ExerciseSearch                                                  |          4 |        302 |          4 |         10 |        316 |
+| src\components\ExerciseWrapper                                                 |          4 |        294 |         14 |         24 |        332 |
+| src\components\ImageSearch                                                     |          3 |        267 |         16 |         22 |        305 |
+| src\reducers                                                                   |          4 |        374 |         17 |         12 |        403 |
++--------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------+----------------------+------------+------------+------------+------------+
+| filename                                                                       | language             | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------+----------------------+------------+------------+------------+------------+
+| d:\Projektkurs\projekt\Dokumentation\template_Report.log                       | Log                  |        155 |          0 |         13 |        168 |
+| d:\Projektkurs\projekt\README.md                                               | source.markdown.math |         37 |          0 |         32 |         69 |
+| d:\Projektkurs\projekt\download.json                                           | JSON                 |         39 |          0 |          1 |         40 |
+| d:\Projektkurs\projekt\package-lock.json                                       | JSON                 |     14,669 |          0 |          1 |     14,670 |
+| d:\Projektkurs\projekt\package.json                                            | JSON                 |         58 |          0 |          1 |         59 |
+| d:\Projektkurs\projekt\public\defaultData\equipment.json                       | JSON                 |          1 |          0 |          1 |          2 |
+| d:\Projektkurs\projekt\public\defaultData\exercises.json                       | JSON                 |         16 |          0 |          1 |         17 |
+| d:\Projektkurs\projekt\public\defaultData\muscles.json                         | JSON                 |          1 |          0 |          1 |          2 |
+| d:\Projektkurs\projekt\public\defaultData\workouts.json                        | JSON                 |         12 |          0 |          1 |         13 |
+| d:\Projektkurs\projekt\public\index.html                                       | HTML                 |         29 |         23 |          2 |         54 |
+| d:\Projektkurs\projekt\src\actions\index.js                                    | JavaScript           |        126 |         14 |         29 |        169 |
+| d:\Projektkurs\projekt\src\apis\tts.js                                         | JavaScript           |          9 |          0 |          2 |         11 |
+| d:\Projektkurs\projekt\src\apis\wger.js                                        | JavaScript           |          2 |          0 |          2 |          4 |
+| d:\Projektkurs\projekt\src\components\App.jsx                                  | JavaScript React     |         51 |          1 |          3 |         55 |
+| d:\Projektkurs\projekt\src\components\ChartComponent.jsx                       | JavaScript React     |         21 |          3 |          2 |         26 |
+| d:\Projektkurs\projekt\src\components\DeleteSelectorField.jsx                  | JavaScript React     |         39 |          0 |          2 |         41 |
+| d:\Projektkurs\projekt\src\components\DragAndDropList.jsx                      | JavaScript React     |         50 |          7 |          6 |         63 |
+| d:\Projektkurs\projekt\src\components\Dropdown.jsx                             | JavaScript React     |         15 |          0 |          2 |         17 |
+| d:\Projektkurs\projekt\src\components\Exercise.jsx                             | JavaScript React     |         78 |          8 |          8 |         94 |
+| d:\Projektkurs\projekt\src\components\ExercisePreview\ExerciseForm.jsx         | JavaScript React     |        226 |          5 |          7 |        238 |
+| d:\Projektkurs\projekt\src\components\ExercisePreview\ExerciseFormSelector.jsx | JavaScript React     |         74 |          2 |          3 |         79 |
+| d:\Projektkurs\projekt\src\components\ExercisePreview\ExercisePreview.jsx      | JavaScript React     |         85 |          8 |          7 |        100 |
+| d:\Projektkurs\projekt\src\components\ExerciseSearch\ExerciseSearch.jsx        | JavaScript React     |        193 |          1 |          3 |        197 |
+| d:\Projektkurs\projekt\src\components\ExerciseSearch\InternalSearch.jsx        | JavaScript React     |         13 |          0 |          3 |         16 |
+| d:\Projektkurs\projekt\src\components\ExerciseSearch\SearchSettings.jsx        | JavaScript React     |         83 |          3 |          1 |         87 |
+| d:\Projektkurs\projekt\src\components\ExerciseSearch\WgerSearch.jsx            | JavaScript React     |         13 |          0 |          3 |         16 |
+| d:\Projektkurs\projekt\src\components\ExerciseWrapper\ExerciseScreen.jsx       | JavaScript React     |         45 |          0 |          2 |         47 |
+| d:\Projektkurs\projekt\src\components\ExerciseWrapper\ExerciseWrapper.jsx      | JavaScript React     |        150 |         13 |         15 |        178 |
+| d:\Projektkurs\projekt\src\components\ExerciseWrapper\FinishScreen.jsx         | JavaScript React     |         38 |          1 |          4 |         43 |
+| d:\Projektkurs\projekt\src\components\ExerciseWrapper\PauseScreen.jsx          | JavaScript React     |         61 |          0 |          3 |         64 |
+| d:\Projektkurs\projekt\src\components\FileUpload.jsx                           | JavaScript React     |         22 |          1 |          2 |         25 |
+| d:\Projektkurs\projekt\src\components\ImageSearch\ImageCard.jsx                | JavaScript React     |         31 |          2 |          6 |         39 |
+| d:\Projektkurs\projekt\src\components\ImageSearch\ImageField.jsx               | JavaScript React     |        199 |         12 |         11 |        222 |
+| d:\Projektkurs\projekt\src\components\ImageSearch\UnsplashSearch.jsx           | JavaScript React     |         37 |          2 |          5 |         44 |
+| d:\Projektkurs\projekt\src\components\Loader.jsx                               | JavaScript React     |         12 |          0 |          2 |         14 |
+| d:\Projektkurs\projekt\src\components\Main.jsx                                 | JavaScript React     |         74 |          4 |          4 |         82 |
+| d:\Projektkurs\projekt\src\components\Menu.jsx                                 | JavaScript React     |        158 |          0 |          5 |        163 |
+| d:\Projektkurs\projekt\src\components\Overview.jsx                             | JavaScript React     |        119 |          3 |          7 |        129 |
+| d:\Projektkurs\projekt\src\components\Popup.jsx                                | JavaScript React     |         31 |          0 |          3 |         34 |
+| d:\Projektkurs\projekt\src\components\ProgressBar.jsx                          | JavaScript React     |         19 |          0 |          2 |         21 |
+| d:\Projektkurs\projekt\src\components\Selector.jsx                             | JavaScript React     |         55 |          1 |          3 |         59 |
+| d:\Projektkurs\projekt\src\components\Settings.jsx                             | JavaScript React     |        201 |          1 |          6 |        208 |
+| d:\Projektkurs\projekt\src\components\Statistic.jsx                            | JavaScript React     |         12 |          0 |          2 |         14 |
+| d:\Projektkurs\projekt\src\components\Timeline.jsx                             | JavaScript React     |         86 |          7 |          2 |         95 |
+| d:\Projektkurs\projekt\src\components\WorkoutCreator.jsx                       | JavaScript React     |        328 |         17 |         11 |        356 |
+| d:\Projektkurs\projekt\src\components\WorkoutStatistics.jsx                    | JavaScript React     |        178 |         11 |          6 |        195 |
+| d:\Projektkurs\projekt\src\helpers.js                                          | JavaScript           |         86 |          5 |         13 |        104 |
+| d:\Projektkurs\projekt\src\index.js                                            | JavaScript           |         11 |          0 |          2 |         13 |
+| d:\Projektkurs\projekt\src\localstorage.js                                     | JavaScript           |         18 |          1 |          2 |         21 |
+| d:\Projektkurs\projekt\src\reducers\currentReducer.js                          | JavaScript           |         27 |          0 |          2 |         29 |
+| d:\Projektkurs\projekt\src\reducers\index.js                                   | JavaScript           |         15 |          2 |          2 |         19 |
+| d:\Projektkurs\projekt\src\reducers\userDataReducer.js                         | JavaScript           |        312 |         15 |          7 |        334 |
+| d:\Projektkurs\projekt\src\reducers\wgerReducer.js                             | JavaScript           |         20 |          0 |          1 |         21 |
+| d:\Projektkurs\projekt\src\style.css                                           | CSS                  |        271 |         19 |         47 |        337 |
+| d:\Projektkurs\projekt\state.code-workspace                                    | JSON with Comments   |          1 |          0 |          1 |          2 |
+| Total                                                                          |                      |     18,712 |        192 |        315 |     19,219 |
++--------------------------------------------------------------------------------+----------------------+------------+------------+------------+------------+

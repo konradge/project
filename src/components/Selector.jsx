@@ -26,12 +26,20 @@ class Selector extends Component {
     return (
       <div>
         <CreatableSelect
+          isMulti={this.props.isMulti}
           styles={this.customStyles}
           options={this.props.options}
           onCreateOption={this.props.onCreate}
           onChange={selected => {
             if (this.props.onChange) {
-              this.props.onChange(selected.value);
+              if (Array.isArray(selected)) {
+                this.props.onChange(selected);
+              } else if (selected) {
+                this.props.onChange(selected.value);
+              } else {
+                //Wert wurde mit Klick auf X gelöscht
+                this.props.onChange(null);
+              }
             }
           }}
           value={this.props.value}

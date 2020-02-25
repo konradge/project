@@ -1,16 +1,20 @@
-export default (results = def, action) => {
+export default (
+  data = {
+    languages: [],
+    muscles: [],
+    equipment: []
+  },
+  action
+) => {
   switch (action.type) {
-    case "GET_LANGUAGES":
-      return { ...results, languages: action.payload };
-    case "GET_EQUIPMENT":
-      return { ...results, equipment: action.payload };
+    case "LOAD_DEFAULT_DATA_FROM_WGER":
+      return {
+        ...data,
+        languages: action.payload.language,
+        equipment: action.payload.equipment,
+        muscles: action.payload.muscle
+      };
     default:
-      return results;
+      return data;
   }
-};
-
-const def = {
-  languages: [],
-  muscles: [],
-  equipment: []
 };

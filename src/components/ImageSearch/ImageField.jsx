@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import Popup from "reactjs-popup";
 import axios from "axios";
 import ImageCard from "./ImageCard";
+import { Loader } from "../Loader";
 
 class ImageWrapper extends Component {
   maxHeight = 400;
@@ -79,9 +80,16 @@ class ImageWrapper extends Component {
     const { unsplashKeyword, unsplashImages } = this.state;
     if (unsplashKeyword) {
       if (unsplashImages === null) {
-        return <div>Searching for {unsplashKeyword}...</div>;
+        return <Loader message={"Getting results for " + unsplashKeyword} />;
       } else if (unsplashImages.length === 0) {
-        return <div>Could not find result for {unsplashKeyword}</div>;
+        return (
+          <div className="ui negative message">
+            <div className="header">
+              No results found for {unsplashKeyword}!
+            </div>
+            Please try another searchterm.
+          </div>
+        );
       } else {
         const imageList = unsplashImages.map(image => (
           <ImageCard
@@ -117,7 +125,11 @@ class ImageWrapper extends Component {
           className="ui fluid rounded image exercise-image"
           style={this.state.imageStyle}
         >
-          <a className="ui right corner red big label">
+          <a
+            className="ui right corner red big label"
+            href="delete-image"
+            onClick={evt => evt.preventDefault()}
+          >
             <i
               className="trash icon"
               onClick={() =>
@@ -153,6 +165,12 @@ class ImageWrapper extends Component {
                     onChange={event => {
                       this.setState({ customUrl: event.target.value });
                     }}
+                    onFocus={() =>
+                      this.setState({ imageUrlFieldFocused: true })
+                    }
+                    onBlur={() =>
+                      this.setState({ imageUrlFieldFocused: false })
+                    }
                     onKeyDown={e => {
                       if (e.key === "Enter") {
                         e.preventDefault();
@@ -169,7 +187,12 @@ class ImageWrapper extends Component {
                         this.setState({ customUrl: "" });
                       }
                     }}
-                  ></input>
+                  />
+                  {this.state.imageUrlFieldFocused ? (
+                    <div className="ui pointing label">
+                      Press enter to set image
+                    </div>
+                  ) : null}
                 </div>
               </div>
               <div className="middle aligned column">

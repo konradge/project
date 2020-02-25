@@ -1,13 +1,12 @@
 /*
   Formular zum Bearbeiten der einzelnen Übungen
-  TODO: Leere Übungen nicht erlauben
 */
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { editExercise, addExercise } from "../actions";
-import { getId } from "../helpers";
+import { editExercise, addExercise } from "../../actions";
+import { getId } from "../../helpers";
 import ExerciseForm from "./ExerciseForm";
 class ExercisePreview extends Component {
   state = { exercise: null };
@@ -34,7 +33,11 @@ class ExercisePreview extends Component {
   }
   render() {
     //Falls in der URL eine nicht-existente ID eingegeben wurde, wird dies als Fehler angezeigt
-    if (!this.state.exercise) {
+    if (this.props.match.params.id === "search") {
+      ///exercise/search
+      return null;
+    }
+    if (!this.state.exercise && !isNaN(this.props.match.params.id)) {
       return (
         <div>
           <div className="ui grid">
@@ -61,7 +64,9 @@ class ExercisePreview extends Component {
                   onClick={() => {
                     const idForNewExercise = getId(this.props.exercises);
                     this.props.addExercise("");
-                    this.props.history.push("/exercise/" + idForNewExercise);
+                    this.props.history.push(
+                      "/project/exercise/" + idForNewExercise
+                    );
                   }}
                 >
                   <i className="plus circle icon"></i>
@@ -74,7 +79,6 @@ class ExercisePreview extends Component {
       );
     }
     //Zeige die Daten der Übung mit Bearbeitungsoption an
-    console.log(this.props);
 
     return (
       <ExerciseForm

@@ -4,35 +4,27 @@
 import React, { Component } from "react";
 import { Formik, Field } from "formik";
 
-import ImageField from "./ImageSearch/ImageField";
-import CreatableSelect from "react-select/creatable";
+import ImageField from "../ImageSearch/ImageField";
 import { connect } from "react-redux";
-import { editExercise, createMuscle, getMuscles } from "../actions";
-import { getId } from "../helpers";
-import { withRouter, Prompt } from "react-router";
+import {
+  editExercise,
+  createMuscle,
+  deleteMuscle,
+  createEquipment,
+  deleteEquipment,
+  removeExercise
+} from "../../actions";
+import { Prompt } from "react-router";
+import ExerciseFormSelector from "./ExerciseFormSelector";
 
 //In einem Formular werden Name, Dauer, Beschreibung, Muskelpartien und Bild der Übung angezeigt
 //Mit dem Button am Ende wird die Übung mit den neuen Werten dann global gespeichert
 class ExerciseForm extends Component {
-  state = { formChanged: false };
+  state = { formChanged: false, exerciseName: "" };
   componentDidMount() {
-    if (this.props.muscles[0].isDefault) {
-      this.props.getMuscles();
-    }
-    console.log(this.state.formChanged);
     window.addEventListener("beforeunload", this.beforeunload.bind(this));
-    /*
-    if (window.performance) {
-      if (performance.navigation.type == 1) {
-        let x = window.confirm("This page is reloaded");
-        alert(x);
-      } else {
-        alert("This page is not reloaded");
-      }
-    }*/
   }
   beforeunload(e) {
-    console.log(this.state.formChanged);
     if (this.state.formChanged) {
       e.preventDefault();
       e.returnValue = false;
@@ -43,8 +35,14 @@ class ExerciseForm extends Component {
     window.removeEventListener("beforeunload", this.beforeunload.bind(this));
   }
   render() {
-    console.log(this.props);
-    const { name, duration, description, image, muscles } = this.props.exercise;
+    const {
+      name,
+      duration,
+      description,
+      image,
+      muscles,
+      equipment
+    } = this.props.exercise;
     return (
       <div ref={elem => (this.form = elem)}>
         <Prompt
@@ -55,10 +53,23 @@ class ExerciseForm extends Component {
           validateOnChange
           enableReinitialize
           initialValues={{
-            name,
+            name: name.startsWith("Unnamed exercise") ? "" : name,
             duration: duration || this.props.defaults.exerciseDuration,
             description: description || "",
-            muscles: muscles || [],
+            muscles: (muscles || []).map(muscleId => {
+              const name = this.props.muscles.find(
+                muscle => muscle.id === muscleId
+              );
+
+              return { value: muscleId, label: name };
+            }),
+            equipment: (equipment || []).map(equipmentId => {
+              const name = this.props.equipment.find(
+                equipment => equipment.id === equipmentId
+              );
+
+              return { value: equipmentId, label: name };
+            }),
             image: {
               showImage: image != null,
               imageUrl: image || "",
@@ -69,8 +80,7 @@ class ExerciseForm extends Component {
           }}
           onChange={evt => console.log(evt)}
           validate={values => {
-            console.log("CHANGED");
-            this.setState({ formChanged: true });
+            this.setState({ formChanged: true, exerciseName: values.name });
             const errors = {};
             if (values.name === "") {
               errors.name = "field name required";
@@ -83,19 +93,27 @@ class ExerciseForm extends Component {
             return errors;
           }}
           onSubmit={values => {
-            console.log(this.props);
-            const { name, duration, description, image, muscles } = values;
+            this.setState({ formChanged: false });
+            const {
+              name,
+              duration,
+              description,
+              image,
+              muscles,
+              equipment
+            } = values;
             this.props.editExercise(
               {
                 name,
                 duration,
                 description,
-                muscles,
+                muscles: muscles.map(m => m.value),
+                equipment: equipment.map(e => e.value),
                 image: image.showImage ? image.imageUrl : null
               },
               this.props.exercise.id
             );
-            console.log(this.props);
+
             this.props.back();
           }}
         >
@@ -120,6 +138,7 @@ class ExerciseForm extends Component {
                 <div className="required field">
                   <label>Name:</label>
                   <input
+                    autoFocus={values.name === ""}
                     type="text"
                     name="name"
                     placeholder="Exercise Name"
@@ -134,6 +153,7 @@ class ExerciseForm extends Component {
                 <div className="required field">
                   <label>Duration (s):</label>
                   <input
+                    autoFocus={values.name !== "" && values.duration <= 5}
                     type="number"
                     name="duration"
                     placeholder="Duration in seconds"
@@ -145,37 +165,18 @@ class ExerciseForm extends Component {
                     <div className="form-error">{errors.duration}</div>
                   )}
                 </div>
-                <div className="field">
-                  <label>Muscles:</label>
-                  <CreatableSelect
-                    isMulti
-                    onCreateOption={name => {
-                      const newId = getId(this.props.muscles);
-                      this.props.createMuscle(name);
-                      handleChange({
-                        target: {
-                          value: [
-                            ...values.muscles,
-                            { value: newId, label: name }
-                          ],
-                          name: "muscles"
-                        }
-                      });
-                    }}
-                    onChange={evt =>
-                      handleChange({
-                        target: {
-                          value: evt,
-                          name: "muscles"
-                        }
-                      })
-                    }
-                    value={values.muscles}
-                    options={this.props.muscles.map(muscle => {
-                      return { value: muscle.id, label: muscle.name };
-                    })}
-                  />
-                </div>
+                <ExerciseFormSelector
+                  {...this.props}
+                  type="muscles"
+                  handleChange={handleChange}
+                  values={values}
+                />
+                <ExerciseFormSelector
+                  {...this.props}
+                  type="equipment"
+                  handleChange={handleChange}
+                  values={values}
+                />
                 <div className="field">
                   <label>Description:</label>
                   <textarea
@@ -202,6 +203,16 @@ class ExerciseForm extends Component {
                 >
                   Save
                 </button>
+                <button
+                  type="button"
+                  className="ui red button"
+                  onClick={() => {
+                    this.props.removeExercise(this.props.exercise.id);
+                    this.props.back();
+                  }}
+                >
+                  Delete Exercise
+                </button>
               </form>
             );
           }}
@@ -214,12 +225,15 @@ class ExerciseForm extends Component {
 const mapStateToProps = state => {
   return {
     defaults: state.userData.defaultValues,
-    muscles: state.userData.muscles
+    muscles: state.userData.muscles,
+    equipment: state.userData.equipment
   };
 };
-
 export default connect(mapStateToProps, {
   editExercise,
   createMuscle,
-  getMuscles
+  deleteMuscle,
+  createEquipment,
+  deleteEquipment,
+  removeExercise
 })(ExerciseForm);

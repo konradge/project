@@ -5,7 +5,6 @@ export default function FileUpload(props) {
   return (
     <Dropzone
       onDrop={evt => {
-        console.log(evt);
         const reader = new FileReader();
         reader.onload = () => {
           // reader.result ist Dateiinhalt

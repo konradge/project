@@ -5,7 +5,6 @@ import React from "react";
 import { Chart, Dataset } from "react-rainbow-components";
 
 export default function ChartComponent(props) {
-  console.log(props.data.values);
   return (
     <div className="chart">
       <Chart

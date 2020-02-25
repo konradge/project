@@ -9,7 +9,7 @@ class PauseScreen extends Component {
   async componentDidMount() {
     const speech = new Speech();
     await speech.init({ lang: "en-GB" });
-    console.log("PAUSE SPEECH LOADED");
+
     this.setState({ speech });
   }
   renderTime = time => {
@@ -17,7 +17,6 @@ class PauseScreen extends Component {
     if (this.state.lastTime !== time) {
       if (this.state.speech) {
         if (time > 0 && time < 4) {
-          console.log(this.state.speech);
           this.state.speech.speak({ text: "" + time, queue: false });
         }
       }

@@ -1,0 +1,57 @@
+filename, language, JSON, Log, source.markdown.math, HTML, JavaScript, CSS, JavaScript React, JSON with Comments, comment, blank, total
+d:\Projektkurs\projekt\Dokumentation\template_Report.log, Log, 0, 155, 0, 0, 0, 0, 0, 0, 0, 13, 168
+d:\Projektkurs\projekt\README.md, source.markdown.math, 0, 0, 37, 0, 0, 0, 0, 0, 0, 32, 69
+d:\Projektkurs\projekt\download.json, JSON, 39, 0, 0, 0, 0, 0, 0, 0, 0, 1, 40
+d:\Projektkurs\projekt\package-lock.json, JSON, 14669, 0, 0, 0, 0, 0, 0, 0, 0, 1, 14670
+d:\Projektkurs\projekt\package.json, JSON, 58, 0, 0, 0, 0, 0, 0, 0, 0, 1, 59
+d:\Projektkurs\projekt\public\defaultData\equipment.json, JSON, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2
+d:\Projektkurs\projekt\public\defaultData\exercises.json, JSON, 16, 0, 0, 0, 0, 0, 0, 0, 0, 1, 17
+d:\Projektkurs\projekt\public\defaultData\muscles.json, JSON, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2
+d:\Projektkurs\projekt\public\defaultData\workouts.json, JSON, 12, 0, 0, 0, 0, 0, 0, 0, 0, 1, 13
+d:\Projektkurs\projekt\public\index.html, HTML, 0, 0, 0, 29, 0, 0, 0, 0, 23, 2, 54
+d:\Projektkurs\projekt\src\actions\index.js, JavaScript, 0, 0, 0, 0, 126, 0, 0, 0, 14, 29, 169
+d:\Projektkurs\projekt\src\apis\tts.js, JavaScript, 0, 0, 0, 0, 9, 0, 0, 0, 0, 2, 11
+d:\Projektkurs\projekt\src\apis\wger.js, JavaScript, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 4
+d:\Projektkurs\projekt\src\components\App.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 51, 0, 1, 3, 55
+d:\Projektkurs\projekt\src\components\ChartComponent.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 21, 0, 3, 2, 26
+d:\Projektkurs\projekt\src\components\DeleteSelectorField.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 39, 0, 0, 2, 41
+d:\Projektkurs\projekt\src\components\DragAndDropList.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 50, 0, 7, 6, 63
+d:\Projektkurs\projekt\src\components\Dropdown.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 15, 0, 0, 2, 17
+d:\Projektkurs\projekt\src\components\Exercise.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 78, 0, 8, 8, 94
+d:\Projektkurs\projekt\src\components\ExercisePreview\ExerciseForm.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 226, 0, 5, 7, 238
+d:\Projektkurs\projekt\src\components\ExercisePreview\ExerciseFormSelector.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 74, 0, 2, 3, 79
+d:\Projektkurs\projekt\src\components\ExercisePreview\ExercisePreview.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 85, 0, 8, 7, 100
+d:\Projektkurs\projekt\src\components\ExerciseSearch\ExerciseSearch.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 193, 0, 1, 3, 197
+d:\Projektkurs\projekt\src\components\ExerciseSearch\InternalSearch.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 13, 0, 0, 3, 16
+d:\Projektkurs\projekt\src\components\ExerciseSearch\SearchSettings.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 83, 0, 3, 1, 87
+d:\Projektkurs\projekt\src\components\ExerciseSearch\WgerSearch.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 13, 0, 0, 3, 16
+d:\Projektkurs\projekt\src\components\ExerciseWrapper\ExerciseScreen.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 45, 0, 0, 2, 47
+d:\Projektkurs\projekt\src\components\ExerciseWrapper\ExerciseWrapper.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 150, 0, 13, 15, 178
+d:\Projektkurs\projekt\src\components\ExerciseWrapper\FinishScreen.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 38, 0, 1, 4, 43
+d:\Projektkurs\projekt\src\components\ExerciseWrapper\PauseScreen.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 61, 0, 0, 3, 64
+d:\Projektkurs\projekt\src\components\FileUpload.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 22, 0, 1, 2, 25
+d:\Projektkurs\projekt\src\components\ImageSearch\ImageCard.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 31, 0, 2, 6, 39
+d:\Projektkurs\projekt\src\components\ImageSearch\ImageField.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 199, 0, 12, 11, 222
+d:\Projektkurs\projekt\src\components\ImageSearch\UnsplashSearch.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 37, 0, 2, 5, 44
+d:\Projektkurs\projekt\src\components\Loader.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 12, 0, 0, 2, 14
+d:\Projektkurs\projekt\src\components\Main.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 74, 0, 4, 4, 82
+d:\Projektkurs\projekt\src\components\Menu.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 158, 0, 0, 5, 163
+d:\Projektkurs\projekt\src\components\Overview.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 119, 0, 3, 7, 129
+d:\Projektkurs\projekt\src\components\Popup.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 31, 0, 0, 3, 34
+d:\Projektkurs\projekt\src\components\ProgressBar.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 19, 0, 0, 2, 21
+d:\Projektkurs\projekt\src\components\Selector.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 55, 0, 1, 3, 59
+d:\Projektkurs\projekt\src\components\Settings.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 201, 0, 1, 6, 208
+d:\Projektkurs\projekt\src\components\Statistic.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 12, 0, 0, 2, 14
+d:\Projektkurs\projekt\src\components\Timeline.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 86, 0, 7, 2, 95
+d:\Projektkurs\projekt\src\components\WorkoutCreator.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 328, 0, 17, 11, 356
+d:\Projektkurs\projekt\src\components\WorkoutStatistics.jsx, JavaScript React, 0, 0, 0, 0, 0, 0, 178, 0, 11, 6, 195
+d:\Projektkurs\projekt\src\helpers.js, JavaScript, 0, 0, 0, 0, 86, 0, 0, 0, 5, 13, 104
+d:\Projektkurs\projekt\src\index.js, JavaScript, 0, 0, 0, 0, 11, 0, 0, 0, 0, 2, 13
+d:\Projektkurs\projekt\src\localstorage.js, JavaScript, 0, 0, 0, 0, 18, 0, 0, 0, 1, 2, 21
+d:\Projektkurs\projekt\src\reducers\currentReducer.js, JavaScript, 0, 0, 0, 0, 27, 0, 0, 0, 0, 2, 29
+d:\Projektkurs\projekt\src\reducers\index.js, JavaScript, 0, 0, 0, 0, 15, 0, 0, 0, 2, 2, 19
+d:\Projektkurs\projekt\src\reducers\userDataReducer.js, JavaScript, 0, 0, 0, 0, 312, 0, 0, 0, 15, 7, 334
+d:\Projektkurs\projekt\src\reducers\wgerReducer.js, JavaScript, 0, 0, 0, 0, 20, 0, 0, 0, 0, 1, 21
+d:\Projektkurs\projekt\src\style.css, CSS, 0, 0, 0, 0, 0, 271, 0, 0, 19, 47, 337
+d:\Projektkurs\projekt\state.code-workspace, JSON with Comments, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 2
+Total, -, 14796, 155, 37, 29, 626, 271, 2797, 1, 192, 315, 19219

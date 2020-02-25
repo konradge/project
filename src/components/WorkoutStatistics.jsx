@@ -63,13 +63,11 @@ class WorkoutStatistics extends Component {
     return average.toFixed(2);
   }
   calcAverageWorkoutTime() {
-    console.log(this.props.userHistory.lastWorkouts);
     const time = (
       this.props.userHistory.totalTrainingTime /
       this.props.userHistory.lastWorkouts.length
     ).toFixed(2);
-    console.log(this.props.userHistory.totalTrainingTime);
-    console.log(this.props.userHistory.lastWorkouts.length);
+
     if (isNaN(time)) {
       //Falls noch keine Workouts durchgeführt wurden
       return 0;

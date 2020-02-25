@@ -18,6 +18,7 @@ class Settings extends Component {
       exercises: true,
       workouts: true,
       muscles: true,
+      equipment: true,
       history: {
         workouts: true,
         weight: true,
@@ -26,7 +27,6 @@ class Settings extends Component {
     }
   };
   deleteAll(evt) {
-    console.log(this.state.delete);
     evt.preventDefault();
     if (
       window.confirm("Are your sure that you want to delete all of your data?")
@@ -71,7 +71,6 @@ class Settings extends Component {
     this.props.setDefaultValue(evt.target.value, evt.target.name);
   };
   render() {
-    console.log(this.state);
     return (
       <form className="ui form">
         <div className="ui dividing header">Defaults</div>
@@ -159,6 +158,11 @@ class Settings extends Component {
               label={"Muscles"}
               values={this.state.delete}
             />
+            <DeleteSelectorField
+              setState={this.setState.bind(this)}
+              label={"Equipment"}
+              values={this.state.delete}
+            />
             <div className="grouped field">
               <label>History:</label>
               <DeleteSelectorField
@@ -195,7 +199,6 @@ class Settings extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     userData: state.userData,
     defaultValues: state.userData.defaultValues

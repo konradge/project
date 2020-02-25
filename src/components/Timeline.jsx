@@ -1,25 +1,29 @@
 import React, { Component } from "react";
 import HorizontalTimeline from "react-horizontal-timeline";
 import dateFormat from "dateformat";
-import { isToday, isSameDay } from "../helpers";
+import { isSameDay, unique } from "../helpers";
 import { connect } from "react-redux";
 class Timeline extends Component {
-  state = { index: null };
   today = new Date();
   lastTrainingDates = this.props.lastWorkouts.map(workout => workout.date);
-  values = [];
+  //Das Element (also Datum), dass auf der Timeline ausgewählt wurde
+  state = { index: null };
+  //Daten, an denen mind. ein Training durchgeführt wurde
+  uniqueDaysWithTraining = [];
   componentDidMount() {
-    this.values = this.getValues();
+    this.uniqueDaysWithTraining = this.getValues();
   }
   buildTimeline() {
+    //Die eigentliche Timeline
     return (
       <div style={{ width: "100%", height: "100px", margin: "0 auto" }}>
         <HorizontalTimeline
           index={
             this.state.index ||
-            this.values.length - (this.state.todayNoTraining ? 2 : 1)
+            this.uniqueDaysWithTraining.length -
+              (this.state.todayNoTraining ? 2 : 1)
           }
-          values={this.values}
+          values={this.uniqueDaysWithTraining}
           indexClick={index => this.setState({ index })}
           getLabel={date => {
             if (date.getYear() === this.today.getYear()) {
@@ -35,29 +39,28 @@ class Timeline extends Component {
     );
   }
   getValues() {
-    let dateArray = this.lastTrainingDates.filter((elem, index, arr) => {
+    //Reduziere Trainingsdaten (this.lastTrainingDates) so, dass jedes Datum nur noch einmal vorhanden ist
+    if (this.lastTrainingDates.length === 0) {
+      //Falls noch kein Training durchgeführt wurde, gib nur das heutige Datum zurück
+      //(Dann wird "Noch kein Training heute" angezeigt)
+      return [new Date()];
+    }
+    //Filtere letzte Trainings so, dass jedes Datum nur noch einmal vorhanden ist
+    return this.lastTrainingDates.filter((elem, index, arr) => {
       if (index === 0) {
         return true;
       }
       return !isSameDay(arr[index - 1], elem);
     });
-    if (!isToday(dateArray[dateArray.length - 1])) {
-      if (!this.state.todayNoTraining) {
-        this.setState({ todayNoTraining: true });
-      }
-      dateArray.push(new Date());
-    } else if (this.state.todayNoTraining) {
-      this.setState({ todayNoTraining: false });
-    }
-    return dateArray;
   }
   render() {
     let filteredTrainings = [];
-    if (this.state.index != null) {
+    if (this.uniqueDaysWithTraining.length > 0) {
+      let index = this.state.index || this.uniqueDaysWithTraining.length - 1;
       let trainingsOnSelectedDay = this.props.lastWorkouts
-        .filter(t => isSameDay(t.date, this.values[this.state.index]))
+        .filter(t => isSameDay(t.date, this.uniqueDaysWithTraining[index]))
         .map(t => t.title);
-      filteredTrainings = [...new Set(trainingsOnSelectedDay)];
+      filteredTrainings = unique(trainingsOnSelectedDay);
       filteredTrainings = filteredTrainings.map(name => {
         return {
           name,

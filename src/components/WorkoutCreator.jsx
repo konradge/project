@@ -14,10 +14,12 @@ import {
   editWorkout,
   setStoppedAt
 } from "../actions";
-import { getExercise, getId, getWorkout } from "../helpers";
+import { getId, unique, findById } from "../helpers";
 import "../style.css";
 import Selector from "./Selector";
 import DragAndDropList from "./DragAndDropList";
+import { Loader } from "./Loader";
+import { Dropdown } from "./Dropdown";
 
 class WorkoutCreator extends Component {
   state = {
@@ -33,14 +35,14 @@ class WorkoutCreator extends Component {
 
   loadWorkout() {
     const id = parseInt(this.props.match.params.id);
-    const workout = this.getWorkout(id);
+    const workout = findById(this.props.allWorkouts, id);
     if (id === -1) {
       this.setState({
         workout: { id: -1, title: null, exercises: [] },
         title: "---Select Workout, Type name to add workout---"
       });
-    } else if (workout === null) {
-      this.props.history.push("/workout/-1");
+    } else if (workout == null) {
+      this.props.history.push("/project/workout/-1");
     } else {
       this.setState({ workout, id: workout.id, title: workout.title });
     }
@@ -49,14 +51,14 @@ class WorkoutCreator extends Component {
   componentDidUpdate(_, prevState) {
     //Wie componentDidMount(), inkl. Verhinderung einer endlosschleife durch setState()
     const id = parseInt(this.props.match.params.id);
-    const workout = this.getWorkout(id);
+    const workout = findById(this.props.allWorkouts, id);
     if (id === -1 && prevState.workout.id !== -1) {
       this.setState({
         workout: { id: -1, title: null, exercises: [] },
         title: "---Select Workout, Type name to add workout---"
       });
-    } else if (workout === null && id !== -1) {
-      this.props.history.push("/workout/-1");
+    } else if (workout == null && id !== -1) {
+      this.props.history.push("/project/workout/-1");
     } else if (id !== -1) {
       if (workout.exercises !== prevState.workout.exercises) {
         this.setState({ workout, id: workout.id, title: workout.title });
@@ -77,10 +79,7 @@ class WorkoutCreator extends Component {
           items={this.state.workout.exercises
             .map((exerciseId, index) => {
               //Wandle die (als ID) gespeicherte Übung in die richtige Übung um
-              const exercise = getExercise(
-                exerciseId,
-                this.props.usersExercises
-              );
+              const exercise = findById(this.props.usersExercises, exerciseId);
               if (exercise) {
                 //Zeige diese Übung in einer Tabelle an(Übungsname, Bearbeitungsoption, Löschoption)
                 return {
@@ -119,6 +118,8 @@ class WorkoutCreator extends Component {
                   ),
                   id: exerciseId
                 };
+              } else {
+                return { content: <div></div>, id: -1 };
               }
             })
             .filter(elem => elem !== undefined)}
@@ -171,7 +172,7 @@ class WorkoutCreator extends Component {
               this.state.workout.id
             );
             //Leite weiter zur Bearbeitung der neuen Übung
-            this.props.history.push("/exercise/" + idForNewExercise);
+            this.props.history.push("/project/exercise/" + idForNewExercise);
           }}
           customStyle={{
             control: {
@@ -183,11 +184,34 @@ class WorkoutCreator extends Component {
       </div>
     );
   }
+  neededEquipment(type, header) {
+    //Type: "equipment" or muscles
+    const list = {
+      equipment: this.props.usersEquipment,
+      muscles: this.props.usersMuscles
+    };
+    const ids = this.state.workout.exercises.map(exerciseId => {
+      const exercise = findById(this.props.usersExercises, exerciseId);
+
+      return exercise[type];
+    });
+
+    const uniqueIds = unique([].concat.apply([], ids));
+    if (uniqueIds.length === 0) {
+      return <div>No {header.toLowerCase()}</div>;
+    }
+    return (
+      <Dropdown
+        header={header}
+        items={uniqueIds.map(id => findById(list[type], id))}
+      />
+    );
+  }
   render() {
     //In componentDidMount() wird nach der ID in der URL das passende Workout ausgeählt,
     //bis dahin soll das Workout nicht angezeigt werden.
     if (!this.state.workout) {
-      return <div>Loading...</div>;
+      return <Loader />;
     }
 
     return (
@@ -223,7 +247,7 @@ class WorkoutCreator extends Component {
               })}
               onChange={selected => {
                 if (!this.state.preventSelect) {
-                  this.props.history.push("/workout/" + selected);
+                  this.props.history.push("/project/workout/" + selected);
                 }
               }}
               value={{ value: this.state.title, label: this.state.title }}
@@ -236,25 +260,46 @@ class WorkoutCreator extends Component {
             />
           </div>
           {this.state.workout.title !== null ? this.renderExerciseList() : null}
-          <div className="ui right labeled input pause-time-input">
-            <div className="ui label">Pause time:</div>
-            <input
-              value={this.state.workout.pauseTime}
-              onChange={evt => {
-                this.setState({
-                  workout: {
-                    ...this.state.workout,
-                    pauseTime: evt.target.value
-                  }
-                });
-                this.props.editWorkout(this.state.workout.id, {
-                  ...this.state.workout,
-                  pauseTime: evt.target.value
-                });
-              }}
-            />
-            <div className="ui basic label">sec</div>
-          </div>
+          {this.state.workout.id !== -1 ? (
+            <div className="workout-information">
+              <div className="ui grid">
+                <div className="four wide column">
+                  <div className="ui segment">
+                    {this.neededEquipment("equipment", "Needed Equipment")}
+                  </div>
+                </div>
+                <div className="four wide column">
+                  <div className="ui segment">
+                    {this.neededEquipment("muscles", "Strained muscles")}
+                  </div>
+                </div>
+                <div className="column">
+                  <div className="ui right labeled input">
+                    <div className="ui label">Pause time:</div>
+                    <input
+                      value={
+                        this.state.workout.pauseTime ||
+                        this.props.defaultPauseTime
+                      }
+                      onChange={evt => {
+                        this.setState({
+                          workout: {
+                            ...this.state.workout,
+                            pauseTime: evt.target.value
+                          }
+                        });
+                        this.props.editWorkout(this.state.workout.id, {
+                          ...this.state.workout,
+                          pauseTime: evt.target.value
+                        });
+                      }}
+                    />
+                    <div className="ui basic label">sec</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : null}
           <div>
             <button
               className={
@@ -263,7 +308,7 @@ class WorkoutCreator extends Component {
               }
               onClick={() => {
                 this.props.setWorkout(this.state.workout.id);
-                this.props.history.push("/workout");
+                this.props.history.push("/project/workout");
               }}
             >
               Start
@@ -273,16 +318,6 @@ class WorkoutCreator extends Component {
       </div>
     );
   }
-
-  //Finde das Workout mit ID id aus der Liste aller Workouts
-  getWorkout(id) {
-    const workout = getWorkout(id, this.props.allWorkouts);
-    if (workout) {
-      return workout;
-    } else {
-      return null;
-    }
-  }
 }
 
 const mapStateToProps = state => {
@@ -290,7 +325,10 @@ const mapStateToProps = state => {
     userData: state.userData,
     allWorkouts: state.userData.workouts,
     usersWorkouts: state.userData.workouts,
-    usersExercises: state.userData.exercises
+    usersExercises: state.userData.exercises,
+    usersEquipment: state.userData.equipment,
+    usersMuscles: state.userData.muscles,
+    defaultPauseTime: state.userData.defaultValues.pauseTime
   };
 };
 

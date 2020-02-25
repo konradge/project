@@ -1,9 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import Exercise from "../Exercise";
 import PauseScreen from "./PauseScreen";
 
 export default function ExerciseScreen(props) {
+  //console.log(props.pause);
   return (
     <div>
       <div className="title">
