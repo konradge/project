@@ -343,18 +343,37 @@ class WorkoutCreator extends Component {
             </div>
           ) : null}
           <div>
-            <button
-              className={
-                "ui submit button" +
-                (this.state.workout.exercises.length > 0 ? "" : " disabled")
-              }
-              onClick={() => {
-                this.props.setWorkout(this.state.workout.id);
-                this.props.history.push("/project/workout");
-              }}
-            >
-              Start
-            </button>
+            {this.state.workout.id !== -1 ? (
+              <div>
+                <button
+                  className={
+                    "ui submit button" +
+                    (this.state.workout.exercises.length > 0 ? "" : " disabled")
+                  }
+                  onClick={() => {
+                    this.props.setWorkout(this.state.workout.id);
+                    this.props.history.push("/project/workout");
+                  }}
+                >
+                  Start
+                </button>
+                <button
+                  className="ui red button"
+                  onClick={evt => {
+                    evt.preventDefault();
+                    if (
+                      window.confirm(
+                        "Are your sure that you want to delete all this workout?"
+                      )
+                    ) {
+                      this.props.removeWorkout(this.state.workout.id);
+                    }
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            ) : null}
           </div>
         </form>
       </div>

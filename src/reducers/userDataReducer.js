@@ -129,7 +129,7 @@ export default (
           ...workout,
           deleted: true,
           exercises: workout.exercises.filter(
-            exercise => exercise !== action.payload
+            exercise => exercise.id !== action.payload
           )
         };
       });

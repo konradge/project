@@ -11,15 +11,12 @@ import { connect } from "react-redux";
 class Exercise extends Component {
   state = { key: 0, lastTime: 0, speech: null };
   async componentDidMount() {
-    console.log(this.props.exercise);
     const speech = new Speech();
     await speech.init({ lang: "en-GB" });
 
     this.setState({ speech });
   }
   renderTime(time) {
-    console.log(time);
-    console.log(this.state.lastTime);
     //Funktion wird 60 Mal in der Sekunde aufgerufen
     //Füge jedes mal 1/60 Sekunde zur Trainingszeit hinzu
     if (this.state.lastTime !== time) {
@@ -87,7 +84,11 @@ class Exercise extends Component {
             ) : null}
             {this.props.exercise.description ? (
               <div className="ui segment exercise-description-text">
-                {this.props.exercise.description}
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: this.props.exercise.description
+                  }}
+                ></div>
               </div>
             ) : null}
           </div>

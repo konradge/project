@@ -78,7 +78,6 @@ class ExerciseForm extends Component {
               customUrl: ""
             }
           }}
-          onChange={evt => console.log(evt)}
           validate={values => {
             this.setState({ formChanged: true, exerciseName: values.name });
             const errors = {};
@@ -207,8 +206,14 @@ class ExerciseForm extends Component {
                   type="button"
                   className="ui red button"
                   onClick={() => {
-                    this.props.removeExercise(this.props.exercise.id);
-                    this.props.back();
+                    if (
+                      window.confirm(
+                        "Are your sure that you want to delete this exercise?"
+                      )
+                    ) {
+                      this.props.removeExercise(this.props.exercise.id);
+                      this.props.back();
+                    }
                   }}
                 >
                   Delete Exercise

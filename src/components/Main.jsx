@@ -47,22 +47,13 @@ class Main extends Component {
             <Popup
               trigger={
                 <div className="start-workout">
-                  <i
-                    className="fas fa-play"
-                    onClick={() => {
-                      if (this.props.currentWorkout) {
-                        //return <Redirect to="/project/workout"></Redirect>;
-                        this.props.history.push("/project/workout");
-                      }
-                    }}
-                  ></i>
+                  <i className="fas fa-play"></i>
                   <div>Start your workout NOW!</div>
                 </div>
               }
               content={this.startPopupContent()}
               canOpen={!!this.props.currentWorkout}
             />
-            <Link to="/project/workout">START</Link>
           </div>
         </div>
       </div>

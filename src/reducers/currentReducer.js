@@ -1,5 +1,4 @@
 export default (current = def, action) => {
-  console.log(action);
   switch (action.type) {
     case "SET_EXERCISE":
       return { ...current, exercise: action.payload, workoutStoppedAt: 0 };

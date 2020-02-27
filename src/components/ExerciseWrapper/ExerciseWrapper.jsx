@@ -93,7 +93,6 @@ class ExerciseWrapper extends Component {
               " seconds pause. prepare for " +
               nextExercise.name
           );
-          console.log("next");
           this.props.setIndex(this.props.indexInWorkout + 1);
           this.props.setPause(this.props.pauseTime);
         }
@@ -168,8 +167,6 @@ const mapStateToProps = state => {
   );
 
   const currentIndex = state.current.index;
-  console.log(currentWorkout.exercises);
-  console.log(currentIndex);
   const currentExercise = currentWorkout
     ? findById(
         state.userData.exercises,
