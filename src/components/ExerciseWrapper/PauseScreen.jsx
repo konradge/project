@@ -2,16 +2,24 @@ import React, { Component } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import Speech from "speak-tts";
 import { connect } from "react-redux";
-import { addTime } from "../../actions";
+import { addTime, setPause } from "../../actions";
 
 class PauseScreen extends Component {
-  state = { speech: null, lastTime: 0 };
+  state = { speech: null, lastTime: 0, pauseEnded: false };
   async componentDidMount() {
+    window.addEventListener("beforeunload", this.beforeunload);
     const speech = new Speech();
     await speech.init({ lang: "en-GB" });
 
     this.setState({ speech });
   }
+  componentWillUnmount() {
+    window.removeEventListener("beforeunload", this.beforeunload);
+    this.props.setPause(this.state.time);
+  }
+  beforeunload = () => {
+    this.props.setPause(this.state.lastTime);
+  };
   renderTime = time => {
     if (this.state.lastTime !== time) {
       if (this.state.speech) {
@@ -19,11 +27,12 @@ class PauseScreen extends Component {
           this.state.speech.speak({ text: "" + time, queue: false });
         }
       }
-      this.props.addTime(1 / 60);
+      this.props.addTime(1);
 
       this.setState({ lastTime: time });
     }
     if (time <= 0) {
+      this.props.setPause(null);
       this.props.endPause();
     }
     return (
@@ -50,7 +59,12 @@ class PauseScreen extends Component {
           <div className="vertical-center">
             <div className="next-exercise">
               Next exercise:
-              <h1 onClick={this.props.endPause}>
+              <h1
+                onClick={() => {
+                  this.setState({ pauseEnded: true });
+                  this.props.endPause();
+                }}
+              >
                 <i className="ui angle double right icon"></i>
                 {this.props.nextExercise}
               </h1>
@@ -61,4 +75,9 @@ class PauseScreen extends Component {
     );
   }
 }
-export default connect(null, { addTime })(PauseScreen);
+export default connect(
+  state => {
+    return { pause: state.current.pause };
+  },
+  { addTime, setPause }
+)(PauseScreen);

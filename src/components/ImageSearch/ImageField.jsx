@@ -7,6 +7,8 @@ import ImageCard from "./ImageCard";
 import { Loader } from "../Loader";
 
 class ImageWrapper extends Component {
+  baseURL =
+    "https://api.unsplash.com/search/photos?client_id=08a0aaca34c345e60dc6b0906c21421d7d71e0851bf5aec143584f75a506ddd9";
   maxHeight = 400;
   state = {
     unsplashKeyword: "",
@@ -45,21 +47,17 @@ class ImageWrapper extends Component {
   }
 
   async searchImages(keyword) {
-    //Suche nach eingegebenem Wort auf Unsplash. Sobald ein neuer Buchstabe eingegeben wird, cancele die
-    //alte Anfrage und sende eine neue
+    //Suche nach eingegebenem Wort auf Unsplash. Sobald ein neuer Buchstabe
+    // eingegeben wird, cancele die alte Anfrage und sende eine neue
     if (this.cancel !== undefined) {
       this.cancel();
     }
     try {
-      const request = await axios.get(
-        "https://api.unsplash.com/search/photos?client_id=08a0aaca34c345e60dc6b0906c21421d7d71e0851bf5aec143584f75a506ddd9&query=" +
-          keyword,
-        {
-          cancelToken: new axios.CancelToken(c => {
-            this.cancel = c;
-          })
-        }
-      );
+      const request = await axios.get(this.baseURL + "&query=" + keyword, {
+        cancelToken: new axios.CancelToken(c => {
+          this.cancel = c;
+        })
+      });
       const unsplashImages = request.data.results.map(image => {
         return {
           alt: image.alt_description,

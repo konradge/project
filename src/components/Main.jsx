@@ -12,7 +12,7 @@ class Main extends Component {
   //Falls bereits früher ein Workout gestartet wurde, kann es hier direkt ausgewählt werden
   startPopupContent() {
     if (!this.props.currentWorkout) {
-      return null;
+      return <Redirect to="/project/workout/-1" />;
     }
     return (
       <div className="start-popup ui center aligned basic segment">
@@ -27,7 +27,7 @@ class Main extends Component {
           className="ui button"
           onClick={() => this.props.history.push("/project/workout")}
         >
-          <i className="play icon"></i> Continue{" "}
+          <i className="play icon"></i> Continue
           {this.props.currentWorkout.title}
         </div>
       </div>
@@ -52,7 +52,7 @@ class Main extends Component {
                 </div>
               }
               content={this.startPopupContent()}
-              canOpen={!!this.props.currentWorkout}
+              canOpen={true}
             />
           </div>
         </div>

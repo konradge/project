@@ -53,7 +53,7 @@ class ExerciseWrapper extends Component {
 
   speak(text) {
     if (this.state.speech) {
-      this.state.speech.speak({ text: text });
+      this.state.speech.speak({ text: text, queue: false });
     }
   }
 
@@ -61,7 +61,8 @@ class ExerciseWrapper extends Component {
 
   //Starte die nächste Übung aus aktuellem Workout (this.props.workout)
   next() {
-    if (this.props.pause !== null) {
+    console.log(this.props.pause);
+    if (this.props.pause != null) {
       this.props.setPause(null);
       this.speak(
         this.props.exercise.duration + " seconds " + this.props.exercise.name
@@ -102,8 +103,12 @@ class ExerciseWrapper extends Component {
 
   previous() {
     if (this.props.exercise && !this.state.ready) {
-      if (this.props.indexInWorkout - 1 >= 0) {
-        this.props.setIndex(this.props.indexInWorkout - 1);
+      if (this.props.pause) {
+        this.props.setPause(null);
+      } else {
+        if (this.props.indexInWorkout - 1 >= 0) {
+          this.props.setIndex(this.props.indexInWorkout - 1);
+        }
       }
     }
   }

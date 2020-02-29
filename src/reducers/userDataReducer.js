@@ -13,14 +13,13 @@ export default (
     exercises: [],
     muscles: [],
     equipment: [],
-    shouldLoadDefaultData: true,
     history: defaultHistory,
     defaultValues
   },
   action
 ) => {
   //Muss hier initialisiert werden, damit Variablenname mehrfach verwendet werden kann
-  let workout, history, workouts, exercises, muscles;
+  let workout, history, workouts, exercises, muscles, equipment;
   switch (action.type) {
     /**Muscle */
     case "CREATE_MUSCLE":
@@ -235,7 +234,7 @@ export default (
         ? userData.muscles.filter(muscle => muscle.id <= 15)
         : userData.muscles;
       //Behalte immer das "Standardequipment" aus der Wger Datenbank
-      let equipment = action.payload.equipment
+      equipment = action.payload.equipment
         ? userData.equipment.filter(equipment => equipment.id <= 10)
         : userData.equipment;
       //History des Trainings; muss einzeln geleert werden
@@ -262,7 +261,7 @@ export default (
       return action.payload;
     case "ADD_USER_DATA":
       //Füge jeweilige Daten aus action.payload zu UserData hinzu
-      ({ exercises, workouts, history } = action.payload);
+      ({ exercises, workouts, history, muscles, equipment } = action.payload);
       //Übungen laden (IDs weiter vergeben)
       let startId = getId(userData.exercises);
       for (let prop in exercises) {
@@ -285,7 +284,11 @@ export default (
         ...userData,
         exercises: [...userData.exercises, ...exercises],
         workouts: [...userData.workouts, ...workouts],
-        muscles: [...userData.muscles, ...muscles],
+        muscles: [...userData.muscles, ...muscles.filter(m => m.id <= 15)],
+        equipment: [
+          ...userData.equipment,
+          ...equipment.filter(e => e.id <= 10)
+        ],
         //Werte an history anhängen
         history: {
           lastWorkouts: [

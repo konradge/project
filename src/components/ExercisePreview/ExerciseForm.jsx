@@ -203,6 +203,15 @@ class ExerciseForm extends Component {
                   Save
                 </button>
                 <button
+                  className="ui button"
+                  onClick={evt => {
+                    evt.preventDefault();
+                    this.props.back();
+                  }}
+                >
+                  Abbort
+                </button>
+                <button
                   type="button"
                   className="ui red button"
                   onClick={() => {
@@ -211,6 +220,7 @@ class ExerciseForm extends Component {
                         "Are your sure that you want to delete this exercise?"
                       )
                     ) {
+                      this.setState({ formChanged: false });
                       this.props.removeExercise(this.props.exercise.id);
                       this.props.back();
                     }

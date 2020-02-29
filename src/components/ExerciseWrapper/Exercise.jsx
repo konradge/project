@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import Speech from "speak-tts";
 
-import { addTime, setStoppedAt } from "../actions";
+import { addTime, setStoppedAt } from "../../actions";
 import { connect } from "react-redux";
 
 class Exercise extends Component {
@@ -23,7 +23,8 @@ class Exercise extends Component {
       if (this.state.speech) {
         if (time > 0 && time < 4) {
           this.state.speech.speak({
-            text: "" + time
+            text: "" + time,
+            queue: false
           });
         }
       }

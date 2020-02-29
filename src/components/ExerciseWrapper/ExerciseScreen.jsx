@@ -1,5 +1,5 @@
 import React from "react";
-import Exercise from "../Exercise";
+import Exercise from "./Exercise";
 import PauseScreen from "./PauseScreen";
 
 export default function ExerciseScreen(props) {

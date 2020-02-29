@@ -56,7 +56,7 @@ class Settings extends Component {
         typeof history.totalTrainingTime === "number" &&
         Array.isArray(history.weight)
       ) {
-        if (this.props.overwriteChecked) {
+        if (this.state.overwriteChecked) {
           this.props.setUserData(json);
         } else {
           this.props.addUserData(json);
