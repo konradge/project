@@ -1,16 +1,110 @@
 [
   {
-    "id": 0,
-    "name": "Situps",
-    "duration": 10,
-    "muscles": [1],
-    "equipment": [1, 2]
+    "name": "Vierfüßlerstand",
+    "duration": 30,
+    "description": "<p>Begeben Sie sich in einen Vierfüßlerstand: Dabei sind die Arme gestreckt und berühren senkrecht unter den Schultern den Boden, die Knie stehen unter den Hüften. Strecken Sie nun das linke Bein nach hinten und den rechten Arm nach vorne aus. Beachten Sie folgendes:</p><ul>\n\t<li>Beachten Sie, dass Arm und Bein eine Linie mit dem Rumpf bilden.</li>\n\t<li>Halten Sie den Oberkörper parallel zum Boden und verdrehen Sie ihn nicht.</li>\n\t<li>Vermeiden Sie ein Hohlkreuz, spannen Sie die Bauchmuskulatur an.</li>\n\t<li>Richten Sie den Blick auf den Boden.</li>\n</ul><p>Wechseln Sie nach 15 Sekunden die Seite und führen Sie die Übung vier bis fünf Mal durch.</p>",
+    "muscles": [12, 15],
+    "equipment": [4],
+    "image": "https://www.gesundheit.de/sites/default/files/styles/photoseries_content/public/photo_series/2018-05/vierfuesslerstand-rueckengymnastik.jpg?itok=Nsg2JyZh",
+    "id": 2
   },
   {
-    "id": 1,
-    "name": "Squats",
+    "name": "Rumpfheber",
+    "duration": 30,
+    "description": "<p>Legen Sie sich auf den Bauch und öffnen Sie die Beine leicht. Die Arme liegen neben dem Oberkörper, die Handflächen zeigen nach oben. Spannen Sie Bauch, Rücken und Po an und heben Sie die Beine und den Oberkörper leicht vom Boden ab. Achten Sie darauf, dass Sie den Kopf nicht überstrecken sondern dieser in Verlängerung der Wirbelsäule bleibt. Halten Sie diese Position für 10 bis 15 Sekunden. Führen Sie die Übung insgesamt sechsmal durch.</p>",
+    "muscles": [],
+    "equipment": [4],
+    "image": "https://www.gesundheit.de/sites/default/files/styles/photoseries_content/public/photo_series/2018-05/rumpfheber-alternative-rueckengymnastik.jpg?itok=4KTwqgRw",
+    "id": 3
+  },
+  {
+    "name": "Rückenschaukel",
+    "duration": 30,
+    "description": "<p>Legen Sie sich auf den Boden und achten Sie darauf, dass der Rücken flach aufliegt und Sie kein Hohlkreuz machen. Pressen Sie die Wirbelsäule aber auch nicht auf die Matte. Winkeln Sie Beine an, sodass zwischen Ober- und Unterschenkel ein 90 Grad Winkel entsteht. Umfassen Sie die Schienbeine anschließend mit den Armen und ziehen Sie die Beine zum Körper heran. Heben Sie nun den Kopf und die Schultern leicht vom Boden ab und schaukeln Sie langsam etwa 15mal vor und zurück. Führen Sie die Übung insgesamt dreimal durch.</p>",
+    "muscles": [],
+    "equipment": [4],
+    "image": "https://www.gesundheit.de/sites/default/files/styles/photoseries_content/public/photo_series/2018-05/rueckenschaukel-rueckengymnastik.jpg?itok=K1xKDkx-",
+    "id": 4
+  },
+  {
+    "name": "Seitstütz",
+    "duration": 30,
+    "description": "<p>Legen Sie sich auf die rechte Seite und stützen Sie sich mit dem rechten Unterarm ab. Strecken Sie die Beine übereinander aus und heben Sie die Hüfte an. Die linke Hand legen Sie an die Hüfte. Achten Sie bei der Übungsausführung darauf, dass Beine und Rumpf eine Linie bilden. Halten Sie die Position für 10 bis 15 Sekunden und wechseln Sie dann die Seite. Führen Sie die Übung insgesamt fünfmal pro Seite durch.</p>",
+    "muscles": [],
+    "equipment": [4],
+    "image": "https://www.gesundheit.de/sites/default/files/styles/photoseries_content/public/photo_series/2018-05/seitstuetz-rueckengymnastik.jpg?itok=ejnsl2cv",
+    "id": 5
+  },
+  {
+    "name": "Tiefe Hocksprünge",
+    "duration": 30,
+    "description": "<p>5 Sekunden parallel zum Boden mit den Oberschenkeln. Dann hoch springen und in Anfangsphase begeben. Arme verschränkt hinter dem Kopf die ganze Zeit.</p>",
+    "muscles": [11, 7, 8, 10, 6],
+    "equipment": [],
+    "image": "https://images.unsplash.com/photo-1492567291473-fe3dfc175b45?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjk4MzY5fQ",
+    "id": 6
+  },
+  {
+    "name": "Beckenheben",
     "duration": 10,
-    "muscles": [1, 2],
-    "equipment": [1, 2, 3]
+    "description": "<p>Lege dich auf die Matte, die Arme sind ausgestreckt und bilden einen rechten Winkel mit dem Körper. Bringe mit etwas Schwung die Beine in eine senkrechte Position. Hebe nun mit einer kontrollierten Bewegung den Becken etwa 5 cm. hoch. und bringe ihn langsam wieder runter. Ohne Pausen wird die Bewegung wiederholt.</p>",
+    "muscles": [6],
+    "equipment": [4],
+    "image": null,
+    "id": 7
+  },
+  {
+    "name": "Dips",
+    "duration": 10,
+    "description": "<p>Greife die Stangen an einer engen Stelle und drücke dich hoch. Strecke dabei die Arme nicht ganz aus, dann bleiben während des gesamten Bewegungablaufs die Muskeln immer unter Spannung. Beuge nun die Arme und gehe so tief wie möglich runter, die Ellenbogen zeigen nach hinten. Du kannst an dieser Stelle einige Sekunden bleiben, bevor du die Übung weitermachst.</p>",
+    "muscles": [5],
+    "equipment": [],
+    "image": "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjk4MzY5fQ",
+    "id": 8
+  },
+  {
+    "name": "Handgelenkstreckung",
+    "duration": 10,
+    "description": "<p>Im Sitzen Unterarme auf die Oberschenkel, Handrücken nach oben (Obergriff) und dann Kurzhanteln nach oben bewegen.</p>",
+    "muscles": [],
+    "equipment": [],
+    "image": null,
+    "id": 9
+  },
+  {
+    "name": "Burpee",
+    "duration": 30,
+    "description": "Man startet in der oberen Liegestützposition, springt mit den Füßen vor in die Hocke, drückt sich dann kraftvoll vom Boden ab und springt in die Luft, sanft landen. Anschließend wieder in die Hocke gehen und mit den Füßen zurückspringen in den Liegestütz und von vorne beginnen. Die Bewegung sollte möglichst rund und geschmeidig sein.",
+    "muscles": [],
+    "equipment": [],
+    "image": "https://www.myself.de/Undefined/image-thumb__1945__gallery-vertical/burpees-istock.jpeg",
+    "id": 10
+  },
+  {
+    "name": "Planke",
+    "duration": 30,
+    "description": "Für den klassischen Plank die Unterarme auf dem Boden mit den Ellbogen unter den Schultern platzieren, die Füße hüftbreit aufstellen und den Körper anheben. Wichtig: Hüfte und Schultern müssen auf einer Höhe sein. Ziel ist es, die Position so lange wie möglich zu halten. Anfänger können mit 30-60 Sekunden starten. Fortgeschrittene schaffen 60 Sekunden und mehr (3 bis 5 Durchgänge pro Trainingseinheit mit einer Satzpause von 30 Sekunden sind optimal).",
+    "muscles": [],
+    "equipment": [4],
+    "image": "https://www.myself.de/Undefined/image-thumb__1946__gallery-horizontal/plank-istock.jpeg",
+    "id": 11
+  },
+  {
+    "name": "Donkey Kicks",
+    "duration": 30,
+    "description": "Im Vierfüßlerstand beginnen, Bauchmuskeln anspannen, dann das rechte Bein anheben, bis es eine Linie mit Po und Rücken bildet, Spannung kurz halten, dann in die Ausgangsposition zurück bis das Knie knapp über dem Boden ist. Während einem Satz (15-20 Wiederholungen) das Knie nicht absetzen und immer auf einen geraden Rücken achten. Anschließend mit dem linken Bein durchführen (oder immer im Wechsel durchführen).",
+    "muscles": [],
+    "equipment": [4],
+    "image": "https://www.myself.de/Undefined/image-thumb__1956__gallery-horizontal/donkey-kicks-istock.jpeg",
+    "id": 12
+  },
+  {
+    "name": "Squat",
+    "duration": 30,
+    "description": "Die Kniegelenke sollten in die gleiche Richtung wie die Fußspitzen zeigen, der Rücken ist gerade, den Oberkörper kann man leicht nach vorne beugen, jedoch nie in den Rundrücken verfallen. Wie tief man in die Kniebeuge geht, ist vom individuellen Trainingsstand abhängig. Beim Beugen der Beine, den Po so nach hinten schieben, als würde man sich auf eine Stuhlkante setzen. Füße sind dabei fest am Boden.",
+    "muscles": [],
+    "equipment": [],
+    "image": "https://www.myself.de/Undefined/image-thumb__1944__gallery-horizontal/squats-istock.jpeg",
+    "id": 13
   }
 ]
