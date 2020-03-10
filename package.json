@@ -2,7 +2,7 @@
   "name": "projekt",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://konradge.github.io/project/",
+  "homepage": "https://konradge.github.io/be-fit/",
   "dependencies": {
     "@fortawesome/react-fontawesome": "^0.1.8",
     "axios": "^0.19.0",

@@ -109,6 +109,7 @@ export const pushWorkoutHistory = title => {
 
 //Füge Zeit zur totalTrainingTime hinzu
 export const addTime = timeToAdd => {
+  console.log(timeToAdd);
   return { type: "ADD_TIME", payload: timeToAdd };
 };
 
@@ -151,9 +152,9 @@ export const loadDefaultData = () => async dispatch => {
     ]);
   } catch {
     [workouts, exercises, muscles] = await Axios.all([
-      Axios.get("/project/defaultData/workouts.json"),
-      Axios.get("/project/defaultData/exercises.json"),
-      Axios.get("/project/defaultData/muscles.json")
+      Axios.get("/be-fit/defaultData/workouts.json"),
+      Axios.get("/be-fit/defaultData/exercises.json"),
+      Axios.get("/be-fit/defaultData/muscles.json")
     ]);
   }
   dispatch({

@@ -1,6 +1,9 @@
+/**
+ * Workout wurde beendet; Zeige Statistiken und verschiedene Links an
+ */
 import React from "react";
 
-import WorkoutStatistics from "../WorkoutStatistics";
+import WorkoutStatistics from "../Overview/WorkoutStatistics";
 
 export default function FinishScreen(props) {
   return (

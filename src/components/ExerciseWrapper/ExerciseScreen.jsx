@@ -1,9 +1,11 @@
+/**
+ * Zeige entweder die aktuelle Übung (Exercise) oder die Pausenanzeige (PauseScreen) an
+ */
 import React from "react";
 import Exercise from "./Exercise";
 import PauseScreen from "./PauseScreen";
 
 export default function ExerciseScreen(props) {
-  //
   return (
     <div>
       <div className="title">
@@ -14,7 +16,7 @@ export default function ExerciseScreen(props) {
           time={props.pause}
           isRunning={props.isRunning}
           endPause={props.next}
-          nextExercise={props.nextExercise.name}
+          nextExercise={props.exercise.name}
         />
       ) : (
         <Exercise
@@ -26,9 +28,9 @@ export default function ExerciseScreen(props) {
         />
       )}
       <div className="exercise-menu">
-        <div className="ui grid">
+        <div className="ui centered grid">
           <div className="three wide column">
-            <i className="step backward icon" onClick={props.previous}></i>
+            <i className="stop icon" onClick={props.stopWorkout}></i>
           </div>
           <div className="three wide column">
             {props.isRunning ? (

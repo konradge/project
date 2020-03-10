@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import Popup from "reactjs-popup";
 import axios from "axios";
 import ImageCard from "./ImageCard";
-import { Loader } from "../Loader";
+import Loader from "../../Loader";
 
 class ImageWrapper extends Component {
   baseURL =

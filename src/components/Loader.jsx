@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Loader = props => {
+const Loader = props => {
   return (
     <div className="ui segment">
       <div className="loading-bar">
@@ -11,3 +11,5 @@ export const Loader = props => {
     </div>
   );
 };
+
+export default Loader;

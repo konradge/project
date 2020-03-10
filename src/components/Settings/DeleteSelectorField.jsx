@@ -2,7 +2,7 @@ import React from "react";
 const DeleteSelectorField = props => {
   return (
     <div className="field">
-      <div className="ui checkbox">
+      <div className="ui toggle checkbox">
         <input
           type="checkbox"
           checked={

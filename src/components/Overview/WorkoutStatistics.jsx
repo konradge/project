@@ -4,9 +4,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { addWeight } from "../actions";
+import { addWeight } from "../../actions";
 import Statistic from "./Statistic";
-import { shuffle, isToday } from "../helpers";
+import { shuffle, isToday } from "../../helpers";
 
 class WorkoutStatistics extends Component {
   state = {
@@ -86,9 +86,11 @@ class WorkoutStatistics extends Component {
         this.props.userHistory.weight.map(w => w.weight)
       ) - lastWeight
     ).toFixed(1);
+    //Zeige Verlust oder, falls kein Verlust, null
     return <Statistic value={(loss >= 0 && loss) || 0} label="weight loss" />;
   }
   renderWeightStatistics() {
+    //Statistik zur Anzeige und zum bearbeiten des Körpergewichts
     let { lastWeight } = this.state;
     if (!this.state.weightChanged) {
       lastWeight = this.props.lastWeight;
@@ -103,7 +105,7 @@ class WorkoutStatistics extends Component {
               onClick={() => {
                 this.setState({
                   weightChanged: true,
-                  lastWeight: parseFloat((lastWeight - 0.1).toFixed(1))
+                  lastWeight: parseFloat((lastWeight - 0.5).toFixed(1))
                 });
               }}
             ></i>
@@ -113,7 +115,7 @@ class WorkoutStatistics extends Component {
               onClick={() =>
                 this.setState({
                   weightChanged: true,
-                  lastWeight: parseFloat((lastWeight + 0.1).toFixed(1))
+                  lastWeight: parseFloat((lastWeight + 0.5).toFixed(1))
                 })
               }
             ></i>

@@ -2,7 +2,7 @@ import { getId } from "../helpers";
 
 const defaultHistory = {
   lastWorkouts: [],
-  totalTrainingTime: 0,
+  totalTrainingTime: 0, //in seconds
   weight: []
 };
 const defaultValues = { exerciseDuration: 10, pauseTime: 10 };
@@ -104,8 +104,8 @@ export default (
       return {
         ...userData,
         workouts: [
-          ...userData.workouts.filter(w => w.id !== action.payload.workoutId),
-          workout
+          workout,
+          ...userData.workouts.filter(w => w.id !== action.payload.workoutId)
         ]
       };
     /**Exercise */
@@ -142,8 +142,8 @@ export default (
       return {
         ...userData,
         exercises: [
-          ...userData.exercises.filter(ex => ex.id !== action.payload.id),
-          { ...action.payload.exercise, id: action.payload.id }
+          { ...action.payload.exercise, id: action.payload.id },
+          ...userData.exercises.filter(ex => ex.id !== action.payload.id)
         ]
       };
     /** History */
@@ -179,6 +179,7 @@ export default (
       };
     /**Bearbeitung aller Daten */
     case "SET_DEFAULT_VALUE":
+      console.log(action.payload.value);
       try {
         defaultValues[action.payload.key] = parseInt(action.payload.value);
       } catch {

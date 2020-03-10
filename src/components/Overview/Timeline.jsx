@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import HorizontalTimeline from "react-horizontal-timeline";
 import dateFormat from "dateformat";
-import { isSameDay, unique } from "../helpers";
+import { isSameDay, unique } from "../../helpers";
 import { connect } from "react-redux";
 class Timeline extends Component {
   today = new Date();
@@ -12,19 +12,19 @@ class Timeline extends Component {
   uniqueDaysWithTraining = [];
   componentDidMount() {
     this.uniqueDaysWithTraining = this.getValues();
+    this.setState({ index: this.uniqueDaysWithTraining.length - 1 });
   }
   buildTimeline() {
     //Die eigentliche Timeline
     return (
       <div style={{ width: "100%", height: "100px", margin: "0 auto" }}>
         <HorizontalTimeline
-          index={
-            this.state.index ||
-            this.uniqueDaysWithTraining.length -
-              (this.state.todayNoTraining ? 2 : 1)
-          }
-          values={this.uniqueDaysWithTraining}
-          indexClick={index => this.setState({ index })}
+          index={this.state.index || 0}
+          values={this.getValues()}
+          indexClick={index => {
+            console.log(index);
+            this.setState({ index });
+          }}
           getLabel={date => {
             if (date.getYear() === this.today.getYear()) {
               return dateFormat(date, "dd.mm.");
@@ -39,6 +39,9 @@ class Timeline extends Component {
     );
   }
   getValues() {
+    //TODO: Ältester Eintrag
+    console.log("get values");
+    console.log(this.state.index);
     //Reduziere Trainingsdaten (this.lastTrainingDates) so, dass jedes Datum nur noch einmal vorhanden ist
     if (this.lastTrainingDates.length === 0) {
       //Falls noch kein Training durchgeführt wurde, gib nur das heutige Datum zurück
@@ -46,6 +49,7 @@ class Timeline extends Component {
       return [new Date()];
     }
     //Filtere letzte Trainings so, dass jedes Datum nur noch einmal vorhanden ist
+    console.log(this.lastTrainingDates);
     return this.lastTrainingDates.filter((elem, index, arr) => {
       if (index === 0) {
         return true;
@@ -56,11 +60,19 @@ class Timeline extends Component {
   render() {
     let filteredTrainings = [];
     if (this.uniqueDaysWithTraining.length > 0) {
-      let index = this.state.index || this.uniqueDaysWithTraining.length - 1;
+      //Zeige ausgewählten oder heutigen Tag an
+      let index = this.state.index;
+      if (index == null) {
+        index = this.uniqueDaysWithTraining.length - 1;
+      }
+      console.log("INDEX: " + index);
+      //Finde Traings-Titel an diesem Tag
       let trainingsOnSelectedDay = this.props.lastWorkouts
         .filter(t => isSameDay(t.date, this.uniqueDaysWithTraining[index]))
         .map(t => t.title);
+      //Reduziere diese auf einzigartige Trainings
       filteredTrainings = unique(trainingsOnSelectedDay);
+      //Zähle, wie oft diese vorkommen
       filteredTrainings = filteredTrainings.map(name => {
         return {
           name,

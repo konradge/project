@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { addTime, setPause } from "../../actions";
 
 class PauseScreen extends Component {
-  state = { speech: null, lastTime: 0, pauseEnded: false };
+  state = { speech: null, lastTime: 0, pauseEnded: false, running: true };
   async componentDidMount() {
     window.addEventListener("beforeunload", this.beforeunload);
     const speech = new Speech();
@@ -18,6 +18,8 @@ class PauseScreen extends Component {
     this.props.setPause(this.state.time);
   }
   beforeunload = () => {
+    //Soll während reload nicht weiterlaufen
+    this.setState({ running: false });
     this.props.setPause(this.state.lastTime);
   };
   renderTime = time => {
@@ -27,7 +29,7 @@ class PauseScreen extends Component {
           this.state.speech.speak({ text: "" + time, queue: false });
         }
       }
-      this.props.addTime(1);
+      this.props.addTime(1 / 60);
 
       this.setState({ lastTime: time });
     }
@@ -48,10 +50,11 @@ class PauseScreen extends Component {
         <div className="timer-div">
           <CountdownCircleTimer
             className="timer"
+            startAt={0}
             durationSeconds={this.props.time}
             renderTime={this.renderTime}
             colors={[["#f00", 0.33], ["#ff0", 0.33], ["#0f0"]]}
-            isPlaying={this.props.isRunning}
+            isPlaying={this.state.running ? this.props.isRunning : false}
             size={500}
           />
         </div>

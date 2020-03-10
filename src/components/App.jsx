@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 
+import "../style.css";
+
 import ExerciseWrapper from "./ExerciseWrapper/ExerciseWrapper";
 import Menu from "./Menu";
-import Overview from "./Overview";
+import Overview from "./Overview/Overview";
 import Main from "./Main";
-import WorkoutCreator from "./WorkoutCreator";
+import WorkoutCreator from "./WorkoutCreator/WorkoutCreator";
 import ExercisePreview from "./ExercisePreview/ExercisePreview";
-import Settings from "./Settings";
+import Settings from "./Settings/Settings";
 import WgerSearch from "./ExerciseSearch/WgerSearch";
 import InternalSearch from "./ExerciseSearch/InternalSearch";
 import { loadDefaultData } from "../actions";
@@ -22,19 +24,16 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <Route path="/(project)?" component={Menu} />
+        <Route path="/(be-fit)?" component={Menu} />
         <div className="content">
-          <Route path="(/project)?/overview" component={Overview} />
-          <Route path="(/project)?/workout" component={ExerciseWrapper} exact />
-          <Route path="(/project)?/workout/:id" component={WorkoutCreator} />
-          <Route path="(/project)?/exercise/:id" component={ExercisePreview} />
-          <Route
-            path="(/project)?/exercise/search"
-            component={InternalSearch}
-          />
-          <Route path="(/project)?/settings" component={Settings} />
-          <Route path="(/project)?/wger" component={WgerSearch} />
-          <Route path="(/project)?/" component={Main} exact />
+          <Route path="(/be-fit)?/overview" component={Overview} />
+          <Route path="(/be-fit)?/workout" component={ExerciseWrapper} exact />
+          <Route path="(/be-fit)?/workout/:id" component={WorkoutCreator} />
+          <Route path="(/be-fit)?/exercise/:id" component={ExercisePreview} />
+          <Route path="(/be-fit)?/exercise/search" component={InternalSearch} />
+          <Route path="(/be-fit)?/settings" component={Settings} />
+          <Route path="(/be-fit)?/wger" component={WgerSearch} />
+          <Route path="(/be-fit)?/" component={Main} exact />
         </div>
       </BrowserRouter>
     );

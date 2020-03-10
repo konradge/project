@@ -6,6 +6,16 @@ import throttle from "lodash.throttle";
 import { saveState, loadState } from "./localstorage";
 import reducers from "./reducers";
 
+export function announceExercise(index, workout, exerciseList, speech) {
+  let exercise = findById(exerciseList, workout.exercises[index].id);
+  speech.speak({
+    text:
+      (workout.exercises[index].duration || exercise.duration) +
+      " seconds " +
+      exercise.name,
+    queue: false
+  });
+}
 //Gibt gemischtes Array <array> zurück
 export function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);

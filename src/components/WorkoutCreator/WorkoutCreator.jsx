@@ -14,13 +14,12 @@ import {
   editWorkout,
   setStoppedAt,
   setIndex
-} from "../actions";
-import { getId, unique, findById } from "../helpers";
-import "../style.css";
-import Selector from "./Selector";
+} from "../../actions";
+import { getId, unique, findById } from "../../helpers";
+import Selector from "../Selector";
 import DragAndDropList from "./DragAndDropList";
-import { Loader } from "./Loader";
-import { Dropdown } from "./Dropdown";
+import Loader from "../Loader";
+import Dropdown from "./Dropdown";
 
 class WorkoutCreator extends Component {
   state = {
@@ -36,13 +35,13 @@ class WorkoutCreator extends Component {
 
   loadWorkout() {
     if (this.props.workout == null) {
-      this.props.history.push("/project/workout/-1");
+      this.props.history.push("/be-fit/workout/-1");
     }
   }
 
   componentDidUpdate(_, prevState) {
     if (this.props.workout == null && this.props.match.params.id !== "-1") {
-      this.props.history.push("/project/workout/-1");
+      this.props.history.push("/be-fit/workout/-1");
     }
   }
 
@@ -65,9 +64,8 @@ class WorkoutCreator extends Component {
     return (
       <div className="field">
         <DragAndDropList
-          onDragEnd={ids => {
-            //Verändere die Reihenfolge der Übungen
-            const newOrder = ids.map(id =>
+          onDragEnd={newIdOrder => {
+            const newOrder = newIdOrder.map(id =>
               this.props.workout.exercises.find(ex => ex.id === id)
             );
             this.props.editWorkout(this.props.workout.id, {
@@ -88,9 +86,7 @@ class WorkoutCreator extends Component {
                       key={"" + exercise.id + index}
                     >
                       <div className="ui grid">
-                        <div className="eight wide column exercise-name">
-                          {exercise.name}
-                        </div>
+                        <div className="eight wide column">{exercise.name}</div>
                         <div className="four wide column">
                           <div className="ui right labeled mini input">
                             <input
@@ -159,12 +155,6 @@ class WorkoutCreator extends Component {
                   <div className="one wide column">
                     <i
                       className="trash alternate icon"
-                      onMouseOver={() => {
-                        this.setState({ preventSelect: true });
-                      }}
-                      onMouseLeave={() => {
-                        this.setState({ preventSelect: false });
-                      }}
                       onClick={evt => {
                         evt.stopPropagation();
                         this.props.removeExercise(exercise.id);
@@ -177,9 +167,7 @@ class WorkoutCreator extends Component {
           })}
           onChange={selected => {
             //Falls Papierkorb geklickt wurde, wähle Übung nicht aus
-            if (!this.state.preventSelect) {
-              this.props.addExerciseToWorkout(selected, this.props.workout.id);
-            }
+            this.props.addExerciseToWorkout(selected, this.props.workout.id);
           }}
           onCreate={selected => {
             //Füge die Übung zu allen Übungen und zum aktuellen Workout hinzu
@@ -190,7 +178,7 @@ class WorkoutCreator extends Component {
               this.props.workout.id
             );
             //Leite weiter zur Bearbeitung der neuen Übung
-            this.props.history.push("/project/exercise/" + idForNewExercise);
+            this.props.history.push("/be-fit/exercise/" + idForNewExercise);
           }}
           customStyle={{
             control: {
@@ -216,12 +204,9 @@ class WorkoutCreator extends Component {
                 <div className="twelve wide column">{workout.title}</div>
                 <div className="one wide column">
                   <i
-                    onClick={() => this.props.removeWorkout(workout.id)}
-                    onMouseOver={() => {
-                      this.setState({ preventSelect: true });
-                    }}
-                    onMouseLeave={() => {
-                      this.setState({ preventSelect: false });
+                    onClick={evt => {
+                      evt.stopPropagation();
+                      this.props.removeWorkout(workout.id);
                     }}
                     className="trash alternate icon"
                   ></i>
@@ -232,7 +217,7 @@ class WorkoutCreator extends Component {
         })}
         onChange={selected => {
           if (!this.state.preventSelect) {
-            this.props.history.push("/project/workout/" + selected);
+            this.props.history.push("/be-fit/workout/" + selected);
           }
         }}
         value={{
@@ -249,6 +234,7 @@ class WorkoutCreator extends Component {
     );
   }
   neededEquipment(type, header) {
+    //Zeige belastete Muskulatur oder benötigtes Equipment an
     //Type: "equipment" or muscles
     const list = {
       equipment: this.props.usersEquipment,
@@ -309,10 +295,8 @@ class WorkoutCreator extends Component {
                   <div className="ui right labeled input">
                     <div className="ui label">Pause time:</div>
                     <input
-                      value={
-                        this.props.workout.pauseTime ||
-                        this.props.defaultPauseTime
-                      }
+                      type="number"
+                      value={this.props.workout.pauseTime || null}
                       onChange={evt => {
                         this.setState({
                           workout: {
@@ -343,7 +327,7 @@ class WorkoutCreator extends Component {
                   onClick={() => {
                     this.props.setIndex(0);
                     this.props.setWorkout(this.props.workout.id);
-                    this.props.history.push("/project/workout");
+                    this.props.history.push("/be-fit/workout");
                   }}
                 >
                   Start

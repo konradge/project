@@ -6,30 +6,46 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Popup from "./Popup";
 import { findById } from "../helpers";
-import WorkoutStatistics from "./WorkoutStatistics";
-import { Redirect, Link } from "react-router-dom";
+import WorkoutStatistics from "./Overview/WorkoutStatistics";
+import { Redirect } from "react-router-dom";
 class Main extends Component {
   //Falls bereits früher ein Workout gestartet wurde, kann es hier direkt ausgewählt werden
   startPopupContent() {
     if (!this.props.currentWorkout) {
-      return <Redirect to="/project/workout/-1" />;
+      return <Redirect to="/be-fit/workout/-1" />;
     }
     return (
-      <div className="start-popup ui center aligned basic segment">
+      <div className="ui center aligned basic vertical segment">
         <div
           className="ui button"
-          onClick={() => this.props.history.push("/project/workout/-1")}
+          onClick={() => this.props.history.push("/be-fit/workout/-1")}
         >
           <i className="mouse pointer icon"></i> Select Workout
         </div>
         <div className="ui horizontal divider">Or</div>
-        <div
-          className="ui button"
-          onClick={() => this.props.history.push("/project/workout")}
-        >
-          <i className="play icon"></i> Continue
-          {this.props.currentWorkout.title}
+        <div className="ui buttons">
+          <button
+            className="ui button"
+            onClick={() => {
+              this.props.history.push(
+                "/be-fit/workout/" + this.props.currentWorkout.id
+              );
+            }}
+          >
+            <i className="redo icon" />
+            Restart
+          </button>
+          <div className="or"></div>
+          <button
+            className="ui positive button"
+            onClick={() => this.props.history.push("/be-fit/workout")}
+          >
+            <i className="play icon" />
+            Continue
+          </button>
+          Hello World
         </div>
+        {this.props.currentWorkout.title}
       </div>
     );
   }
@@ -62,6 +78,7 @@ class Main extends Component {
 }
 
 const mapStateToProps = state => {
+  state.current.test = 100;
   const currentWorkout = findById(
     state.userData.workouts,
     state.current.workout

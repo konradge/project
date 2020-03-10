@@ -65,7 +65,7 @@ class ExercisePreview extends Component {
                     const idForNewExercise = getId(this.props.exercises);
                     this.props.addExercise("");
                     this.props.history.push(
-                      "/project/exercise/" + idForNewExercise
+                      "/be-fit/exercise/" + idForNewExercise
                     );
                   }}
                 >

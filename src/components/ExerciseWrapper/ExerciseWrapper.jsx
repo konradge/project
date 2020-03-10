@@ -10,10 +10,10 @@ import {
   setStoppedAt,
   setPause
 } from "../../actions";
-import { findById } from "../../helpers";
+import { findById, announceExercise } from "../../helpers";
 import FinishScreen from "./FinishScreen";
 import ExerciseScreen from "./ExerciseScreen";
-import { Loader } from "../Loader";
+import Loader from "../Loader";
 
 class ExerciseWrapper extends Component {
   constructor(props) {
@@ -33,6 +33,13 @@ class ExerciseWrapper extends Component {
     this.setState({ speech });
     if (this.props.workoutExercises && this.props.exercise) {
       this.startExercise();
+      console.log(this.props.exercise.duration);
+      this.speak(
+        this.props.exercise.duration -
+          (this.props.workoutStoppedAt || 0) +
+          " seconds " +
+          this.props.exercise.name
+      );
     }
   }
 
@@ -42,6 +49,16 @@ class ExerciseWrapper extends Component {
         this.props.setStoppedAt(0);
       }
       this.startExercise();
+      if (
+        this.props.workoutExercises &&
+        this.props.exercise &&
+        !this.state.ready &&
+        !this.props.pause
+      ) {
+        this.speak(
+          this.props.exercise.duration + " seconds " + this.props.exercise.name
+        );
+      }
     }
   }
 
@@ -57,57 +74,60 @@ class ExerciseWrapper extends Component {
     }
   }
 
+  finishWorkout() {
+    //Das aktuelle Workout ist beendet->Wird zur History hinzugefügt,
+    //fertig machen für nächstes Training(Index auf 0)
+    this.props.pushWorkoutHistory(this.props.currentWorkout.title);
+    this.props.setIndex(0);
+    this.setState({ ready: true });
+    this.speak("Well done. workout completed!");
+  }
+
   /** Methoden zur Auswahl der Übungen **/
 
   //Starte die nächste Übung aus aktuellem Workout (this.props.workout)
   next() {
-    console.log(this.props.pause);
     if (this.props.pause != null) {
       this.props.setPause(null);
-      this.speak(
-        this.props.exercise.duration + " seconds " + this.props.exercise.name
+      announceExercise(
+        this.props.indexInWorkout,
+        this.props.currentWorkout,
+        this.props.exerciseList,
+        this.state.speech
       );
 
       return;
     }
     if (this.props.exercise && !this.state.ready) {
       if (this.props.indexInWorkout + 1 >= this.props.workoutExercises.length) {
-        //Das aktuelle Workout ist beendet->Wird zur History hinzugefügt,
-        //fertig machen für nächstes Training(Index auf 0, clearInterval)
-        this.props.pushWorkoutHistory(this.props.currentWorkout.title);
-        this.props.setIndex(0);
-        this.setState({ ready: true });
-        this.speak("Well done. workout completed!");
+        this.finishWorkout();
       } else {
         if (!this.props.pause) {
-          //tts("pause starts now");
-          const nextExerciseIndex = this.props.currentWorkout.exercises[
-            this.props.indexInWorkout + 1
-          ].id;
-          const nextExercise = findById(
-            this.props.exerciseList,
-            nextExerciseIndex
-          );
-
-          this.speak(
-            this.props.pauseTime +
-              " seconds pause. prepare for " +
-              nextExercise.name
-          );
+          //Starte Pause, sage nächste Übung an
+          if (this.props.pauseTime) {
+            const nextExerciseIndex = this.props.currentWorkout.exercises[
+              this.props.indexInWorkout + 1
+            ].id;
+            const nextExercise = findById(
+              this.props.exerciseList,
+              nextExerciseIndex
+            );
+            this.speak(
+              this.props.pauseTime +
+                " seconds pause. prepare for " +
+                nextExercise.name
+            );
+          } else {
+            //Pause wurde nicht angegeben oder ist 0, nächste Übung startet dann sofort
+            announceExercise(
+              this.props.indexInWorkout + 1,
+              this.props.currentWorkout,
+              this.props.exerciseList,
+              this.state.speech
+            );
+          }
           this.props.setIndex(this.props.indexInWorkout + 1);
           this.props.setPause(this.props.pauseTime);
-        }
-      }
-    }
-  }
-
-  previous() {
-    if (this.props.exercise && !this.state.ready) {
-      if (this.props.pause) {
-        this.props.setPause(null);
-      } else {
-        if (this.props.indexInWorkout - 1 >= 0) {
-          this.props.setIndex(this.props.indexInWorkout - 1);
         }
       }
     }
@@ -120,9 +140,7 @@ class ExerciseWrapper extends Component {
 
   //Führe den Countdown fort
   runTimer() {
-    this.setState({
-      isRunning: true
-    });
+    this.setState({ isRunning: true });
   }
 
   /** Render **/
@@ -130,20 +148,28 @@ class ExerciseWrapper extends Component {
     if (this.state.ready) {
       //Alle Übungen des aktuellen Workouts wurden beendet
       return (
-        <FinishScreen
-          goToHome={() => this.props.history.push("/project/")}
-          goToOverview={() => this.props.history.push("/project/overview")}
-          restart={() => {
-            this.setState({ ready: false });
-            this.props.setIndex(0);
-          }}
-        />
+        <div>
+          <FinishScreen
+            goToHome={() => this.props.history.push("/be-fit/")}
+            goToOverview={() => this.props.history.push("/be-fit/overview")}
+            restart={() => {
+              this.setState({ ready: false });
+              this.props.setIndex(0);
+              announceExercise(
+                0,
+                this.props.currentWorkout,
+                this.props.exerciseList,
+                this.state.speech
+              );
+            }}
+          />
+        </div>
       );
     } else if (
       !this.props.workoutExercises ||
       this.props.workoutExercises.length === 0
     ) {
-      //Es wurde noch kein Workout ausgewählt=>Auswahlmenu
+      //Es wurde noch kein Workout ausgewählt=>Auswahlmenu (WorkoutCreator)
       return <Redirect to="/workout/-1" />;
     } else if (!this.props.exercise) {
       return <Loader />;
@@ -152,12 +178,10 @@ class ExerciseWrapper extends Component {
       return (
         <ExerciseScreen
           {...this.props}
-          pause={this.props.pause}
-          nextExercise={this.props.exercise}
           isRunning={this.state.isRunning}
           next={this.next.bind(this)}
-          previous={this.previous.bind(this)}
           pauseTimer={this.pauseTimer.bind(this)}
+          stopWorkout={this.finishWorkout.bind(this)}
           runTimer={this.runTimer.bind(this)}
         />
       );
@@ -172,6 +196,7 @@ const mapStateToProps = state => {
   );
 
   const currentIndex = state.current.index;
+  //Erhalte aktuelle Übung, ggf. mit anderer Zeit
   const currentExercise = currentWorkout
     ? findById(
         state.userData.exercises,
@@ -186,6 +211,23 @@ const mapStateToProps = state => {
       currentWorkout.exercises[currentIndex].duration
     );
   }
+  let nextExercise;
+  if (currentWorkout.exercises.length > currentIndex + 1) {
+    nextExercise = currentWorkout
+      ? {
+          ...findById(
+            state.userData.exercises,
+            currentWorkout.exercises[currentIndex + 1].id
+          )
+        }
+      : null;
+    if (currentWorkout.exercises[currentIndex + 1].duration) {
+      //Eigene Zeit wurde angegeben
+      nextExercise.duration = parseInt(
+        currentWorkout.exercises[currentIndex + 1].duration
+      );
+    }
+  }
   return {
     exercise,
     workoutExercises: currentWorkout ? currentWorkout.exercises : null,
@@ -197,7 +239,9 @@ const mapStateToProps = state => {
     pauseTime: currentWorkout
       ? currentWorkout.pauseTime
       : state.userData.defaultValues.pauseTime,
-    exerciseList: state.userData.exercises
+    exerciseList: state.userData.exercises,
+    nextExercise,
+    workoutStoppedAt: state.current.workoutStoppedAt
   };
 };
 export default connect(mapStateToProps, {

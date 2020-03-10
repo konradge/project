@@ -1,7 +1,7 @@
 import React from "react";
 import { Dropdown as SemanticDropdown } from "semantic-ui-react";
 
-export const Dropdown = props => {
+const Dropdown = props => {
   return (
     <SemanticDropdown text={props.header}>
       <SemanticDropdown.Menu>
@@ -14,3 +14,5 @@ export const Dropdown = props => {
     </SemanticDropdown>
   );
 };
+
+export default Dropdown;

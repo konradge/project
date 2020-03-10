@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 
 import { connect } from "react-redux";
-import { addWeight } from "../actions";
+import { addWeight } from "../../actions";
 
 import dateFormat from "dateformat";
 
 import Timeline from "./Timeline";
 import ChartComponent from "./ChartComponent";
 import WorkoutStatistics from "./WorkoutStatistics";
-import Popup from "./Popup";
+import Popup from "../Popup";
 
 class Overview extends Component {
   state = { weightValue: 0, lastAnchorTag: null };
@@ -49,7 +49,7 @@ class Overview extends Component {
   render() {
     return (
       <div>
-        <div className="overview-section" id="last-trainings">
+        <div className="section" id="last-trainings">
           <h1>Last Trainings</h1>
           <Timeline
             latestTrainings={this.props.lastWorkouts.map(training => {
@@ -57,7 +57,7 @@ class Overview extends Component {
             })}
           />
         </div>
-        <div className="overview-section" id="body-weight">
+        <div className="section" id="body-weight">
           <h1>Body Weight</h1>
           <ChartComponent
             data={{
@@ -69,7 +69,7 @@ class Overview extends Component {
           />
           <Popup
             trigger={
-              <button className="circular ui icon button add-weight">
+              <button className="circular ui icon button">
                 <i className="icon plus"></i>
               </button>
             }
@@ -93,6 +93,7 @@ class Overview extends Component {
                   <div className="ui basic label">kg</div>
                 </div>
                 <button
+                  className="ui button"
                   onClick={() => this.props.addWeight(this.state.weightValue)}
                 >
                   Save
@@ -101,7 +102,7 @@ class Overview extends Component {
             }
           />
         </div>
-        <div className="overview-section" id="statistics">
+        <div className="section" id="statistics">
           <h1>Statistics</h1>
           <WorkoutStatistics />
         </div>

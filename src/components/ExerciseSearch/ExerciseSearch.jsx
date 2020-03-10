@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { getId } from "../../helpers";
 import SearchSettings from "./SearchSettings";
 import Axios from "axios";
-import { Loader } from "../Loader";
+import Loader from "../Loader";
 
 class WgerSearch extends Component {
   state = {
@@ -110,7 +110,7 @@ class WgerSearch extends Component {
               },
               idForNewExercise
             );
-            this.props.history.push("/project/exercise/" + idForNewExercise);
+            this.props.history.push("/be-fit/exercise/" + idForNewExercise);
           }}
         ></i>
       );
@@ -119,7 +119,7 @@ class WgerSearch extends Component {
         <i
           className="edit icon"
           onClick={() => {
-            this.props.history.push("/project/exercise/" + exercise.id);
+            this.props.history.push("/be-fit/exercise/" + exercise.id);
           }}
         ></i>
       );
@@ -169,7 +169,7 @@ class WgerSearch extends Component {
             wgerSearch={this.props.wgerSearch}
           />
         </div>
-        <div className="wger-search-results">
+        <div className="search-results">
           <h1>Results:</h1>
           <div className="ui segment">
             {this.renderArrowButtons()}

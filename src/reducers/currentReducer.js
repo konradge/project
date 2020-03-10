@@ -24,5 +24,6 @@ const def = {
   workout: null,
   index: 0,
   workoutStoppedAt: 0, //Zeit, an der die aktuelle Übung gerade ist (Falls Seite gewechselt wird)
-  pause: undefined
+  pause: undefined,
+  test: 20
 };

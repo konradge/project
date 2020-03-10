@@ -4,7 +4,7 @@
 import React, { Component } from "react";
 import { Formik, Field } from "formik";
 
-import ImageField from "../ImageSearch/ImageField";
+import ImageField from "./ImageSearch/ImageField";
 import { connect } from "react-redux";
 import {
   editExercise,
@@ -26,8 +26,6 @@ class ExerciseForm extends Component {
   }
   beforeunload(e) {
     if (this.state.formChanged) {
-      e.preventDefault();
-      e.returnValue = false;
     }
   }
   componentWillUnmount() {
@@ -54,7 +52,7 @@ class ExerciseForm extends Component {
           enableReinitialize
           initialValues={{
             name: name.startsWith("Unnamed exercise") ? "" : name,
-            duration: duration || this.props.defaults.exerciseDuration,
+            duration: duration || this.props.defaults.exerciseDuration || null,
             description: description || "",
             muscles: (muscles || []).map(muscleId => {
               const name = this.props.muscles.find(
@@ -106,8 +104,8 @@ class ExerciseForm extends Component {
                 name,
                 duration,
                 description,
-                muscles: muscles.map(m => m.value),
-                equipment: equipment.map(e => e.value),
+                muscles: (muscles || []).map(m => m.value),
+                equipment: (equipment || []).map(e => e.value),
                 image: image.showImage ? image.imageUrl : null
               },
               this.props.exercise.id
