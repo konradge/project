@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "dac53f8525f23047bb66262399611ce9",
+    "revision": "e7e7431f6495514b743c05c75ffb8f5f",
     "url": "/be-fit/index.html"
   },
   {
-    "revision": "8b4ed3fa755fc07311b7",
+    "revision": "bd888d22d74700cf9d0c",
     "url": "/be-fit/static/css/main.1d272b89.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/be-fit/static/js/2.ccae06cb.chunk.js"
   },
   {
-    "revision": "8b4ed3fa755fc07311b7",
-    "url": "/be-fit/static/js/main.247e60f1.chunk.js"
+    "revision": "bd888d22d74700cf9d0c",
+    "url": "/be-fit/static/js/main.e4365591.chunk.js"
   },
   {
     "revision": "30db563b8bfdfe5d97f7",
