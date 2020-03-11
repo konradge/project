@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { editExercise, addExercise } from "../../actions";
+import {
+  editExercise,
+  addExercise,
+  setSearchSettings,
+  setSearchPage
+} from "../../actions";
 import { connect } from "react-redux";
 import { getId } from "../../helpers";
 import SearchSettings from "./SearchSettings";
@@ -9,8 +14,6 @@ import Loader from "../Loader";
 class WgerSearch extends Component {
   state = {
     exercises: null,
-    //status:2 -> Nur "verifizierte" Übungen
-    searchSettings: { status: 2 },
     shouldReload: false
   };
   componentDidMount() {
@@ -24,7 +27,8 @@ class WgerSearch extends Component {
   }
   async searchData(url) {
     this.setState({ exercises: null });
-    const { searchSettings } = this.state;
+    const { searchSettings } = this.props;
+
     if (this.props.wgerSearch) {
       if (!url) {
         url =
@@ -66,9 +70,12 @@ class WgerSearch extends Component {
               className={
                 "circular ui icon button" + (this.state.prev ? "" : " disabled")
               }
-              onClick={() =>
-                this.state.next ? this.searchData(this.state.prev) : null
-              }
+              onClick={() => {
+                if (this.state.prev) {
+                  this.searchData(this.state.prev);
+                  this.props.setSearchPage(this.props.searchSettings.page - 1);
+                }
+              }}
             >
               Previous page
               <i className="arrow left icon"></i>
@@ -79,9 +86,12 @@ class WgerSearch extends Component {
               className={
                 "circular ui icon button" + (this.state.next ? "" : " disabled")
               }
-              onClick={() =>
-                this.state.next ? this.searchData(this.state.next) : null
-              }
+              onClick={() => {
+                if (this.state.next) {
+                  this.searchData(this.state.next);
+                  this.props.setSearchPage(this.props.searchSettings.page + 1);
+                }
+              }}
             >
               <i className="arrow right icon"></i>
               Next page
@@ -151,12 +161,17 @@ class WgerSearch extends Component {
       equipment: this.props.equipment,
       setSearchSettings: (key, value) => {
         this.setState({
-          shouldReload: true,
-          searchSettings: { ...this.state.searchSettings, [key]: value }
+          shouldReload: true
+        });
+        this.props.setSearchSettings({
+          ...this.props.searchSettings,
+          [key]: value
         });
       },
       deleteKey: key => {
-        delete this.state.searchSettings[key];
+        let settings = { ...this.props.searchSettings };
+        delete settings[key];
+        this.props.setSearchSettings(settings);
         this.setState({ shouldReload: true });
       },
       showLanguages: this.props.showLanguages
@@ -167,6 +182,7 @@ class WgerSearch extends Component {
           <SearchSettings
             {...settingsProps}
             wgerSearch={this.props.wgerSearch}
+            selected={this.props.searchSettings}
           />
         </div>
         <div className="search-results">
@@ -186,10 +202,13 @@ const mapStateToProps = state => {
     languages: state.wger.languages,
     muscles: state.wger.muscles,
     equipment: state.wger.equipment,
-    exercises: state.userData.exercises
+    exercises: state.userData.exercises,
+    searchSettings: state.current.searchSettings
   };
 };
 export default connect(mapStateToProps, {
   editExercise,
-  addExercise
+  addExercise,
+  setSearchSettings,
+  setSearchPage
 })(WgerSearch);

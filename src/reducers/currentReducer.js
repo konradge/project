@@ -14,6 +14,15 @@ export default (current = def, action) => {
       return { ...current, workoutStoppedAt: action.payload };
     case "SET_PAUSE":
       return { ...current, pause: action.payload };
+    case "SET_SEARCH_SETTINGS":
+      //Set settings, reset page
+      return { ...current, searchSettings: { ...action.payload, page: 1 } };
+    case "SET_SEARCH_PAGE":
+      return {
+        //Copy settings, set page
+        ...current,
+        searchSettings: { ...current.searchSettings, page: action.payload }
+      };
     default:
       return current;
   }
@@ -25,5 +34,5 @@ const def = {
   index: 0,
   workoutStoppedAt: 0, //Zeit, an der die aktuelle Übung gerade ist (Falls Seite gewechselt wird)
   pause: undefined,
-  test: 20
+  searchSettings: { status: 2, page: 1 }
 };

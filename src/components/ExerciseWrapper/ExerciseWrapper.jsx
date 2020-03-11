@@ -33,7 +33,7 @@ class ExerciseWrapper extends Component {
     this.setState({ speech });
     if (this.props.workoutExercises && this.props.exercise) {
       this.startExercise();
-      console.log(this.props.exercise.duration);
+
       this.speak(
         this.props.exercise.duration -
           (this.props.workoutStoppedAt || 0) +

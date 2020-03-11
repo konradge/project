@@ -27,6 +27,14 @@ export default props => {
                 props.setSearchSettings("language", evt.value);
               }
             }}
+            defaultValue={{
+              label: (
+                props.languages.find(
+                  lang => lang.id === props.selected.language
+                ) || {}
+              ).full_name,
+              value: props.selected.language
+            }}
           />
         </div>
       ) : null}
@@ -48,6 +56,12 @@ export default props => {
               props.setSearchSettings("muscles", evt.value);
             }
           }}
+          defaultValue={{
+            label: (
+              props.muscles.find(mus => mus.id === props.selected.muscles) || {}
+            ).name,
+            value: props.selected.muscles
+          }}
         />
       </div>
       <div className="field">
@@ -68,17 +82,21 @@ export default props => {
               props.setSearchSettings("equipment", evt.value);
             }
           }}
+          defaultValue={{
+            label: (
+              props.equipment.find(eq => eq.id === props.selected.equipment) ||
+              {}
+            ).name,
+            value: props.selected.equipment
+          }}
         />
       </div>
       <div className="field">
         <label>Keyword{props.wgerSearch ? <span> (exact)</span> : null}:</label>
         <input
           type="text"
-          onKeyDown={evt =>
-            evt.keyCode === 13
-              ? props.setSearchSettings("name", evt.target.value)
-              : null
-          }
+          onChange={evt => props.setSearchSettings("name", evt.target.value)}
+          defaultValue={props.selected.name}
         />
       </div>
     </form>

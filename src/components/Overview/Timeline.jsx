@@ -22,7 +22,6 @@ class Timeline extends Component {
           index={this.state.index || 0}
           values={this.getValues()}
           indexClick={index => {
-            console.log(index);
             this.setState({ index });
           }}
           getLabel={date => {
@@ -40,8 +39,7 @@ class Timeline extends Component {
   }
   getValues() {
     //TODO: Ältester Eintrag
-    console.log("get values");
-    console.log(this.state.index);
+
     //Reduziere Trainingsdaten (this.lastTrainingDates) so, dass jedes Datum nur noch einmal vorhanden ist
     if (this.lastTrainingDates.length === 0) {
       //Falls noch kein Training durchgeführt wurde, gib nur das heutige Datum zurück
@@ -49,7 +47,7 @@ class Timeline extends Component {
       return [new Date()];
     }
     //Filtere letzte Trainings so, dass jedes Datum nur noch einmal vorhanden ist
-    console.log(this.lastTrainingDates);
+
     return this.lastTrainingDates.filter((elem, index, arr) => {
       if (index === 0) {
         return true;
@@ -65,7 +63,7 @@ class Timeline extends Component {
       if (index == null) {
         index = this.uniqueDaysWithTraining.length - 1;
       }
-      console.log("INDEX: " + index);
+
       //Finde Traings-Titel an diesem Tag
       let trainingsOnSelectedDay = this.props.lastWorkouts
         .filter(t => isSameDay(t.date, this.uniqueDaysWithTraining[index]))

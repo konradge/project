@@ -179,7 +179,6 @@ export default (
       };
     /**Bearbeitung aller Daten */
     case "SET_DEFAULT_VALUE":
-      console.log(action.payload.value);
       try {
         defaultValues[action.payload.key] = parseInt(action.payload.value);
       } catch {

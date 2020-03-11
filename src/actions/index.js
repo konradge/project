@@ -109,7 +109,6 @@ export const pushWorkoutHistory = title => {
 
 //Füge Zeit zur totalTrainingTime hinzu
 export const addTime = timeToAdd => {
-  console.log(timeToAdd);
   return { type: "ADD_TIME", payload: timeToAdd };
 };
 
@@ -137,6 +136,14 @@ export const setUserData = data => {
 //Füge data zu userData hinzu (wird angehängt)
 export const addUserData = data => {
   return { type: "ADD_USER_DATA", payload: data };
+};
+
+export const setSearchSettings = searchSettings => {
+  return { type: "SET_SEARCH_SETTINGS", payload: searchSettings };
+};
+
+export const setSearchPage = page => {
+  return { type: "SET_SEARCH_PAGE", payload: page };
 };
 
 /** Load defaults */

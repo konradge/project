@@ -78,7 +78,6 @@ class Main extends Component {
 }
 
 const mapStateToProps = state => {
-  state.current.test = 100;
   const currentWorkout = findById(
     state.userData.workouts,
     state.current.workout
