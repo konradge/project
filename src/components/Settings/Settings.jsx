@@ -15,8 +15,12 @@ class Settings extends Component {
   resetAll(evt) {
     evt.preventDefault();
     if (
-      window.confirm("Are your sure that you want to delete all of your data?")
+      window.confirm(
+        "Are your sure that you want to reset this app? All data will be lost!"
+      )
     ) {
+      //Back to home screen
+      this.props.history.push("/be-fit");
       localStorage.clear();
       window.location.reload();
     }

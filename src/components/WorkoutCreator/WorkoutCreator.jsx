@@ -91,17 +91,20 @@ class WorkoutCreator extends Component {
                           <div className="ui right labeled mini input">
                             <input
                               type="number"
+                              min={0}
                               value={
                                 ex.duration == null
                                   ? exercise.duration
                                   : ex.duration
                               }
-                              onChange={evt =>
-                                this.editExerciseDurationInWorkout(
-                                  index,
-                                  parseInt(evt.target.value)
-                                )
-                              }
+                              onChange={evt => {
+                                if (evt.target.value >= 0) {
+                                  this.editExerciseDurationInWorkout(
+                                    index,
+                                    parseInt(evt.target.value)
+                                  );
+                                }
+                              }}
                             ></input>
                             <div className="ui basic label">seconds</div>
                           </div>
@@ -157,7 +160,13 @@ class WorkoutCreator extends Component {
                       className="trash alternate icon"
                       onClick={evt => {
                         evt.stopPropagation();
-                        this.props.removeExercise(exercise.id);
+                        if (
+                          window.confirm(
+                            "Are your sure that you want to permanently delete this exercise?"
+                          )
+                        ) {
+                          this.props.removeExercise(exercise.id);
+                        }
                       }}
                     ></i>
                   </div>
@@ -206,7 +215,13 @@ class WorkoutCreator extends Component {
                   <i
                     onClick={evt => {
                       evt.stopPropagation();
-                      this.props.removeWorkout(workout.id);
+                      if (
+                        window.confirm(
+                          "Are your sure that you want to permanently delete this workout?"
+                        )
+                      ) {
+                        this.props.removeWorkout(workout.id);
+                      }
                     }}
                     className="trash alternate icon"
                   ></i>
@@ -296,18 +311,21 @@ class WorkoutCreator extends Component {
                     <div className="ui label">Pause time:</div>
                     <input
                       type="number"
-                      value={this.props.workout.pauseTime || null}
+                      min={0}
+                      value={this.props.workout.pauseTime || ""}
                       onChange={evt => {
-                        this.setState({
-                          workout: {
+                        if (evt.target.value >= 0) {
+                          this.setState({
+                            workout: {
+                              ...this.props.workout,
+                              pauseTime: evt.target.value
+                            }
+                          });
+                          this.props.editWorkout(this.props.workout.id, {
                             ...this.props.workout,
                             pauseTime: evt.target.value
-                          }
-                        });
-                        this.props.editWorkout(this.props.workout.id, {
-                          ...this.props.workout,
-                          pauseTime: evt.target.value
-                        });
+                          });
+                        }
                       }}
                     />
                     <div className="ui basic label">sec</div>
@@ -338,7 +356,7 @@ class WorkoutCreator extends Component {
                     evt.preventDefault();
                     if (
                       window.confirm(
-                        "Are your sure that you want to delete all this workout?"
+                        "Are your sure that you want to delete permanently delete this workout?"
                       )
                     ) {
                       this.props.removeWorkout(this.props.workout.id);

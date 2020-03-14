@@ -56,7 +56,7 @@ class Main extends Component {
           <div className="heading">Welcome back!</div>
         </div>
         <div className="ui grid main">
-          <div className="eight wide column">
+          <div className="ten wide column">
             <WorkoutStatistics />
           </div>
           <div className="play-icon four wide column">

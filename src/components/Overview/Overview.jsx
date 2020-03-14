@@ -79,10 +79,13 @@ class Overview extends Component {
                   <input
                     type="number"
                     step="0.1"
+                    min={0}
                     value={this.state.weightValue}
-                    onChange={evt =>
-                      this.setState({ weightValue: evt.target.value })
-                    }
+                    onChange={evt => {
+                      if (evt.target.value >= 0) {
+                        this.setState({ weightValue: evt.target.value });
+                      }
+                    }}
                     onKeyDown={evt => {
                       if (evt.keyCode === 13) {
                         this.props.addWeight(this.state.weightValue);

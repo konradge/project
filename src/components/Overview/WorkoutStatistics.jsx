@@ -68,8 +68,9 @@ class WorkoutStatistics extends Component {
       this.props.userHistory.lastWorkouts.length
     ).toFixed(2);
 
-    if (isNaN(time)) {
+    if (isNaN(time) || !isFinite(time)) {
       //Falls noch keine Workouts durchgeführt wurden
+      //oder Workout-history gelöscht wurde
       return 0;
     } else {
       return time;

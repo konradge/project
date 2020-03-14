@@ -54,7 +54,6 @@ export function unique(array) {
   return [...new Set(array)];
 }
 
-//TODO
 export function prepareStore() {
   let persistedState = loadState();
   if (persistedState) {

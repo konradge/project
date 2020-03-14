@@ -13,9 +13,14 @@ function DefaultSettings(props) {
             <div className="ui input">
               <input
                 name="exerciseDuration"
+                min={0}
                 type="number"
                 value={props.defaultValues.exerciseDuration}
-                onChange={evt => setDefaultValue(evt)}
+                onChange={evt => {
+                  if (evt.target.value >= 0) {
+                    setDefaultValue(evt);
+                  }
+                }}
               />
             </div>
           </div>
@@ -25,8 +30,13 @@ function DefaultSettings(props) {
               <input
                 name="pauseTime"
                 type="number"
+                min={0}
                 value={props.defaultValues.pauseTime}
-                onChange={evt => setDefaultValue(evt)}
+                onChange={evt => {
+                  if (evt.target.value >= 0) {
+                    setDefaultValue(evt);
+                  }
+                }}
               ></input>
             </div>
           </div>

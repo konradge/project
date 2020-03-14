@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import HorizontalTimeline from "react-horizontal-timeline";
 import dateFormat from "dateformat";
-import { isSameDay, unique } from "../../helpers";
+import { isSameDay, unique, isToday } from "../../helpers";
 import { connect } from "react-redux";
 class Timeline extends Component {
   today = new Date();
@@ -38,8 +38,6 @@ class Timeline extends Component {
     );
   }
   getValues() {
-    //TODO: Ältester Eintrag
-
     //Reduziere Trainingsdaten (this.lastTrainingDates) so, dass jedes Datum nur noch einmal vorhanden ist
     if (this.lastTrainingDates.length === 0) {
       //Falls noch kein Training durchgeführt wurde, gib nur das heutige Datum zurück
@@ -47,13 +45,18 @@ class Timeline extends Component {
       return [new Date()];
     }
     //Filtere letzte Trainings so, dass jedes Datum nur noch einmal vorhanden ist
-
-    return this.lastTrainingDates.filter((elem, index, arr) => {
+    const lastTrainings = this.lastTrainingDates.filter((elem, index, arr) => {
       if (index === 0) {
         return true;
       }
       return !isSameDay(arr[index - 1], elem);
     });
+    if (isToday(lastTrainings[lastTrainings.length - 1])) {
+      return lastTrainings;
+    } else {
+      //Zeige immer heutiges Datum an
+      return [...lastTrainings, new Date()];
+    }
   }
   render() {
     let filteredTrainings = [];

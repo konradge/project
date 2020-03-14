@@ -152,6 +152,7 @@ class ExerciseForm extends Component {
                   <input
                     autoFocus={values.name !== "" && values.duration <= 5}
                     type="number"
+                    min={0}
                     name="duration"
                     placeholder="Duration in seconds"
                     onChange={handleChange}
@@ -215,7 +216,7 @@ class ExerciseForm extends Component {
                   onClick={() => {
                     if (
                       window.confirm(
-                        "Are your sure that you want to delete this exercise?"
+                        "Are your sure that you want to permanently delete this exercise?"
                       )
                     ) {
                       this.setState({ formChanged: false });
