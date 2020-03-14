@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/be-fit/static/css/main.1d272b89.chunk.css",
-    "main.js": "/be-fit/static/js/main.e4365591.chunk.js",
-    "main.js.map": "/be-fit/static/js/main.e4365591.chunk.js.map",
+    "main.js": "/be-fit/static/js/main.03f0061d.chunk.js",
+    "main.js.map": "/be-fit/static/js/main.03f0061d.chunk.js.map",
     "runtime-main.js": "/be-fit/static/js/runtime-main.01cc4247.js",
     "runtime-main.js.map": "/be-fit/static/js/runtime-main.01cc4247.js.map",
     "static/js/2.ccae06cb.chunk.js": "/be-fit/static/js/2.ccae06cb.chunk.js",
     "static/js/2.ccae06cb.chunk.js.map": "/be-fit/static/js/2.ccae06cb.chunk.js.map",
     "index.html": "/be-fit/index.html",
-    "precache-manifest.fbdaa75fdbac937d060f318d7f809d34.js": "/be-fit/precache-manifest.fbdaa75fdbac937d060f318d7f809d34.js",
+    "precache-manifest.375f1f2c56f77e080ff5b79090ad480e.js": "/be-fit/precache-manifest.375f1f2c56f77e080ff5b79090ad480e.js",
     "service-worker.js": "/be-fit/service-worker.js",
     "static/css/main.1d272b89.chunk.css.map": "/be-fit/static/css/main.1d272b89.chunk.css.map",
     "static/media/style.css": "/be-fit/static/media/logo.c9e25012.png"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.01cc4247.js",
     "static/js/2.ccae06cb.chunk.js",
     "static/css/main.1d272b89.chunk.css",
-    "static/js/main.e4365591.chunk.js"
+    "static/js/main.03f0061d.chunk.js"
   ]
 }
