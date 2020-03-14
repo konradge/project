@@ -10,6 +10,7 @@ import { getId } from "../../helpers";
 import SearchSettings from "./SearchSettings";
 import Axios from "axios";
 import Loader from "../Loader";
+import wger from "../../apis/wger";
 
 class WgerSearch extends Component {
   state = {
@@ -30,15 +31,8 @@ class WgerSearch extends Component {
     const { searchSettings } = this.props;
 
     if (this.props.wgerSearch) {
-      if (!url) {
-        url =
-          "https://wger.de/api/v2/exercise.json?" +
-          Object.keys(searchSettings)
-            .map(key => key + "=" + searchSettings[key])
-            .join("&");
-      }
-
-      const result = await Axios.get(url);
+      console.log(searchSettings);
+      const result = await wger.get("/exercise", { params: searchSettings });
       this.setState({
         exercises: result.data.results,
         next: result.data.next,
