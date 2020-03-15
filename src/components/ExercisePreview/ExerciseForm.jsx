@@ -82,6 +82,9 @@ class ExerciseForm extends Component {
             if (values.name === "") {
               errors.name = "field name required";
             }
+            if (values.name.length > 30) {
+              errors.name = "Name can only have 30 characters";
+            }
             if (!values.duration) {
               errors.duration = "field duration required";
             } else if (values.duration <= 5) {
@@ -195,7 +198,7 @@ class ExerciseForm extends Component {
                 <button
                   type="submit"
                   className={
-                    "ui button " +
+                    "ui secondary button " +
                     (errors.name || errors.duration ? "disabled" : null)
                   }
                 >

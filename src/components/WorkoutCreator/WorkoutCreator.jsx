@@ -204,51 +204,68 @@ class WorkoutCreator extends Component {
       title: "SELECT WORKOUT OR TYPE TO ADD ONE"
     };
     return (
-      <Selector
-        options={this.props.usersWorkouts.map(workout => {
-          return {
-            value: workout.id,
-            label: (
-              <div className="ui grid">
-                <div className="twelve wide column">{workout.title}</div>
-                <div className="one wide column">
-                  <i
-                    onClick={evt => {
-                      evt.stopPropagation();
-                      if (
-                        window.confirm(
-                          "Are your sure that you want to permanently delete this workout?"
-                        )
-                      ) {
-                        this.props.removeWorkout(workout.id);
-                      }
-                    }}
-                    className="trash alternate icon"
-                  ></i>
+      <div>
+        <Selector
+          options={this.props.usersWorkouts.map(workout => {
+            return {
+              value: workout.id,
+              label: (
+                <div className="ui grid">
+                  <div className="twelve wide column">{workout.title}</div>
+                  <div className="one wide column">
+                    <i
+                      onClick={evt => {
+                        evt.stopPropagation();
+                        if (
+                          window.confirm(
+                            "Are your sure that you want to permanently delete this workout?"
+                          )
+                        ) {
+                          this.props.removeWorkout(workout.id);
+                        }
+                      }}
+                      className="trash alternate icon"
+                    ></i>
+                  </div>
                 </div>
-              </div>
-            )
-          };
-        })}
-        onChange={selected => {
-          if (!this.state.preventSelect) {
-            this.props.history.push("/be-fit/workout/" + selected);
-          }
-        }}
-        value={{
-          value: selectedWorkout.title,
-          label: selectedWorkout.title
-        }}
-        onCreate={created => {
-          this.props.addWorkout(created);
-          this.props.history.push(
-            "/workout/" + getId(this.props.usersWorkouts)
-          );
-        }}
-      />
+              )
+            };
+          })}
+          onChange={selected => {
+            if (!this.state.preventSelect) {
+              this.setState({
+                nameError: null
+              });
+              this.props.history.push("/be-fit/workout/" + selected);
+            }
+          }}
+          value={{
+            value: selectedWorkout.title,
+            label: selectedWorkout.title
+          }}
+          onCreate={created => {
+            if (created.length < 30) {
+              this.setState({
+                nameError: null
+              });
+              this.props.addWorkout(created);
+              this.props.history.push(
+                "/workout/" + getId(this.props.usersWorkouts)
+              );
+            } else {
+              this.setState({
+                nameError:
+                  "Workout-Name can only contain a maximum of 30 characters"
+              });
+              this.props.history.push("/workout/-1");
+            }
+          }}
+        />
+        <div className="workout-error">{this.state.nameError}</div>
+      </div>
     );
   }
-  neededEquipment(type, header) {
+  neededThings(type, header) {
     //Zeige belastete Muskulatur oder benötigtes Equipment an
     //Type: "equipment" or muscles
     const list = {
@@ -298,12 +315,12 @@ class WorkoutCreator extends Component {
               <div className="ui grid">
                 <div className="four wide column">
                   <div className="ui segment">
-                    {this.neededEquipment("equipment", "Needed Equipment")}
+                    {this.neededThings("equipment", "Needed Equipment")}
                   </div>
                 </div>
                 <div className="four wide column">
                   <div className="ui segment">
-                    {this.neededEquipment("muscles", "Strained muscles")}
+                    {this.neededThings("muscles", "Strained muscles")}
                   </div>
                 </div>
                 <div className="column">
@@ -339,7 +356,7 @@ class WorkoutCreator extends Component {
               <div>
                 <button
                   className={
-                    "ui submit button" +
+                    "ui green submit button" +
                     (this.props.workout.exercises.length > 0 ? "" : " disabled")
                   }
                   onClick={() => {

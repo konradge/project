@@ -11,6 +11,7 @@ class Popup extends Component {
   render() {
     return (
       <SemanticPopup
+        position="left center"
         content={this.props.content}
         eventsEnabled={true}
         on="click"

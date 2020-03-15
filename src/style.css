@@ -33,6 +33,13 @@
   color: orange;
 }
 
+/******
+*   Workout Creator
+*******/
+.workout-error {
+  color: red;
+}
+
 /**********
 *   Main
 *********/
@@ -44,9 +51,12 @@
 .start-workout i {
   font-size: 250px;
   color: blue;
+  text-shadow: 5px 0 0 red, 0 -px 0 red, 0 5px 0 red, -5px 0 0 red;
 }
-.start-workout div {
-  font-size: 20px;
+
+.start-workout h1 {
+  margin-top: 40px;
+  font-size: 40px;
   font-weight: bold;
   color: white;
 }

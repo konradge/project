@@ -96,7 +96,7 @@ class Overview extends Component {
                   <div className="ui basic label">kg</div>
                 </div>
                 <button
-                  className="ui button"
+                  className="ui secondary button"
                   onClick={() => this.props.addWeight(this.state.weightValue)}
                 >
                   Save

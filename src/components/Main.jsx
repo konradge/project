@@ -45,7 +45,7 @@ class Main extends Component {
           </button>
           Hello World
         </div>
-        {this.props.currentWorkout.title}
+        <h3>{this.props.currentWorkout.title}</h3>
       </div>
     );
   }
@@ -64,7 +64,7 @@ class Main extends Component {
               trigger={
                 <div className="start-workout">
                   <i className="fas fa-play"></i>
-                  <div>Start your workout NOW!</div>
+                  <h1>Start your workout NOW!</h1>
                 </div>
               }
               content={this.startPopupContent()}
