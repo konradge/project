@@ -5,7 +5,7 @@
   "homepage": "https://konradge.github.io/be-fit/",
   "dependencies": {
     "@fortawesome/react-fontawesome": "^0.1.8",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "dateformat": "^3.0.3",
     "formik": "^2.1.2",
     "gh-pages": "^2.1.1",
